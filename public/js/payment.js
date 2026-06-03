@@ -233,6 +233,8 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!openBtn || !page) return;
 
   const availableLocations = getAllowedLocationsForCurrentUser();
+  console.log("USER:", getCurrentAuthUserForPayment());
+  console.log("AVAILABLE LOCATIONS:", availableLocations);
 
   if (!selectedLocation && availableLocations.length === 1) {
     selectedLocation = availableLocations[0];
