@@ -1,0 +1,989 @@
+/* ================= NAVBAR TRANSPARENT ON TOP ================= */
+/* Posisi awal di hero: transparan */
+#mainNav {
+  background: transparent !important;
+  box-shadow: none !important;
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.logo-text,
+.navbar-brand {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.nav-links a,
+.nav-menu a {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Warna teks saat transparan */
+#mainNav .navbar-brand,
+#mainNav .navbar-brand strong,
+#mainNav .nav-link,
+#mainNav .dropdown-toggle {
+  color: #ffffff !important;
+}
+
+/* Setelah scroll: biru muda */
+#mainNav.navbar-scrolled,
+#mainNav.navbar-shrink {
+  background: #003049 !important;
+  box-shadow: none !important;
+}
+
+/* Teks setelah scroll tetap putih */
+#mainNav.navbar-scrolled .navbar-brand,
+#mainNav.navbar-scrolled .navbar-brand strong,
+#mainNav.navbar-scrolled .nav-link,
+#mainNav.navbar-scrolled .dropdown-toggle,
+#mainNav.navbar-shrink .navbar-brand,
+#mainNav.navbar-shrink .navbar-brand strong,
+#mainNav.navbar-shrink .nav-link,
+#mainNav.navbar-shrink .dropdown-toggle {
+  color: #ffffff !important;
+}
+
+/* HAPUS GAP DI ATAS NAVBAR */
+#mainNav {
+  top: 0;
+}
+
+.hide-main-nav #mainNav {
+  display: none !important;
+}
+
+/* Hide navbar pada halaman detail data */
+body.hide-main-nav #mainNav {
+  display: none !important;
+}
+
+/* =========================================================
+   INAMI ENTERPRISE UI SYSTEM
+========================================================= */
+:root {
+  /* COLORS */
+  --inami-primary: #123b6d;
+  --inami-secondary: #1e5a8a;
+  --inami-accent: #4da8da;
+
+  --inami-bg: #f4f7fb;
+  --inami-surface: #ffffff;
+  --inami-border: #e3e8ef;
+
+  --inami-text: #172b4d;
+  --inami-text-soft: #5e6c84;
+
+  --inami-success: #34c759;
+  --inami-warning: #ffb020;
+  --inami-danger: #ff453a;
+
+  /* SHADOW */
+  --inami-shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+
+  --inami-shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+
+  --inami-shadow-lg: 0 18px 42px rgba(15, 23, 42, 0.12);
+
+  /* RADIUS */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+
+  /* SPACING */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+}
+
+/* =========================================================
+   GLOBAL DETAIL VIEW
+========================================================= */
+
+#pertaminaDetailView,
+#bakauheniDetailView,
+#inundationDetailView,
+#riskDetailView,
+#bakauheniInundationDetailView,
+#bakauheniRiskDetailView {
+  background: var(--inami-bg) !important;
+  color: var(--inami-text);
+  font-family: "Inter", sans-serif;
+}
+
+.btn-primary {
+  background: var(--inami-primary) !important;
+  border: none !important;
+}
+
+.btn-primary:hover {
+  background: #0f315b !important;
+  transform: translateY(-2px);
+}
+
+.btn-report-bar {
+  width: 100%;
+  background: white !important;
+  color: var(--inami-primary) !important;
+  border: 1px solid var(--inami-border) !important;
+  box-shadow: var(--inami-shadow-sm) !important;
+}
+
+.btn-report-bar:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--inami-shadow-md) !important;
+}
+
+/* =========================================================
+   RISK ACCORDION CLEANUP
+========================================================= */
+
+.risk-pill-btn {
+  border-radius: 18px !important;
+  min-height: 58px !important;
+
+  background: #155b7a !important;
+
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+
+  box-shadow: none !important;
+}
+
+.risk-pill-btn.is-danger {
+  background: #d64545 !important;
+}
+
+.risk-subpill-btn {
+  border-radius: 14px !important;
+
+  background: #eaf3fa !important;
+  color: var(--inami-primary) !important;
+
+  border: 1px solid #d8e7f2;
+
+  box-shadow: none !important;
+
+  font-weight: 700 !important;
+}
+
+.risk-leaf-pill.is-criteria {
+  background: #f4f7fb !important;
+  color: var(--inami-text) !important;
+
+  border-radius: 12px !important;
+  border: 1px solid var(--inami-border);
+
+  font-weight: 700 !important;
+}
+
+.risk-leaf-pill.is-subcriteria {
+  background: #fff7f2 !important;
+  color: #8a4b2a !important;
+
+  border-radius: 12px !important;
+  border: 1px solid #f0d7c6;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.table thead {
+  background: #f4f7fb;
+}
+
+.table th {
+  color: var(--inami-text);
+  font-weight: 800;
+  border-color: var(--inami-border);
+}
+
+.table td {
+  color: var(--inami-text-soft);
+  border-color: var(--inami-border);
+}
+
+/* =========================================================
+   ENTERPRISE HERO
+========================================================= */
+
+.enterprise-hero {
+  padding-top: 135px;
+  padding-bottom: 75px;
+}
+
+.enterprise-hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.enterprise-badge {
+  display: inline-flex;
+  align-items: center;
+
+  height: 36px;
+  padding: 0 16px;
+
+  background: rgba(18, 59, 109, 0.08);
+
+  border-radius: 999px;
+
+  color: var(--inami-primary);
+
+  font-size: 0.82rem;
+  font-weight: 700;
+
+  margin-bottom: 22px;
+}
+
+.enterprise-title {
+  font-size: 4rem;
+  font-weight: 900;
+
+  line-height: 1.05;
+
+  letter-spacing: -0.06em;
+
+  color: var(--inami-text);
+
+  margin-bottom: 22px;
+}
+
+.enterprise-description {
+  font-size: 1.08rem;
+  line-height: 1.9;
+
+  color: var(--inami-text-soft);
+
+  max-width: 640px;
+
+  margin-bottom: 34px;
+}
+
+.enterprise-metrics {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.metric-label {
+  display: block;
+
+  color: var(--inami-text-soft);
+
+  font-size: 0.82rem;
+  font-weight: 600;
+
+  margin-bottom: 10px;
+}
+
+.metric-value {
+  color: var(--inami-text);
+
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.enterprise-hero-visual {
+  position: relative;
+}
+
+.enterprise-hero-visual img {
+  width: 100%;
+
+  border-radius: 28px;
+
+  object-fit: cover;
+
+  box-shadow: 0 24px 60px rgba(15, 39, 71, 0.18);
+}
+
+/* responsive */
+
+@media (max-width: 991px) {
+  .enterprise-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .enterprise-title {
+    font-size: 2.7rem;
+  }
+}
+
+/* =========================================================
+   HERO IMAGE SLIDER
+========================================================= */
+
+.enterprise-hero-image {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  min-height: 500px;
+
+  border-radius: 34px;
+
+  overflow: hidden;
+
+  box-shadow: 0 24px 60px rgba(15, 39, 71, 0.12);
+}
+
+.hero-slider {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slide {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  opacity: 0;
+
+  transition:
+    opacity 1s ease,
+    transform 8s ease;
+
+  transform: scale(1.03);
+}
+
+.hero-slide.active {
+  opacity: 1;
+
+  transform: scale(1);
+}
+
+.report-bar {
+  margin-top: 12px;
+}
+
+.btn-report-bar {
+  width: 100%;
+  height: 78px;
+
+  border: none;
+  border-radius: 24px;
+
+  background: #ffffff;
+
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0d2d62;
+
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.06);
+
+  transition: all 0.3s ease;
+}
+
+.btn-report-bar:hover {
+  transform: translateY(-3px);
+}
+
+/* =========================================
+   BAKAUHENI ENTERPRISE OVERRIDE
+========================================= */
+
+#bakauheniDetailView .enterprise-title {
+  max-width: 520px;
+}
+
+#bakauheniDetailView .enterprise-description {
+  max-width: 720px;
+}
+
+#bakauheniDetailView .metric-value {
+  color: #123b72;
+}
+
+#bakauheniDetailView .hero-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#bakauheniDetailView .hero-slide {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  opacity: 0;
+
+  transition: opacity 0.9s ease;
+}
+
+#bakauheniDetailView .hero-slide.active {
+  opacity: 1;
+}
+
+/* =========================================================
+   PROJECTS VIEW
+========================================================= */
+
+#projectsView {
+  min-height: 100vh;
+
+  background: #000000;
+
+  color: #ffffff;
+
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   MAIN SHELL
+========================================================= */
+
+.projects-redesign-shell {
+  width: min(1380px, 94%);
+
+  margin: 0 auto;
+
+  padding: 90px 0 52px;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.projects-hero {
+  text-align: center;
+
+  margin-bottom: 30px;
+}
+
+.projects-hero-copy {
+  max-width: 980px;
+
+  margin: 0 auto;
+}
+
+.projects-hero-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 10px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 4px;
+
+  text-transform: uppercase;
+}
+
+.projects-hero-title {
+  font-size: clamp(35px, 5vw, 52px);
+
+  line-height: 1.05;
+
+  font-weight: 800;
+
+  margin-bottom: 20px;
+
+  color: #ffffff;
+}
+
+.projects-hero-subtitle {
+  max-width: 920px;
+
+  margin: 0 auto;
+
+  color: rgba(255, 255, 255, 0.8);
+
+  font-size: 20px;
+
+  line-height: 1.9;
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.projects-grid-section {
+  margin-bottom: 84px;
+}
+
+.projects-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 34px;
+
+  align-items: stretch;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+  .projects-grid {
+    gap: 28px;
+  }
+
+  .project-card-image {
+    height: 320px;
+  }
+}
+
+@media (max-width: 992px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card-image {
+    height: 340px;
+  }
+
+  .projects-hero-title {
+    font-size: 56px;
+  }
+
+  .projects-hero-subtitle {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-redesign-shell {
+    width: 92%;
+
+    padding-top: 78px;
+  }
+
+  .projects-top-actions {
+    margin-bottom: 42px;
+  }
+
+  .btn-back-dashboard {
+    width: 100%;
+  }
+
+  .projects-hero {
+    margin-bottom: 56px;
+  }
+
+  .projects-hero-title {
+    font-size: 42px;
+  }
+
+  .projects-hero-subtitle {
+    font-size: 16px;
+
+    line-height: 1.8;
+  }
+
+  .project-card-image {
+    height: 240px;
+  }
+
+  .project-card-body {
+    padding: 28px 24px 32px;
+  }
+
+  .project-card-title {
+    font-size: 32px;
+  }
+
+  .project-card-desc {
+    font-size: 16px;
+  }
+}
+
+/* =========================================
+   RESPONSIVE BLEND FIX
+========================================= */
+
+@media (max-width: 768px) {
+  .projects-about-panel {
+    margin-top: 12px;
+
+    padding: 62px 0 70px;
+
+    border-radius: 28px 28px 0 0;
+  }
+
+  .person-card,
+  .lecturer-card {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.projects-about-panel {
+  position: relative;
+
+  width: min(1380px, 94%);
+
+  margin: 24px auto 0;
+
+  padding: 78px 0 82px;
+
+  border-radius: 42px;
+
+  background: linear-gradient(180deg, rgba(16, 92, 112, 0.42) 0%, rgba(10, 52, 66, 0.18) 100%);
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  backdrop-filter: blur(10px);
+
+  overflow: hidden;
+}
+
+.projects-about-container {
+  width: min(1280px, 92%);
+  margin: 0 auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.projects-about-block {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.projects-about-title {
+  font-size: clamp(48px, 5vw, 72px);
+  font-weight: 800;
+  line-height: 1.05;
+  color: white;
+  margin-bottom: 24px;
+}
+
+.projects-about-desc {
+  max-width: 900px;
+  margin: 0 auto;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  font-size: 19px;
+  line-height: 1.9;
+}
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.projects-section-block {
+  margin-top: 72px;
+}
+
+.projects-section-header {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  margin-bottom: 36px;
+}
+
+.projects-section-label {
+  padding: 14px 28px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  color: white;
+
+  font-size: 19px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.projects-section-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* =========================================================
+   TEAM GRID
+========================================================= */
+
+.team-grid {
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  gap: 24px;
+
+  align-items: stretch;
+}
+
+/* =========================================================
+   TEAM CARD
+========================================================= */
+
+.person-photo {
+  width: 110px;
+  height: 110px;
+
+  margin: 0 auto 20px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  border: 4px solid rgba(255, 255, 255, 0.92);
+}
+
+.person-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.person-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.person-name {
+  color: white;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  line-height: 1.45;
+
+  margin: 0;
+}
+
+.person-id {
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 14px;
+  font-weight: 600;
+
+  margin: 0;
+}
+
+/* =========================================================
+   LECTURER GRID
+========================================================= */
+
+.lecturer-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 28px;
+}
+
+/* =========================================================
+   LECTURER CARD
+========================================================= */
+
+.lecturer-photo {
+  width: 128px;
+  height: 128px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  margin-bottom: 24px;
+
+  border: 4px solid rgba(255, 255, 255, 0.92);
+}
+
+.lecturer-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lecturer-name {
+  color: white;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.projects-map-back-wrap {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 70px;
+}
+
+.projects-map-back-btn {
+  border: none;
+
+  border-radius: 999px;
+
+  background: white;
+
+  color: #156f86;
+
+  padding: 18px 42px;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  transition: 0.2s ease;
+}
+
+.projects-map-back-btn:hover {
+  transform: translateY(-2px);
+
+  background: #f2fbff;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+  .team-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .lecturer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-about-panel {
+    padding: 72px 0;
+  }
+
+  .projects-about-title {
+    font-size: 42px;
+  }
+
+  .projects-about-desc {
+    font-size: 16px;
+  }
+
+  .projects-section-line {
+    display: none;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-section-header {
+    justify-content: center;
+  }
+}
+
+.btn-inami {
+  background: #003049 !important;
+  border: 1px solid #003049 !important;
+  color: #ffffff !important;
+
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  box-shadow: 0 4px 14px rgba(122, 183, 182, 0.25);
+
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    background 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.btn-inami:hover {
+  background: #003049 !important;
+  border-color: #003049 !important;
+  color: #ffffff !important;
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 20px rgba(122, 183, 182, 0.35);
+}
+
+.btn-inami:focus,
+.btn-inami:active {
+  background: #003049 !important;
+  border-color: #003049 !important;
+  color: #ffffff !important;
+  outline: none;
+
+  box-shadow: 0 0 0 0.2rem rgba(122, 183, 182, 0.35) !important;
+}
+
+.btn-inami i {
+  font-size: 0.95rem;
+}
+
+.team-member img,
+.team-card img,
+.member-photo img {
+  width: 110px;
+  height: 110px;
+
+  object-fit: cover;
+  object-position: center;
+
+  image-rendering: auto;
+
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}

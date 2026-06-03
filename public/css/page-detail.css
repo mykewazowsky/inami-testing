@@ -1,0 +1,1127 @@
+/* =========================================================
+   DETAIL TOPBAR (FINAL CLEAN)
+========================================================= */
+
+.detail-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10050;
+  width: 100%;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: linear-gradient(135deg, #ffffff 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(15, 39, 71, 0.18);
+  flex-wrap: nowrap;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .detail-topbar {
+    padding: 0 14px;
+    min-height: 56px;
+  }
+
+  .detail-action-wrap {
+    gap: 8px;
+  }
+}
+
+/* ================= TOPBAR BRAND ================= */
+
+.detail-topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.detail-topbar-brand img {
+  display: block;
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.detail-topbar-brand span {
+  color: #003049;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* mobile */
+
+@media (max-width: 768px) {
+  .detail-topbar-brand {
+    gap: 10px;
+  }
+
+  .detail-topbar-brand img {
+    height: 34px;
+  }
+
+  .detail-topbar-brand span {
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+/* =========================================================
+   DETAIL SYSTEM (FINAL CLEAN)
+========================================================= */
+.detail-view {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow-y: auto;
+  background: #ffffff;
+}
+
+.detail-view.active {
+  display: block;
+}
+
+.detail-view.active .container {
+  padding-top: 32px;
+  padding-bottom: 60px;
+}
+
+#pertaminaDetailView,
+#bakauheniDetailView,
+#inundationDetailView,
+#riskDetailView,
+#bakauheniInundationDetailView,
+#bakauheniRiskDetailView {
+  background: #ffffff;
+  color: var(--inami-text);
+  font-family: "Inter", sans-serif;
+}
+
+/* TOPBAR */
+.detail-title-wrap {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.detail-back-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+/* HERO */
+.detail-hero-section {
+  background: linear-gradient(180deg, #f4f7fb, #edf3f8);
+  padding-top: 42px;
+  padding-bottom: 56px;
+  overflow: hidden;
+}
+
+.detail-overlay {
+  background: transparent;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* HEADER */
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.detail-header-title {
+  flex: 1;
+}
+
+.detail-header-action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* IMAGE */
+.detail-image-card {
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  height: 100%;
+}
+
+.detail-image-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* PILL */
+.detail-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 110px;
+  padding: 22px 24px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 18px;
+  box-shadow: var(--inami-shadow-sm);
+  backdrop-filter: blur(10px);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--inami-text);
+}
+
+/* CAROUSEL */
+.detail-carousel-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 48px;
+  margin-bottom: 48px;
+}
+
+.detail-carousel {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 28px;
+  overflow: visible;
+}
+
+.detail-slide {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.35s ease;
+}
+
+.detail-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 22px;
+}
+
+.detail-slide.center {
+  transform: translateY(-30px) scale(1.2);
+  z-index: 10;
+}
+
+.detail-slide.side {
+  transform: scale(0.85);
+  opacity: 0.7;
+  z-index: 2;
+}
+
+.detail-slide.center img {
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+}
+
+.detail-slide.side img {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 991px) {
+  .detail-carousel {
+    flex-direction: column;
+  }
+
+  .detail-slide {
+    width: 100%;
+
+    max-width: 420px;
+
+    height: 260px;
+  }
+
+  .detail-pill {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .detail-pill {
+    min-height: 88px;
+
+    padding: 14px 20px;
+
+    font-size: 14px;
+  }
+
+  .detail-image-card img {
+    height: 150px;
+  }
+
+  .detail-carousel {
+    gap: 12px;
+  }
+
+  .detail-slide {
+    width: 120px;
+
+    height: 120px;
+  }
+
+  .detail-slide.center {
+    transform: translateY(-10px) scale(1.04);
+  }
+}
+
+.projects-main-header {
+  position: sticky;
+  top: 72px;
+  z-index: 20;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 991.98px) {
+  .projects-main-header {
+    top: 56px;
+  }
+}
+
+/* PASTIKAN TIDAK ADA OFFSET DARI ELEMEN PERTAMA */
+.view {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+body > *:first-child {
+  margin-top: 0 !important;
+}
+
+#inundationDetailView > .container,
+#riskDetailView > .container,
+#bakauheniInundationDetailView > .container,
+#bakauheniRiskDetailView > .container {
+  padding-top: 32px !important;
+}
+
+.detail-action-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.public-page-brand img {
+  height: 32px;
+}
+
+.public-page-brand span {
+  font-size: 0.92rem;
+}
+
+.public-page-topbar-text {
+  font-size: 0.8rem;
+  padding: 8px 12px;
+}
+
+.public-search-box input {
+  height: 60px;
+  padding-left: 22px;
+}
+
+.public-search-btn {
+  width: 42px;
+  height: 42px;
+  font-size: 1.3rem;
+}
+
+.hidden-page {
+  display: none !important;
+}
+
+.hidden-dropdown {
+  display: none !important;
+}
+
+/* ===== HEADER BARU ===== */
+.public-page-topbar {
+  width: 100%; /* mengikuti parent yang sudah di-max-width */
+  margin: 0 auto;
+  background: #9fc7d7;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.public-page-topbar-inner {
+  width: 100%;
+  padding: 0 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.public-page-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.public-page-brand img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+.public-page-brand span {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.public-page-topbar-text {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 10px 18px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* SESUDAH */
+.public-header-divider {
+  width: 100%; /* ikut parent max-width */
+  height: 7px;
+  margin: 0 auto;
+  background: #0f708c;
+}
+
+/* SEARCH */
+.public-search-wrapper {
+  position: relative;
+  max-width: 100%; /* ubah dari 640px */
+  margin: 0 auto 28px;
+}
+
+.public-search-box {
+  display: flex;
+  align-items: center;
+  min-height: 74px;
+  padding-left: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.public-search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0 22px;
+  color: #2b2b2b;
+  font-size: 1.08rem;
+  font-weight: 600;
+}
+
+.public-search-box input::placeholder {
+  color: #6f7277;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.public-search-btn {
+  width: 68px;
+  height: 68px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #1f2a37;
+  font-size: 1.55rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.public-search-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.public-location-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 10px 0;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(10px);
+}
+
+.public-location-item {
+  padding: 15px 24px;
+  color: #2b2b2b;
+  font-size: 1.02rem;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+
+.public-location-item:hover {
+  background: #eef4f7;
+}
+
+/* ===== ADMIN REPORT PICKER MODAL ===== */
+.admin-report-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(5px);
+  padding: 20px;
+}
+
+.admin-report-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 34px 28px 28px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+  text-align: center;
+  animation: adminReportModalFadeUp 0.25s ease;
+}
+
+@keyframes adminReportModalFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.admin-report-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #234;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.admin-report-close:hover {
+  background: #e2e8f0;
+}
+
+.admin-report-icon {
+  width: 74px;
+  height: 74px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #003049, #003049);
+  color: #fff;
+  font-size: 1.8rem;
+  box-shadow: 0 10px 26px rgba(0, 48, 73, 0.32);
+}
+
+.admin-report-title {
+  margin: 0 0 10px;
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #13354c;
+}
+
+.admin-report-subtitle {
+  margin: 0 0 24px;
+  color: #607282;
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.admin-report-option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-report-option-btn {
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 16px 22px;
+  background: #003049;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  box-shadow: 0 8px 18px rgba(107, 184, 176, 0.22);
+}
+
+.admin-report-option-btn:hover {
+  transform: translateY(-1px);
+  background: #003049;
+}
+
+.admin-report-option-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 576px) {
+  .admin-report-modal-card {
+    padding: 30px 20px 22px;
+    border-radius: 20px;
+  }
+
+  .admin-report-title {
+    font-size: 1.3rem;
+  }
+
+  .admin-report-option-btn {
+    padding: 15px 18px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ===== Info Modals (Hazard, Exposure, Risk) ===== */
+.info-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+.info-overlay.active {
+  display: flex;
+}
+
+.info-modal {
+  position: relative;
+  max-width: 600px;
+  width: 90%;
+  padding: 2.5rem;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  animation: slideUp 0.3s ease-out;
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.info-modal .btn-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+.info-modal .btn-close:hover {
+  opacity: 1;
+}
+
+.info-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.info-modal-header img {
+  max-height: 60px;
+  width: auto;
+}
+
+.info-modal-header h3 {
+  margin: 0;
+  color: var(--tsirip-dark);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.info-modal-content {
+  margin-bottom: 1.5rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.info-modal-content p {
+  margin-bottom: 1rem;
+}
+
+.info-modal-content ul {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.info-modal-content li {
+  margin-bottom: 0.5rem;
+}
+
+.info-modal-footer {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.info-modal-footer .btn {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.info-modal-footer .btn-secondary {
+  background-color: #e9ecef;
+  color: #333;
+  border: none;
+}
+
+.info-modal-footer .btn-secondary:hover {
+  background-color: #dee2e6;
+}
+
+.info-modal-footer .btn-primary {
+  background-color: var(--tsirip-primary);
+  color: white;
+  border: none;
+}
+
+.info-modal-footer .btn-primary:hover {
+  background-color: var(--tsirip-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 153, 255, 0.35);
+}
+
+/* Projects page spacing */
+#pertaminaDetailView .projects-page-header,
+#bakauheniDetailView .projects-page-header {
+  position: fixed;
+  top: 72px;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border-bottom: none;
+  backdrop-filter: none;
+}
+
+@media (max-width: 991.98px) {
+  #pertaminaDetailView .projects-page-header,
+  #bakauheniDetailView .projects-page-header {
+    top: 56px;
+  }
+}
+
+.risk-main-group,
+.risk-subgroup,
+.risk-subcontent,
+.risk-nested-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.risk-main-group,
+.risk-subgroup {
+  gap: 10px;
+}
+
+.risk-subcontent,
+.risk-nested-panel {
+  gap: 8px;
+}
+
+.risk-pill-btn,
+.risk-subpill-btn,
+.risk-leaf-pill {
+  width: 100%;
+  border: none;
+  outline: none;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 800;
+  text-align: center;
+  position: relative;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.risk-pill-btn {
+  background: #0f6f8a;
+  padding: 18px 60px;
+  font-size: 1.02rem;
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.risk-pill-btn.is-danger {
+  background: #bf0000;
+}
+
+.risk-pill-btn.is-clickable,
+.risk-subpill-btn.is-clickable {
+  cursor: pointer;
+}
+
+.risk-pill-btn.is-clickable:hover,
+.risk-subpill-btn.is-clickable:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+.risk-pill-label {
+  display: block;
+  line-height: 1.2;
+}
+
+.risk-pill-arrow {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.45rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.risk-pill-arrow.rotated {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.risk-child-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 2px;
+  padding: 0 6px;
+  background: transparent;
+  border: none;
+}
+
+.risk-subpill-btn {
+  background: #57b6c8;
+  padding: 10px 52px 10px 54px;
+  font-size: 0.93rem;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.risk-subpill-btn .risk-pill-label {
+  font-size: 0.9rem;
+}
+
+.risk-subpill-btn.has-lock,
+.risk-leaf-pill.has-lock {
+  padding-left: 16px;
+}
+
+.risk-lock-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #57b6c8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.risk-nested-panel {
+  padding: 0 8px 0 14px;
+  margin-top: 2px;
+  border: none;
+  background: transparent;
+}
+
+.risk-subcontent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.risk-criteria-list,
+.risk-subcriteria-list {
+  display: grid;
+  gap: 8px;
+}
+
+.risk-leaf-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 8px 12px;
+  line-height: 1.18;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.risk-leaf-pill.is-criteria {
+  background: #87afd1;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.risk-leaf-pill.is-subcriteria {
+  background: #5b2b1f;
+  font-size: 0.72rem;
+  font-weight: 800;
+  min-height: 38px;
+  padding: 8px 10px;
+}
+
+.risk-subcriteria-list.two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.risk-subcriteria-list.one-col {
+  grid-template-columns: 1fr;
+}
+
+.download-card .risk-download-card + .text-center {
+  margin-top: 6px !important;
+}
+
+@media (max-width: 576px) {
+  .risk-download-card {
+    gap: 12px;
+  }
+
+  .risk-main-group,
+  .risk-subgroup {
+    gap: 8px;
+  }
+
+  .risk-pill-btn {
+    min-height: 62px;
+    font-size: 0.95rem;
+    padding: 16px 50px;
+  }
+
+  .risk-subpill-btn {
+    min-height: 46px;
+    padding: 10px 42px 10px 46px;
+  }
+
+  .risk-pill-arrow {
+    right: 16px;
+    font-size: 1.25rem;
+  }
+
+  .risk-lock-icon {
+    left: 12px;
+    width: 24px;
+    height: 24px;
+    font-size: 0.82rem;
+  }
+
+  .risk-leaf-pill.is-criteria {
+    font-size: 0.76rem;
+  }
+
+  .risk-leaf-pill.is-subcriteria {
+    font-size: 0.66rem;
+  }
+
+  .risk-subcriteria-list.two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================
+   KPI STRIP
+========================================= */
+
+.kpi-strip {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 14px;
+}
+
+/* CARD */
+
+.kpi-card {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  min-height: 48px;
+
+  padding: 22px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--inami-border);
+
+  border-radius: 18px;
+
+  box-shadow: var(--inami-shadow-sm);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* CONTENT */
+
+.kpi-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+/* LABEL */
+
+.kpi-label {
+  margin-bottom: 4px;
+
+  color: var(--inami-text-soft);
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.3px;
+}
+
+/* VALUE */
+
+.kpi-value {
+  color: var(--inami-text);
+
+  font-size: 2rem;
+
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+/* VARIANT */
+
+.kpi-card.danger {
+  border-left: 4px solid #d93025;
+}
+
+.kpi-card.warning {
+  border-left: 4px solid #f4b400;
+}
+
+.kpi-card.success {
+  border-left: 4px solid #34a853;
+}
+
+.kpi-card.primary {
+  border-left: 4px solid #2f63b5;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+  .kpi-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .kpi-card {
+    padding: 18px;
+  }
+
+  .kpi-value {
+    font-size: 1.5rem;
+  }
+}
+
+/* FIX DETAIL BACKGROUND */
+.download-data-section,
+.premium-download-section,
+#inundationDetailView,
+#riskDetailView,
+#bakauheniInundationDetailView,
+#bakauheniRiskDetailView {
+  background: transparent !important;
+}
+
+/* SCROLL FIX */
+html,
+body {
+  overflow-y: auto;
+}

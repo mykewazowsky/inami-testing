@@ -1,0 +1,313 @@
+/* =========================================================
+   BASE
+========================================================= */
+
+.view {
+  display: none;
+}
+.view.active {
+  display: block;
+}
+
+.section-divider {
+  display: none;
+}
+
+/* ===== Login/Signup Overlay ===== */
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  z-index: 2000;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+    url("assets/img/Laut 1.jpg") center/cover no-repeat;
+}
+
+.login-overlay.active {
+  display: flex;
+}
+
+.login-overlay::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,50 Q300,80 600,50 T1200,50 L1200,120 L0,120 Z' fill='%23ffffff' opacity='0.10'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  animation: wave 15s linear infinite;
+  bottom: 0;
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(50%);
+  }
+}
+
+.about-section {
+  padding-top: 10rem;
+  background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.9) 75%, rgba(0, 0, 0, 0.8) 100%);
+  /*padding-bottom: 140px;*/
+}
+.about-section p {
+  margin-bottom: 5rem;
+}
+
+.projects-section {
+  padding-top: 60px !important;
+  padding-bottom: 80px;
+}
+.projects-section .row {
+  min-height: 70vh;
+  align-items: center;
+}
+
+.featured-text h4 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.projects-section .featured-text {
+  padding: 2rem;
+}
+
+@media (min-width: 992px) {
+  .projects-section .featured-text {
+    padding: 0 0 0 2rem;
+    border-left: 0.5rem solid #003049;
+  }
+}
+.projects-section .project-text {
+  padding: 3rem;
+  font-size: 90%;
+}
+@media (min-width: 992px) {
+  .projects-section .project-text {
+    padding: 5rem;
+  }
+}
+
+.signup-section {
+  padding: 10rem 0;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.5) 75%, #000 100%),
+    url("../assets/img/bg-signup.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+}
+.signup-section .form-signup input {
+  box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;
+  padding: 1.25rem 2rem;
+  height: auto;
+  font-family:
+    "Varela Round",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
+  font-size: 80%;
+  text-transform: uppercase;
+  letter-spacing: 0.15rem;
+  border: 0;
+}
+
+/* =========================================
+   Animasi Masthead (Slide Up & Fade In)
+   ========================================= */
+
+/* Membuat definisi animasinya */
+@keyframes slideUpFadeIn {
+  0% {
+    opacity: 0; /* Mulai dari transparan/tidak terlihat */
+    transform: translateY(50px); /* Mulai dari posisi 50px lebih rendah ke bawah */
+  }
+  100% {
+    opacity: 1; /* Berakhir sepenuhnya terlihat */
+    transform: translateY(0); /* Berakhir di posisi aslinya */
+  }
+}
+
+/* Class yang akan dipanggil di HTML */
+.animate-slide-up {
+  /* Menjalankan animasi selama 1.2 detik dengan pergerakan yang halus di akhir (ease-out) */
+  animation: slideUpFadeIn 1.2s ease-out forwards;
+}
+
+/* DOWNLOAD DATA SECTION */
+.download-data-section {
+  min-height: 70vh;
+  background: #1b3f69;
+}
+
+.download-title-pill {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 16px 40px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.download-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 28px;
+  padding: 28px;
+  min-height: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.download-card-title {
+  text-align: center;
+  font-weight: 800;
+  margin-bottom: 22px;
+}
+
+.download-preview-img {
+  width: 100%;
+  max-width: 260px;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+
+.download-btn {
+  background: #2f5fa7;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 36px;
+  font-weight: 700;
+  min-width: 240px !important; /* bikin sama panjang */
+  text-align: center;
+}
+
+.download-btn:hover {
+  background: #3f73f2;
+  color: #fff;
+}
+
+.risk-button-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 20px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.risk-mini-btn {
+  background: #2f5fa7;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 700;
+}
+
+.risk-mini-btn,
+.download-btn {
+  transition: all 0.25s ease;
+}
+
+.risk-mini-btn:hover,
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+.projects-page-header {
+  background: #f8f9fa; /* atau #ffffff kalau mau putih full */
+  backdrop-filter: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+html,
+body {
+  scroll-behavior: auto !important;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* ======================
+ACCESS MODAL BUTTON
+====================== */
+.access-notice-btn {
+  background: #003049;
+  color: #ffffff;
+  border: none;
+  min-width: 120px;
+  height: 52px;
+  padding: 0 32px;
+  border-radius: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: 0.25s;
+}
+
+.access-notice-btn:hover {
+  background: #0b4f73;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.access-notice-btn:active {
+  transform: translateY(0);
+}
+
+.access-notice-btn:focus {
+  box-shadow: 0 0 0 4px rgba(0, 48, 73, 0.15);
+}
+
+/* Tombol OK di custom alert */
+#customAlert .custom-alert-box button {
+  background-color: #003049;
+  color: #ffffff;
+  border: none;
+}
+
+#customAlert .custom-alert-box button:hover {
+  background-color: #00223a; /* sedikit lebih gelap saat hover */
+}
+
+/* Tombol OK di accessNoticeModal */
+.access-notice-btn {
+  background-color: #003049;
+  color: #ffffff;
+  border: none;
+}
+
+.access-notice-btn:hover {
+  background-color: #00223a;
+}

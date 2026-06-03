@@ -1,0 +1,183 @@
+.contact-section{
+padding:5px 0 50px;
+background:#000000;
+}
+
+/* HEADER */
+.contact-header{
+max-width:760px;
+margin:0 auto 70px;
+text-align:center;
+}
+
+.contact-badge{
+display:inline-block;
+padding:10px 18px;
+border-radius:999px;
+background:#003049;
+font-size:12px;
+font-weight:800;
+letter-spacing:3px;
+margin-bottom:24px;
+}
+
+.contact-header h2{
+color:#003049;
+font-size:clamp(38px,4vw,54px);
+font-weight:800;
+margin-bottom:20px;
+}
+
+.contact-header p{
+color:rgb(255, 255, 255);
+font-size:18px;
+line-height:1.9;
+}
+
+/* CARD */
+.contact-card{
+height:100%;
+padding:25px 36px;
+background:#ffffff;
+border:
+1px solid rgba(255,255,255,.06);
+border-radius:30px;
+text-align:center;
+transition:.3s;
+}
+
+.contact-card:hover{
+transform:
+translateY(-6px);
+border-color:
+rgba(139,211,254,.24);
+}
+
+.contact-icon{
+width:62px;
+height:62px;
+margin:0 auto 24px;
+border-radius:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#294669;
+font-size:30px;
+}
+
+.contact-card h4{
+color:#003049;
+font-weight:800;
+margin-bottom:6px;
+}
+
+.contact-card p{
+color:
+rgba(0,0,0,.70);
+line-height:1.9;
+margin-bottom:13px;
+}
+
+.contact-card a{
+color:#294669;
+font-weight:700;
+text-decoration:none;
+}
+
+/* SOCIAL */
+.contact-social{
+display:flex;
+justify-content:center;
+gap:18px;
+margin-top:50px;
+}
+
+.contact-social a{
+width:60px;
+height:60px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+background:
+rgba(255,255,255,.06);
+color:#ffffff;
+font-size:20px;
+transition:.3s;
+}
+
+.contact-social a:hover{
+transform:
+translateY(-4px);
+background:#003049;
+}
+
+/* FOOTER */
+.footer{
+padding:32px 0;
+background:#0b0f14;
+border-top:
+1px solid rgba(255,255,255,.05);
+}
+
+.footer-copy{
+text-align:center;
+color:
+rgba(255,255,255,.56);
+letter-spacing:.5px;
+}
+
+
+.contact-card{
+overflow:hidden;
+backdrop-filter:blur(12px);
+}
+
+.contact-card a:hover{
+color:#ffffff;
+}
+
+.contact-cta button{
+border-radius:999px;
+padding:
+16px
+40px;
+font-weight:700;
+transition:.25s;
+}
+
+.contact-cta button:hover{
+transform:
+translateY(-2px);
+background:#ffffff;
+color:#003049;
+}
+
+@media (max-width:768px){
+.contact-section{
+padding:
+80px
+0
+70px;
+}
+
+.contact-header h2{
+font-size:32px;
+}
+
+.contact-card{
+padding:
+40px
+26px;
+}
+
+.contact-cta{
+padding:
+40px
+24px;
+}
+
+.contact-cta h3{
+font-size:28px;
+}
+}

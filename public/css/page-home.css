@@ -1,0 +1,279 @@
+/* ================= HOME HERO ================= */
+
+.masthead{
+  position: relative;
+
+  width: 100%;
+  min-height: 35rem;
+
+  padding: 15rem 0;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.3) 0%,
+      rgba(0,0,0,.5) 75%,
+      #000 100%
+    ),
+    url("../assets/img/Laut 1.jpg");
+
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-attachment:scroll;
+}
+
+/* overlay */
+.masthead::after{
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  bottom:0;
+
+  width:100%;
+  height:180px;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(11,15,20,0),
+      rgba(11,15,20,.35),
+      rgba(11,15,20,.75),
+      rgba(11,15,20,1)
+    );
+}
+
+/* title */
+.masthead h1,
+.masthead .h1{
+
+  font-family:
+    "Varela Round",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+
+  font-size:5rem;
+
+  line-height:1;
+
+  letter-spacing:.8rem;
+
+  color:#fff;
+
+  text-shadow:
+    0 0 30px rgba(0,0,0,.5);
+
+  background:none;
+
+  -webkit-text-fill-color:initial;
+
+  -webkit-background-clip:initial;
+
+  background-clip:initial;
+}
+
+/* subtitle */
+.masthead h2,
+.masthead .h2{
+
+  max-width:900px;
+
+  margin:0 auto;
+
+  white-space:nowrap;
+
+  font-size:
+    clamp(
+      14px,
+      1.8vw,
+      22px
+    );
+
+  letter-spacing:.5px;
+
+  color:#fff;
+
+  opacity:.9;
+
+  text-shadow:
+    1px 1px 10px rgba(0,0,0,.5);
+}
+
+/* responsive */
+
+@media (min-width:768px){
+
+.masthead h1{
+font-size:4rem;
+}
+
+}
+
+@media (min-width:992px){
+
+.masthead{
+height:100vh;
+padding:0;
+}
+
+.masthead h1{
+
+font-size:6.5rem;
+
+line-height:6.5rem;
+
+}
+
+.masthead h2{
+
+font-size:1.25rem;
+
+}
+
+}
+
+/* ===== About, Projects, Catalog ===== */
+
+#about{
+  position: relative;
+  background: #0b0f14 !important;
+  scroll-margin-top: -130px;
+}
+
+#projects{
+  position: relative;
+  padding-top: 120px;
+  background: #0b0f14 !important;
+  color: #ffffff;
+}
+
+#catalog{
+  background: #0b0f14 !important;
+  color: #ffffff;
+}
+
+/* Matikan gradient/transisi lama */
+#about::after,
+#projects::before{
+  display: none !important;
+  content: none !important;
+  background: none !important;
+}
+
+/* ===== Text colors ===== */
+#projects h2,
+#projects h4,
+#catalog h2{
+  color: #ffffff !important;
+}
+
+#projects p,
+#projects .text-black-50{
+  color: rgba(255,255,255,0.78) !important;
+}
+
+/* ===== Catalog containers ===== */
+#catalog .container,
+#catalog .row{
+  background: transparent !important;
+}
+
+#catalog .btn{
+  border-radius: 10px;
+}
+
+#signup,
+.contact-section{
+  background: #0b0f14 !important;
+  position: relative;
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
+#signup::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 90px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(11,15,20,0) 0%,
+    rgba(11,15,20,0.55) 45%,
+    rgba(11,15,20,1) 100%
+  );
+}
+
+.contact-section{
+  padding-top: 40px;
+  padding-bottom: 90px;
+}
+
+footer{
+  background: #0b0f14 !important;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+}
+
+footer::before{
+  content: "";
+  position: absolute;
+  top: -60px;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(11,15,20,0) 0%,
+    rgba(11,15,20,0.6) 50%,
+    rgba(8,12,17,1) 100%
+  );
+}
+
+footer .text-white-50{
+  color: rgba(255,255,255,0.6) !important;
+  letter-spacing: 0.5px;
+  background: #0b0f14 !important;
+}
+
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  background: #333;
+  color: #fff;
+  padding: 12px 18px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.success {
+  background: #28a745;
+}
+
+.toast.error {
+  background: #dc3545;
+}

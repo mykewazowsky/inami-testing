@@ -1,0 +1,2640 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>INAMI Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/INAMI.png" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <script
+      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Bootstrap CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+
+    <!-- CSS Custom -->
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/page-projects.css" rel="stylesheet" />
+    <link href="css/base.css" rel="stylesheet" />
+    <link href="css/card.css" rel="stylesheet" />
+    <link href="css/map.css" rel="stylesheet" />
+    <link href="css/contact.css" rel="stylesheet" />
+    <link href="css/page-home.css" rel="stylesheet" />
+    <link href="css/page-catalog.css" rel="stylesheet" />
+    <link href="css/page-detail.css" rel="stylesheet" />
+    <link href="css/payment.css" rel="stylesheet" />
+    <link href="css/public-download.css" rel="stylesheet" />
+
+    <!-- Leaflet -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+  </head>
+
+  <body id="page-top">
+    <!-- ================================================
+     NAVBAR
+     ================================================ -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container-fluid px-3 px-lg-4">
+        <a class="navbar-brand d-flex align-items-center" href="#" onclick="goHome(event)">
+          <img
+            src="assets/img/INAMI.png"
+            alt="Logo"
+            width="45"
+            height="45"
+            class="d-inline-block align-top me-2"
+          />
+          <strong>INAMI</strong>
+        </a>
+
+        <button
+          class="navbar-toggler navbar-toggler-right"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarResponsive"
+          aria-controls="navbarResponsive"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          Menu <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ms-auto align-items-lg-center">
+            <!--LOGIN (muncul saat belum login)-->
+            <li class="nav-item" id="loginNav">
+              <a class="nav-link" href="#" onclick="openLogin(event)">Login</a>
+            </li>
+
+            <!-- USER DROPDOWN (muncul setelah login) -->
+            <li class="nav-item dropdown d-none" id="userNav">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="userDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fas fa-user-circle me-1"></i>
+                <span id="userGreeting">Account</span>
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li>
+                  <span class="dropdown-item-text" id="userRoleLabel">Role: public</span>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#" onclick="logout(event)">Logout</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- MENU UTAMA -->
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="goToMap(event)">Map</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="goToCatalog(event)">Data & Catalog</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="goToContact(event)">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ================================================
+     HOMEVIEW
+     ================================================ -->
+    <div id="homeView" class="view active">
+      <!-- ======================= MASTHEAD ======================= -->
+      <header class="masthead">
+        <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+          <div class="text-center">
+            <img
+              src="assets/img/INAMI.png"
+              alt="Logo INAMI"
+              style="max-width: 200px; height: auto"
+              class="mb-4"
+            />
+            <h1 class="mx-auto my-0 text-uppercase">INAMI</h1>
+            <h2 class="text-white mx-auto mt-2 mb-5">
+              Indonesia Tsunami Risk Monitoring for Coastal Infrastructure
+            </h2>
+            <a class="btn btn-inami" href="#" onclick="goToAbout(event)">EXPLORE</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- ======================= ABOUT ======================= -->
+      <section class="about-section text-center" id="about">
+        <div class="container px-4 px-lg-5">
+          <div class="row justify-content-center mb-4">
+            <div class="col-auto">
+              <img
+                src="assets/img/INAMI.png"
+                alt="Logo INAMI"
+                class="img-fluid rounded-circle bg-white p-2"
+                style="width: 150px; height: 150px; object-fit: contain"
+              />
+            </div>
+          </div>
+
+          <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+            <div class="col-lg-8">
+              <p class="text-white-50">
+                INAMI (Indonesia Tsunami Risk Monitoring for Coastal Infrastructure) adalah platform
+                terpadu yang mengintegrasikan pemodelan tsunami, analisis paparan infrastruktur, dan
+                kuantifikasi risiko dalam satu sistem visual interaktif.
+              </p>
+            </div>
+          </div>
+
+          <div class="row gx-4 gx-lg-5 justify-content-center pb-5">
+            <div class="col-md-4 mb-4 mb-md-0">
+              <div
+                class="card card-hover h-100 border-0 shadow"
+                style="background-color: #8bd3fe; border-radius: 25px; cursor: pointer"
+                onclick="openHazardModal()"
+              >
+                <div
+                  class="card-body p-4 d-flex flex-column align-items-center justify-content-center"
+                >
+                  <img
+                    src="assets/img/Hazard.png"
+                    alt="Hazard Icon"
+                    class="mb-4"
+                    style="max-height: 100px; width: auto"
+                  />
+                  <h4 class="text-black fw-bold mb-0">HAZARD</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-4 mb-md-0">
+              <div
+                class="card card-hover h-100 border-0 shadow"
+                style="background-color: #8bd3fe; border-radius: 25px; cursor: pointer"
+                onclick="openExposureModal()"
+              >
+                <div
+                  class="card-body p-4 d-flex flex-column align-items-center justify-content-center"
+                >
+                  <img
+                    src="assets/img/Exposure.png"
+                    alt="Exposure Icon"
+                    class="mb-4"
+                    style="max-height: 100px; width: auto"
+                  />
+                  <h4 class="text-black fw-bold mb-0">EXPOSURE</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div
+                class="card card-hover h-100 border-0 shadow"
+                style="background-color: #8bd3fe; border-radius: 25px; cursor: pointer"
+                onclick="openRiskModal()"
+              >
+                <div
+                  class="card-body p-4 d-flex flex-column align-items-center justify-content-center"
+                >
+                  <img
+                    src="assets/img/Risk.png"
+                    alt="Risk Icon"
+                    class="mb-4"
+                    style="max-height: 100px; width: auto"
+                  />
+                  <h4 class="text-black fw-bold mb-0">RISK</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= PROJECTS MAP ======================= -->
+      <section class="projects-section" id="projects">
+        <div class="container-fluid px-4 px-lg-5">
+          <div class="row g-4 g-lg-0 mb-4 mb-lg-5 align-items-center">
+            <div class="col-lg-7 col-xl-8">
+              <div class="map-box">
+                <div class="map-toolbar">
+                  <div class="wilayah-dropdown" id="wilayahDropdown">
+                    <input
+                      type="text"
+                      id="wilayahInput"
+                      placeholder="Cari / Pilih Wilayah..."
+                      autocomplete="off"
+                    />
+                    <div class="wilayah-dropdown-list hidden" id="wilayahList">
+                      <button type="button" class="wilayah-option" data-value="cilacap">
+                        Cilacap
+                      </button>
+                      <button type="button" class="wilayah-option" data-value="bakauheni">
+                        Bakauheni
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="map"></div>
+                <div class="leaflet-layer-menu">
+                  <button
+                    type="button"
+                    class="layer-menu-toggle"
+                    id="layerMenuToggle"
+                    aria-label="Toggle layer menu"
+                  >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </button>
+
+                  <div class="leaflet-layer-panel hidden" id="layerPanel">
+                    <div class="layer-panel-title">Layer</div>
+                    <label><input type="checkbox" id="chkJalan" checked /> Jalan</label>
+                    <label
+                      ><input type="checkbox" id="chkInundasi" checked /> Inundasi Tsunami</label
+                    >
+                    <div class="layer-item">
+                      <label>
+                        <input type="checkbox" id="chkRisk" checked />
+                        Risk Assessment
+                      </label>
+
+                      <div class="risk-options" id="riskOptions">
+                        <label>
+                          <input type="radio" name="riskState" value="DS1" checked />
+                          DS1
+                        </label>
+
+                        <label>
+                          <input type="radio" name="riskState" value="DS2" />
+                          DS2
+                        </label>
+
+                        <label>
+                          <input type="radio" name="riskState" value="DS3" />
+                          DS3
+                        </label>
+
+                        <label>
+                          <input type="radio" name="riskState" value="DS4" />
+                          DS4
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-5 col-xl-4">
+              <div class="featured-text text-center text-lg-start">
+                <h4>Peta Interaktif Risiko</h4>
+                <a class="btn btn-inami" href="#" onclick="openProjects(event)">
+                  Explore Our Projects
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= CATALOG ======================= -->
+      <section class="catalog-section py-5" id="catalog">
+        <div class="container px-4 px-lg-5 mt-5">
+          <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+              <h2 class="text-white mb-3">Katalog Data & Produk</h2>
+              <p class="text-white-50 mb-0">
+                Unduh hasil pemodelan inundasi tsunami, data infrastruktur, dan analisis risiko.
+              </p>
+            </div>
+          </div>
+
+          <div class="row gx-4 gy-4 align-items-stretch catalog-row">
+            <!-- GRATIS -->
+            <div class="col-md-4 d-flex">
+              <div class="card card-hover w-100 border-0 bg-light shadow-sm catalog-card">
+                <div class="card-body p-4 d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="catalog-badge catalog-badge-success">Publik</span>
+                    <i class="fas fa-map-marked-alt catalog-icon-public"></i>
+                  </div>
+                  <h5 class="fw-bold text-dark mb-2">Peta Inundasi Tsunami</h5>
+                  <p class="text-muted small mb-4">Visualiasai area genangan tsunami.</p>
+                  <div class="mt-auto">
+                    <button class="btn btn-success w-100 fw-semibold" onclick="goToMap(event)">
+                      <i class="fas fa-location-dot me-2"></i>Explore Peta
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PREMIUM -->
+            <div class="col-md-4 d-flex">
+              <div class="card card-hover w-100 border-0 bg-light shadow-sm catalog-card">
+                <div class="card-body p-4 d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="catalog-badge catalog-badge-warning">Premium</span>
+                    <i class="fas fa-database catalog-icon-premium"></i>
+                  </div>
+                  <h5 class="fw-bold text-dark mb-2">Data Paparan Infrastruktur</h5>
+                  <p class="text-muted small mb-4">
+                    Dataset atribut lengkap infrastruktur pesisir (Shapefile/CSV) dan raster area
+                    genangan tsunami (GeoJSON/KML).
+                  </p>
+                  <div class="mt-auto">
+                    <button
+                      type="button"
+                      class="catalog-btn premium-access-btn"
+                      id="openPublicDownload"
+                      onclick="requireLoginForPurchase(event)"
+                    >
+                      <i class="bi bi-cart3"></i>
+                      <span>BELI AKSES</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- MITRA -->
+            <div class="col-md-4 d-flex">
+              <div class="card card-hover w-100 border-0 bg-light shadow-sm catalog-card">
+                <div class="card-body p-4 d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="catalog-badge catalog-badge-primary">Khusus Mitra</span>
+                    <i class="fas fa-shield-alt catalog-icon-partner"></i>
+                  </div>
+
+                  <h5 class="fw-bold text-dark mb-2">Kuantifikasi Risiko Detail</h5>
+
+                  <p class="text-muted small mb-4">
+                    Laporan damage analysis &amp; data spasial risiko tinggi.
+                  </p>
+
+                  <div class="mt-auto">
+                    <button
+                      class="catalog-btn mitra-access-btn"
+                      onclick="downloadPartnerReport(event)"
+                    >
+                      <i class="fas fa-lock me-2"></i>
+                      <i class="fas fa-file-pdf me-2"></i>
+                      Unduh Laporan
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SIGNUP ================= -->
+
+      <section class="signup-section" id="signup">
+        <div class="container px-4 px-lg-5">
+          <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+              <i class="far fa-paper-plane fa-2x mb-3 text-white"></i>
+              <h2 class="text-white mb-3">Hubungi Kami untuk Bermitra</h2>
+              <form class="form-signup" id="contactForm" onsubmit="handleSubscribe(event)">
+                <div class="row g-3 justify-content-center">
+                  <div class="col-md">
+                    <input
+                      class="form-control"
+                      id="emailAddress"
+                      type="email"
+                      placeholder="Enter your email address..."
+                      required
+                    />
+                  </div>
+                  <div class="col-auto">
+                    <button class="btn btn-inami px-4" id="submitButton" type="submit">
+                      Notify Me
+                    </button>
+                  </div>
+                </div>
+                <div class="invalid-feedback mt-2" id="emailError" style="display: none"></div>
+                <div class="valid-feedback mt-2" id="emailSuccess" style="display: none"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= CONTACT ======================= -->
+      <section class="contact-section">
+        <div class="container px-4 px-lg-5">
+          <!-- HEADER -->
+          <div class="contact-header">
+            <p>
+              Reach out for partnerships, data access, infrastructure assessment, or collaboration
+              opportunities with INAMI
+            </p>
+          </div>
+
+          <!-- CONTACT GRID -->
+          <div class="row g-4">
+            <!-- ADDRESS -->
+            <div class="col-lg-4">
+              <div class="contact-card">
+                <div class="contact-icon">
+                  <i class="fas fa-location-dot"></i>
+                </div>
+                <h4>Office</h4>
+                <p>
+                  Jl. Ganesa No. 10 Coblong, Bandung<br />
+                  West Java 40132
+                </p>
+                <a
+                  href="https://maps.app.goo.gl/jS7oHw8ZJEiNRaeV8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Location
+                </a>
+              </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="col-lg-4">
+              <div class="contact-card">
+                <div class="contact-icon">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <h4>Email</h4>
+                <p>
+                  General inquiries<br />
+                  and partnership requests
+                </p>
+                <a href="mailto:inami@gmail.com"> inami@gmail.com </a>
+              </div>
+            </div>
+
+            <!-- PHONE -->
+            <div class="col-lg-4">
+              <div class="contact-card">
+                <div class="contact-icon">
+                  <i class="fas fa-phone"></i>
+                </div>
+                <h4>Phone</h4>
+                <p>
+                  Available during business hours<br />
+                  Mon-Fri (09.00 - 17.00 WIB)
+                </p>
+                <a href="tel:+6281222443670"> +62 812 224 43670 </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- SOCIAL -->
+          <div class="contact-social">
+            <a href="#">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="#">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= FOOTER ======================= -->
+      <footer class="footer">
+        <div class="container">
+          <div class="footer-copy">
+            © 2025 INAMI — Indonesia Tsunami Risk Monitoring for Coastal Infrastructure
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ================================================
+     PROJECTS VIEW 
+     ================================================ -->
+    <div id="projectsView" class="view">
+      <div class="projects-redesign-shell">
+        <!-- HERO TITLE -->
+        <section class="projects-hero">
+          <div class="projects-hero-copy">
+            <h1 class="projects-hero-title">Project Overview</h1>
+          </div>
+        </section>
+
+        <!-- PROJECTS GRID -->
+        <section class="projects-grid-section">
+          <div class="projects-grid">
+            <!-- PROJECT 1 -->
+            <article class="project-card">
+              <div class="project-card-image">
+                <img src="assets/img/cilacap/1.webp" alt="Pertamina RU IV Cilacap" />
+              </div>
+              <div class="project-card-body">
+                <span class="project-card-label"> Project 1 </span>
+                <h3 class="project-card-title">PERTAMINA RU IV CILACAP</h3>
+                <p class="project-card-desc">
+                  Analisis paparan tsunami terhadap area kilang, terminal, fasilitas pendukung,
+                  serta aset operasional strategis di Pertamina RU IV Cilacap.
+                </p>
+                <button class="btn btn-light project-card-btn" onclick="openPertaminaDetail()">
+                  Lihat Detail
+                </button>
+              </div>
+            </article>
+
+            <!-- PROJECT 2 -->
+            <article class="project-card project-card-alt">
+              <div class="project-card-image">
+                <img src="assets/img/bakauheni/12.jpg" alt="Pelabuhan Bakauheni" />
+              </div>
+              <div class="project-card-body">
+                <span class="project-card-label"> Project 2 </span>
+                <h3 class="project-card-title">PELABUHAN BAKAUHENI</h3>
+                <p class="project-card-desc">
+                  Analisis potensi risiko tsunami pada terminal penumpang, dermaga, jalur kendaraan,
+                  dan infrastruktur pendukung pelabuhan Bakauheni.
+                </p>
+                <button class="btn btn-light project-card-btn" onclick="openBakauheniDetail()">
+                  Lihat Detail
+                </button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <!-- =====================================================
+            PROJECT TEAM
+        ====================================================== -->
+      <section class="projects-about-panel">
+        <div class="projects-about-container">
+          <!-- HEADER -->
+          <div class="projects-about-block">
+            <h2 class="projects-about-title">Tentang Dashboard</h2>
+            <p class="projects-about-desc">
+              Platform ini dirancang untuk mengintegrasikan analisis risiko tsunami dengan
+              visualisasi geospasial interaktif guna mendukung pengambilan keputusan mitigasi
+              infrastruktur vital di kawasan pesisir.
+            </p>
+          </div>
+
+          <!-- TEAM -->
+          <div class="projects-section-block">
+            <div class="projects-section-header">
+              <div class="projects-section-label">Team Capstone</div>
+              <div class="projects-section-line"></div>
+            </div>
+
+            <div class="team-grid">
+              <!-- PERSON 1 -->
+              <div class="person-card">
+                <div class="person-photo">
+                  <img src="assets/img/ranny1.png" alt="" />
+                </div>
+                <div class="person-content">
+                  <div class="person-name">Ranny F. M. Saimuri</div>
+                  <div class="person-id">15122004</div>
+                </div>
+              </div>
+
+              <!-- PERSON 2 -->
+              <div class="person-card">
+                <div class="person-photo">
+                  <img src="assets/img/mitzu1.png" alt="" />
+                </div>
+                <div class="person-content">
+                  <div class="person-name">Mitzu Lintang S.</div>
+                  <div class="person-id">15122039</div>
+                </div>
+              </div>
+
+              <!-- PERSON 3 -->
+              <div class="person-card">
+                <div class="person-photo">
+                  <img src="assets/img/syahrir1.png" alt="" />
+                </div>
+                <div class="person-content">
+                  <div class="person-name">M. Rayhan Syahrir</div>
+                  <div class="person-id">15122041</div>
+                </div>
+              </div>
+
+              <!-- PERSON 4 -->
+              <div class="person-card">
+                <div class="person-photo">
+                  <img src="assets/img/halim1.png" alt="" />
+                </div>
+                <div class="person-content">
+                  <div class="person-name">Hanif Halim W.</div>
+                  <div class="person-id">15122056</div>
+                </div>
+              </div>
+
+              <!-- PERSON 5 -->
+              <div class="person-card">
+                <div class="person-photo">
+                  <img src="assets/img/ega1.png" alt="" />
+                </div>
+                <div class="person-content">
+                  <div class="person-name">Ega Mutia Asyifa</div>
+                  <div class="person-id">15122065</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LECTURER -->
+          <div class="projects-section-block">
+            <div class="projects-section-header">
+              <div class="projects-section-label">Dosen Pembimbing</div>
+              <div class="projects-section-line"></div>
+            </div>
+
+            <div class="lecturer-grid">
+              <!-- LECTURER 1 -->
+              <div class="lecturer-card">
+                <div class="lecturer-photo">
+                  <img src="assets/img/irwanmeilano1.png" alt="" />
+                </div>
+                <div class="lecturer-content">
+                  <div class="lecturer-name">Prof. Dr. Irwan Meilano, ST., M.Sc.</div>
+                </div>
+              </div>
+
+              <!-- LECTURER 2 -->
+              <div class="lecturer-card">
+                <div class="lecturer-photo">
+                  <img src="assets/img/Wiwin.jpg" alt="" />
+                </div>
+                <div class="lecturer-content">
+                  <div class="lecturer-name">Dr. Rer. Nat. Wiwin Windupranata, ST., M.Si.</div>
+                </div>
+              </div>
+
+              <!-- LECTURER 3 -->
+              <div class="lecturer-card">
+                <div class="lecturer-photo">
+                  <img src="assets/img/iyan.png" alt="" />
+                </div>
+                <div class="lecturer-content">
+                  <div class="lecturer-name">Dr. Iyan E. Mulia, S.Si, M.T.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BUTTON -->
+          <div class="projects-map-back-wrap">
+            <button class="projects-map-back-btn" onclick="goToMap(event)">
+              Kembali ke Dashboard
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================================================
+     DETAIL VIEW: PERTAMINA RU IV CILACAP
+     ================================================ -->
+    <div id="pertaminaDetailView" class="view">
+      <div class="projects-page-header">
+        <div class="detail-topbar container-fluid px-3 px-lg-4">
+          <div class="detail-title-wrap"></div>
+
+          <div class="detail-back-wrap">
+            <button class="btn btn-primary btn-sm detail-back-btn" onclick="goHome(event)">
+              Back to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================
+        ENTERPRISE HERO SECTION
+        ===================================================== -->
+      <section class="enterprise-hero">
+        <div class="container">
+          <div class="enterprise-hero-grid">
+            <!-- LEFT CONTENT -->
+            <div class="enterprise-hero-content">
+              <div class="enterprise-badge">Coastal Infrastructure Risk Zone</div>
+              <h1 class="enterprise-title">Pertamina RU IV Cilacap</h1>
+              <p class="enterprise-description">
+                Kawasan industri strategis pesisir dengan exposure tinggi terhadap risiko tsunami,
+                mencakup kilang minyak, terminal energi, jaringan distribusi, dan infrastruktur
+                pendukung operasional.
+              </p>
+              <!-- metrics -->
+              <div class="enterprise-metrics">
+                <div class="enterprise-metric-card">
+                  <span class="metric-label">Total Area</span>
+                  <span class="metric-value">300+ Ha</span>
+                </div>
+                <div class="enterprise-metric-card">
+                  <span class="metric-label">Risk Category</span>
+                  <span class="metric-value">High</span>
+                </div>
+                <div class="enterprise-metric-card">
+                  <span class="metric-label">Infrastructure</span>
+                  <span class="metric-value">7 Assets</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT VISUAL -->
+            <div class="enterprise-hero-image">
+              <div class="hero-slider">
+                <img class="hero-slide active" src="assets/img/cilacap/1.webp" alt="" />
+                <img class="hero-slide" src="assets/img/cilacap/2.webp" alt="" />
+                <img class="hero-slide" src="assets/img/cilacap/3.webp" alt="" />
+                <img class="hero-slide" src="assets/img/cilacap/4.webp" alt="" />
+                <img class="hero-slide" src="assets/img/cilacap/5.webp" alt="" />
+                <img class="hero-slide" src="assets/img/cilacap/6.webp" alt="" />
+                <img class="hero-slide" src="assets/img/cilacap/7.webp" alt="" />
+                <img class="hero-slide" src="assets/img/cilacap/8.jpg" alt="" />
+                <img class="hero-slide" src="assets/img/cilacap/9.jpg" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+        SECTION DOWNLOAD DATA
+        ===================================================== -->
+      <section id="downloadDataView" class="download-data-section premium-download-section">
+        <div class="container-fluid premium-download-wrapper">
+          <div class="text-center mb-4">
+            <div class="download-title-pill">UNDUH DATA</div>
+          </div>
+
+          <div class="row justify-content-center g-5 premium-download-grid">
+            <div class="col-xl-5 col-lg-6">
+              <div class="download-card">
+                <h2>DATA INUNDASI</h2>
+                <div class="text-center mt-auto">
+                  <button class="btn btn-primary" onclick="openInundationData(event)">
+                    EXPLORE
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-5 col-lg-6">
+              <div class="download-card">
+                <h2>DATA RISIKO</h2>
+                <div class="text-center mt-auto">
+                  <button class="btn btn-primary" onclick="openRiskData(event)">EXPLORE</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-center mt-4">
+            <div class="col-lg-4 col-md-6">
+              <div class="report-bar">
+                <button
+                  id="downloadReportBtnCilacap"
+                  class="btn-report-bar"
+                  onclick="downloadCilacapReport(event)"
+                >
+                  <i class="fas fa-file-pdf me-2"></i>
+                  <i id="downloadIconCilacap" class="fas fa-lock me-2"></i>
+                  UNDUH REPORT PDF
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================================================
+     DETAIL DATA INUNDASI PERTAMINA RU IV CILACAP
+     ================================================ -->
+    <section id="inundationDetailView" class="detail-view">
+      <div class="detail-topbar">
+        <a class="detail-topbar-brand" href="#" onclick="goHome(event)">
+          <img src="assets/img/INAMI.png" alt="Logo" />
+          <span>INAMI</span>
+        </a>
+
+        <div class="detail-action-wrap">
+          <button
+            class="btn btn-primary btn-sm detail-back-btn"
+            onclick="backToPertaminaDetail(event)"
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+
+      <div class="container py-5">
+        <div class="detail-header">
+          <h2>Detail Data Inundasi</h2>
+          <div class="d-flex gap-2"></div>
+        </div>
+
+        <div class="kpi-strip mb-4">
+          <div class="kpi-card">
+            <span class="kpi-label">Lokasi</span>
+            <span class="kpi-value" style="font-size: 20px"> Cilacap </span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Layer</span>
+            <span class="kpi-value" style="font-size: 20px"> Inundasi Tsunami </span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Format</span>
+            <span class="kpi-value" style="font-size: 20px"> GeoTIFF Raster </span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Source</span>
+            <span class="kpi-value" style="font-size: 20px"> GeoServer </span>
+          </div>
+        </div>
+
+        <div class="card p-4 shadow-sm mb-4">
+          <h5 class="mb-3">Ringkasan</h5>
+          <p id="inundationSummary">
+            Raster inundasi tsunami menampilkan distribusi genangan hasil simulasi tsunami pada
+            kawasan Pertamina RU IV Cilacap. Nilai raster merepresentasikan tinggi genangan maksimum
+            (Hmax) yang digunakan sebagai input utama dalam analisis risiko infrastruktur.
+          </p>
+        </div>
+
+        <section class="detail-card inundation-map-card">
+          <div class="detail-card-header">
+            <h3>Inundation Map</h3>
+
+            <span class="map-badge"> GeoServer Raster </span>
+          </div>
+
+          <div class="map-wrapper">
+            <div id="inundationDetailMap"></div>
+
+            <div class="map-gradient-legend">
+              <div class="legend-title">Inundation Depth (m)</div>
+
+              <div class="legend-bar"></div>
+
+              <div class="legend-labels">
+                <span>0.1</span>
+                <span>9.5</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="text-center mt-4">
+          <button class="btn btn-primary" onclick="goToPublicDownload('inundasi', 'cilacap')">
+            <i class="fas fa-download me-2"></i>
+            Unduh Data Inundasi
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================
+     DETAIL DATA RISIKO PERTAMINA RU IV CILACAP
+     ================================================ -->
+    <section id="riskDetailView" class="detail-view risk-detail-page">
+      <!-- TOPBAR -->
+      <div class="detail-topbar">
+        <a class="detail-topbar-brand" href="#" onclick="goHome(event)">
+          <img src="assets/img/INAMI.png" alt="Logo" />
+          <span>INAMI</span>
+        </a>
+
+        <div class="detail-action-wrap">
+          <button
+            class="btn btn-primary btn-sm detail-back-btn"
+            onclick="backToPertaminaDetail(event)"
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="container py-5">
+        <!-- PAGE HEADER -->
+        <div class="risk-page-header">
+          <h1>Detail Data Risiko</h1>
+          <p>
+            Analisis tingkat risiko tsunami berdasarkan raster indeks risiko, penilaian parameter,
+            dan klasifikasi dampak infrastruktur.
+          </p>
+        </div>
+
+        <!-- ================= MAP SECTION ================= -->
+        <section class="risk-section-card">
+          <div class="risk-section-header text-left">
+            <h2>Risk Assessment</h2>
+            <p>Visualisasi spasial area terdampak berdasarkan klasifikasi tingkat risiko.</p>
+          </div>
+
+          <div class="risk-state-switcher">
+            <button class="risk-state-btn active" data-ds="DS1">DS1</button>
+
+            <button class="risk-state-btn" data-ds="DS2">DS2</button>
+
+            <button class="risk-state-btn" data-ds="DS3">DS3</button>
+
+            <button class="risk-state-btn" data-ds="DS4">DS4</button>
+          </div>
+
+          <div class="risk-map-wrapper">
+            <div id="miniRiskRasterMap" class="mini-leaflet-map"></div>
+          </div>
+
+          <!-- ================= LEGEND ================= -->
+          <div class="risk-legend-wrap">
+            <div class="risk-legend-item">
+              <span class="risk-legend-color risk-1"></span>
+              <span>0.00 - 0.20</span>
+            </div>
+
+            <div class="risk-legend-item">
+              <span class="risk-legend-color risk-2"></span>
+              <span>0.20 - 0.40</span>
+            </div>
+
+            <div class="risk-legend-item">
+              <span class="risk-legend-color risk-3"></span>
+              <span>0.40 - 0.60</span>
+            </div>
+
+            <div class="risk-legend-item">
+              <span class="risk-legend-color risk-4"></span>
+              <span>0.60 - 0.80</span>
+            </div>
+
+            <div class="risk-legend-item">
+              <span class="risk-legend-color risk-5"></span>
+              <span>0.80 - 1.00</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= SUMMARY SECTION ================= -->
+        <section class="risk-section-card">
+          <div class="risk-section-header">
+            <h2>Ringkasan Risiko</h2>
+          </div>
+
+          <!-- DAMAGE STATES & MITIGATION -->
+          <div class="risk-kpi-row">
+            <div class="risk-kpi-card">
+              <span>Assets</span>
+              <strong id="riskTotalAssets">-</strong>
+            </div>
+
+            <div class="risk-kpi-card">
+              <span>Avg Risk</span>
+              <strong id="riskAverageRisk">-</strong>
+            </div>
+
+            <div class="risk-kpi-card">
+              <span>Max Risk</span>
+              <strong id="riskMaximumRisk">-</strong>
+            </div>
+
+            <div class="risk-kpi-card">
+              <span>Highest Asset</span>
+              <strong id="riskHighestAsset">-</strong>
+            </div>
+
+            <div class="risk-kpi-card">
+              <span>High Risk</span>
+              <strong id="riskHighRiskCount">-</strong>
+            </div>
+          </div>
+
+          <div class="risk-action-card">
+            <div class="risk-action-title">
+              <i class="fas fa-shield-halved"></i>
+              Recommended Action
+            </div>
+
+            <p id="riskSummary">-</p>
+          </div>
+        </section>
+
+        <!-- INFRASTRUCTURE TYPE SUMMARY -->
+        <section class="risk-section-card">
+          <h2>Infrastructure Summary</h2>
+
+          <table class="table risk-modern-table">
+            <thead>
+              <tr>
+                <th>Infrastructure Type</th>
+                <th>Jumlah Asset</th>
+                <th>Average Risk</th>
+              </tr>
+            </thead>
+
+            <tbody id="riskInfrastructureTable"></tbody>
+          </table>
+        </section>
+
+        <!--TOP RISK ASSETS-->
+        <section class="risk-section-card">
+          <h2>
+            10 Highest Risk Assets -
+            <span id="activeRiskScenario">DS1</span>
+          </h2>
+
+          <table class="table risk-modern-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>TYPE</th>
+                <th>SUBTYPE</th>
+                <th>HMAX</th>
+                <th id="activeDsColumn">DS1</th>
+              </tr>
+            </thead>
+
+            <tbody id="topRiskAssetTable"></tbody>
+          </table>
+        </section>
+
+        <!-- ================= DOWNLOAD BUTTON ================= -->
+        <div class="risk-download-wrap text-center">
+          <button class="btn btn-primary" onclick="goToPublicDownload('risiko', 'cilacap')">
+            <i class="fas fa-download me-2"></i> Unduh Data Risiko
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================
+     DETAIL VIEW: PELABUHAN BAKAUHENI
+     ================================================ -->
+    <div id="bakauheniDetailView" class="view">
+      <div class="projects-page-header">
+        <div class="detail-topbar container-fluid px-3 px-lg-4">
+          <div class="detail-title-wrap"></div>
+
+          <div class="detail-back-wrap">
+            <button class="btn btn-primary btn-sm detail-back-btn" onclick="goHome(event)">
+              Back to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================
+            ENTERPRISE HERO SECTION - BAKAUHENI
+        ===================================================== -->
+      <section class="enterprise-hero">
+        <div class="container">
+          <div class="enterprise-hero-grid">
+            <!-- LEFT CONTENT -->
+            <div class="enterprise-hero-content">
+              <div class="enterprise-badge">National Port Infrastructure Zone</div>
+              <h1 class="enterprise-title">Pelabuhan Bakauheni</h1>
+              <p class="enterprise-description">
+                Pelabuhan penyeberangan strategis nasional yang menghubungkan Pulau Sumatera dan
+                Jawa dengan aktivitas logistik, transportasi penumpang, terminal dermaga, serta
+                infrastruktur operasional pesisir.
+              </p>
+              <!-- metrics -->
+              <div class="enterprise-metrics">
+                <div class="enterprise-metric-card">
+                  <span class="metric-label">Port Area</span>
+                  <span class="metric-value">45,2 Ha</span>
+                </div>
+                <div class="enterprise-metric-card">
+                  <span class="metric-label">Risk Category</span>
+                  <span class="metric-value">Low</span>
+                </div>
+                <div class="enterprise-metric-card">
+                  <span class="metric-label">Infrastructure</span>
+                  <span class="metric-value">7 Assets</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT VISUAL -->
+            <div class="enterprise-hero-image">
+              <div class="hero-slider bakauheni-slider">
+                <img
+                  class="hero-slide active"
+                  src="assets/img/bakauheni/16.jpg"
+                  alt="Bakauheni 1"
+                />
+                <img class="hero-slide" src="assets/img/bakauheni/1.jpg" alt="Bakauheni 2" />
+                <img class="hero-slide" src="assets/img/bakauheni/2.jpg" alt="Bakauheni 3" />
+                <img class="hero-slide" src="assets/img/bakauheni/3.jpg" alt="Bakauheni 4" />
+                <img class="hero-slide" src="assets/img/bakauheni/4.jpg" alt="Bakauheni 5" />
+                <img class="hero-slide" src="assets/img/bakauheni/5.jpg" alt="Bakauheni 6" />
+                <img class="hero-slide" src="assets/img/bakauheni/6.jpg" alt="Bakauheni 7" />
+                <img class="hero-slide" src="assets/img/bakauheni/7.jpg" alt="Bakauheni 8" />
+                <img class="hero-slide" src="assets/img/bakauheni/8.jpg" alt="Bakauheni 9" />
+                <img class="hero-slide" src="assets/img/bakauheni/9.jpg" alt="Bakauheni 10" />
+                <img class="hero-slide" src="assets/img/bakauheni/10.jpg" alt="Bakauheni 11" />
+                <img class="hero-slide" src="assets/img/bakauheni/11.jpg" alt="Bakauheni 12" />
+                <img class="hero-slide" src="assets/img/bakauheni/12.jpg" alt="Bakauheni 13" />
+                <img class="hero-slide" src="assets/img/bakauheni/13.jpg" alt="Bakauheni 14" />
+                <img class="hero-slide" src="assets/img/bakauheni/14.jpg" alt="Bakauheni 15" />
+                <img class="hero-slide" src="assets/img/bakauheni/15.jpg" alt="Bakauheni 16" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+            SECTION DOWNLOAD DATA - BAKAUHENI
+        ===================================================== -->
+      <section
+        id="downloadDataBakauheniView"
+        class="download-data-section premium-download-section"
+      >
+        <div class="container-fluid premium-download-wrapper">
+          <div class="text-center mb-4">
+            <div class="download-title-pill">UNDUH DATA</div>
+          </div>
+
+          <div class="row justify-content-center g-5 premium-download-grid">
+            <div class="col-xl-5 col-lg-6">
+              <div class="download-card">
+                <h2>DATA INUNDASI</h2>
+                <div class="text-center mt-auto">
+                  <button class="btn btn-primary" onclick="openBakauheniInundationData(event)">
+                    EXPLORE
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-5 col-lg-6">
+              <div class="download-card">
+                <h2>DATA RISIKO</h2>
+                <div class="text-center mt-auto">
+                  <button class="btn btn-primary" onclick="openBakauheniRiskData(event)">
+                    EXPLORE
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 🔽 MINI DOWNLOAD CARD -->
+          <div class="row justify-content-center mt-4">
+            <div class="col-lg-4 col-md-6">
+              <div class="report-bar">
+                <button
+                  id="downloadReportBtnBakauheni"
+                  class="btn-report-bar"
+                  onclick="downloadBakauheniReport(event)"
+                >
+                  <i class="fas fa-file-pdf me-2"></i>
+                  <i id="downloadIconBakauheni" class="fas fa-lock me-2"></i>
+                  UNDUH REPORT PDF
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================================================
+     DETAIL DATA INUNDASI PELABUHAN BAKAUHENI
+     ================================================ -->
+    <section id="bakauheniInundationDetailView" class="detail-view">
+      <div class="detail-topbar">
+        <a class="detail-topbar-brand" href="#" onclick="goHome(event)">
+          <img src="assets/img/INAMI.png" alt="Logo" />
+          <span>INAMI</span>
+        </a>
+
+        <div class="detail-action-wrap">
+          <button
+            class="btn btn-primary btn-sm detail-back-btn"
+            onclick="backToBakauheniDetail(event)"
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+
+      <div class="container py-5">
+        <div class="detail-header">
+          <h2>Detail Data Inundasi</h2>
+          <div class="detail-action-wrap"></div>
+        </div>
+
+        <div class="kpi-strip mb-4">
+          <div class="kpi-card">
+            <span class="kpi-label">Lokasi</span>
+            <span class="kpi-value" style="font-size: 20px"> Bakauheni </span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Layer</span>
+            <span class="kpi-value" style="font-size: 20px"> Inundasi Tsunami </span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Format</span>
+            <span class="kpi-value" style="font-size: 20px"> GeoTIFF Raster </span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Source</span>
+            <span class="kpi-value" style="font-size: 20px"> GeoServer </span>
+          </div>
+        </div>
+
+        <div class="card p-4 shadow-sm mb-4">
+          <h5 class="mb-3">Ringkasan</h5>
+          <p id="bakauheniInundationSummary">
+            Raster inundasi tsunami menampilkan distribusi genangan hasil simulasi tsunami pada
+            kawasan Pelabuhan Bakauheni. Nilai raster merepresentasikan tinggi genangan maksimum
+            (Hmax) yang digunakan sebagai input utama dalam analisis risiko infrastruktur.
+          </p>
+        </div>
+
+        <section class="detail-card inundation-map-card">
+          <div class="detail-card-header">
+            <h3>Inundation Map</h3>
+
+            <span class="map-badge"> GeoServer Raster </span>
+          </div>
+
+          <div class="map-wrapper">
+            <div id="bakauheniInundationDetailMap"></div>
+
+            <div class="map-gradient-legend">
+              <div class="legend-title">Inundation Depth (m)</div>
+
+              <div class="legend-bar"></div>
+
+              <div class="legend-labels">
+                <span>0.1</span>
+                <span>9.5</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="text-center mt-4">
+          <button class="btn btn-primary" onclick="goToPublicDownload('inundasi', 'bakauheni')">
+            <i class="fas fa-download me-2"></i>
+            Unduh Data Inundasi
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================
+     DETAIL DATA RISIKO PELABUHAN BAKAUHENI
+     ================================================ -->
+    <section id="bakauheniRiskDetailView" class="detail-view risk-detail-page">
+      <!-- TOPBAR -->
+      <div class="detail-topbar">
+        <a class="detail-topbar-brand" href="#" onclick="goHome(event)">
+          <img src="assets/img/INAMI.png" alt="Logo" />
+          <span>INAMI</span>
+        </a>
+
+        <div class="detail-action-wrap">
+          <button
+            class="btn btn-primary btn-sm detail-back-btn"
+            onclick="backToBakauheniDetail(event)"
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="container py-5">
+        <!-- PAGE HEADER -->
+        <div class="risk-page-header">
+          <h1>Detail Data Risiko</h1>
+          <p>
+            Analisis tingkat risiko tsunami wilayah Bakauheni berdasarkan raster indeks risiko,
+            penilaian parameter, dan klasifikasi dampak infrastruktur.
+          </p>
+        </div>
+
+        <!-- ================= MAP SECTION ================= -->
+        <section class="risk-section-card">
+          <div class="risk-section-header text-left">
+            <h2>Risk Assessment</h2>
+            <p>Visualisasi spasial area terdampak berdasarkan klasifikasi tingkat risiko.</p>
+          </div>
+
+          <div class="risk-state-switcher">
+            <button class="risk-state-btn active" data-ds="DS1">DS1</button>
+
+            <button class="risk-state-btn" data-ds="DS2">DS2</button>
+
+            <button class="risk-state-btn" data-ds="DS3">DS3</button>
+
+            <button class="risk-state-btn" data-ds="DS4">DS4</button>
+          </div>
+
+          <div class="risk-map-wrapper">
+            <div id="bakauheniMiniRiskRasterMap" class="mini-leaflet-map"></div>
+          </div>
+
+          <!-- LEGEND -->
+          <div class="risk-legend-wrap">
+            <div class="risk-legend-item">
+              <span class="risk-legend-color risk-1"></span>
+              <span>0.00 - 0.20</span>
+            </div>
+
+            <div class="risk-legend-item">
+              <span class="risk-legend-color risk-2"></span>
+              <span>0.20 - 0.40</span>
+            </div>
+
+            <div class="risk-legend-item">
+              <span class="risk-legend-color risk-3"></span>
+              <span>0.40 - 0.60</span>
+            </div>
+
+            <div class="risk-legend-item">
+              <span class="risk-legend-color risk-4"></span>
+              <span>0.60 - 0.80</span>
+            </div>
+
+            <div class="risk-legend-item">
+              <span class="risk-legend-color risk-5"></span>
+              <span>0.80 - 1.00</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= SUMMARY SECTION ================= -->
+        <section class="risk-section-card">
+          <div class="risk-section-header">
+            <h2>Ringkasan Risiko</h2>
+          </div>
+
+          <!-- DAMAGE STATES & MITIGATION -->
+          <div class="risk-kpi-row">
+            <div class="risk-kpi-card">
+              <span>Assets</span>
+              <strong id="bakauheniRiskTotalAssets">-</strong>
+            </div>
+
+            <div class="risk-kpi-card">
+              <span>Avg Risk</span>
+              <strong id="bakauheniRiskAverageRisk">-</strong>
+            </div>
+
+            <div class="risk-kpi-card">
+              <span>Max Risk</span>
+              <strong id="bakauheniRiskMaximumRisk">-</strong>
+            </div>
+
+            <div class="risk-kpi-card">
+              <span>Highest Asset</span>
+              <strong id="bakauheniRiskHighestAsset">-</strong>
+            </div>
+
+            <div class="risk-kpi-card">
+              <span>High Risk</span>
+              <strong id="bakauheniRiskHighRiskCount">-</strong>
+            </div>
+          </div>
+
+          <div class="risk-action-card">
+            <div class="risk-action-title">
+              <i class="fas fa-shield-halved"></i>
+              Recommended Action
+            </div>
+
+            <p id="bakauheniRiskSummary">-</p>
+          </div>
+        </section>
+
+        <!-- INFRASTRUCTURE TYPE SUMMARY -->
+        <section class="risk-section-card">
+          <h2>Infrastructure Summary</h2>
+
+          <table class="table risk-modern-table">
+            <thead>
+              <tr>
+                <th>Infrastructure Type</th>
+                <th>Jumlah Asset</th>
+                <th>Average Risk</th>
+              </tr>
+            </thead>
+
+            <tbody id="bakauheniRiskInfrastructureTable"></tbody>
+          </table>
+        </section>
+
+        <!--TOP RISK ASSETS-->
+        <section class="risk-section-card">
+          <h2>
+            10 Highest Risk Assets -
+            <span id="bakauheniActiveRiskScenario">DS1</span>
+          </h2>
+
+          <table class="table risk-modern-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>TYPE</th>
+                <th>SUBTYPE</th>
+                <th>HMAX</th>
+                <th id="bakauheniActiveDsColumn">DS1</th>
+              </tr>
+            </thead>
+
+            <tbody id="bakauheniTopRiskAssetTable"></tbody>
+          </table>
+        </section>
+
+        <!-- ================= DOWNLOAD BUTTON ================= -->
+        <div class="risk-download-wrap text-center">
+          <button class="btn btn-primary" onclick="goToPublicDownload('risiko', 'bakauheni')">
+            <i class="fas fa-download me-2"></i> Unduh Data Risiko
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================
+     PUBLIC DOWNLOAD PAGE
+     ================================================ -->
+    <section id="publicDownloadPage" class="public-download-page hidden-page">
+      <!-- HEADER -->
+      <div class="public-download-header-wrap">
+        <div class="public-page-topbar">
+          <div class="public-page-topbar-inner">
+            <div class="public-page-brand">
+              <img src="assets/img/INAMI.png" alt="INAMI Logo" />
+              <span>INAMI</span>
+            </div>
+
+            <div class="public-page-topbar-text">Public Data Purchase</div>
+          </div>
+        </div>
+
+        <div class="public-header-divider"></div>
+
+        <div class="public-download-header">
+          <h2>UNDUH DATA PUBLIK</h2>
+          <p>
+            Silahkan pilih lokasi dan jenis data yang dibeli,<br />
+            lalu lanjutkan ke proses pembayaran
+          </p>
+        </div>
+      </div>
+
+      <div class="public-download-inner">
+        <div class="public-search-wrapper">
+          <div class="public-search-box">
+            <input type="text" id="locationInput" placeholder="PILIH LOKASI" autocomplete="off" />
+            <button type="button" id="toggleDropdownBtn" class="public-search-btn">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+
+          <div id="locationDropdown" class="public-location-dropdown hidden-dropdown"></div>
+        </div>
+
+        <div class="public-download-card">
+          <div class="public-card-header">
+            <h3>PILIH DATA UNTUK DIUNDUH</h3>
+            <p>Satu atau dua dataset dapat dipilih dari satu lokasi yang sama.</p>
+          </div>
+
+          <div class="public-download-option" id="optionInundasiCard">
+            <button type="button" class="public-option-label" data-modal="inundasi">
+              <div class="dataset-info">
+                <div class="dataset-icon">
+                  <i class="fas fa-water"></i>
+                </div>
+
+                <div class="dataset-text">
+                  <div class="dataset-topline">
+                    <span class="option-title">Raster Inundasi Tsunami</span>
+                    <span class="selected-badge d-none" id="badgeInundasi">Selected</span>
+                  </div>
+                  <span class="option-subtitle">Lihat overview data</span>
+                </div>
+              </div>
+            </button>
+
+            <label class="public-switch">
+              <input type="checkbox" id="toggleInundasi" />
+              <span class="public-slider"></span>
+            </label>
+          </div>
+
+          <div class="public-download-option" id="optionRisikoCard">
+            <button type="button" class="public-option-label" data-modal="risiko">
+              <div class="dataset-info">
+                <div class="dataset-icon">
+                  <i class="fas fa-shield-alt"></i>
+                </div>
+
+                <div class="dataset-text">
+                  <div class="dataset-topline">
+                    <span class="option-title">Data Risiko</span>
+                    <span class="selected-badge d-none" id="badgeRisiko">Selected</span>
+                  </div>
+                  <span class="option-subtitle">Lihat overview data</span>
+                </div>
+              </div>
+            </button>
+
+            <label class="public-switch">
+              <input type="checkbox" id="toggleRisiko" />
+              <span class="public-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="public-selection-summary">
+          <div class="summary-header">
+            <h4>Ringkasan Pembelian</h4>
+            <span class="summary-mini-badge" id="summaryStatus">Belum lengkap</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-label">Lokasi terpilih</span>
+            <span class="summary-value" id="selectedLocationText">Belum dipilih</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-label">Data dipilih</span>
+            <span class="summary-value" id="selectedDataText">Belum ada</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-label">Jumlah item</span>
+            <span class="summary-value" id="selectedItemCount">0 item</span>
+          </div>
+
+          <div class="summary-row summary-row-total">
+            <span class="summary-label">Total harga</span>
+            <span class="summary-value total-price" id="selectedTotalPrice">Rp0</span>
+          </div>
+        </div>
+
+        <div class="public-action-row">
+          <button type="button" id="backToCatalog" class="action-btn action-btn-light">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Catalog</span>
+          </button>
+
+          <button id="paymentBtn" class="action-btn action-btn-primary" disabled>
+            <span>Lanjut ke Payment</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <div class="public-page-footer">
+          <p>Copyright© INAMI 2025 | All rights reserved.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================
+     PAYMENT PAGE 1
+     ================================================ -->
+    <div id="paymentPage" class="payment-page hidden-page">
+      <div class="payment-header-wrap">
+        <div class="payment-page-topbar">
+          <div class="payment-page-topbar-inner">
+            <div class="payment-page-brand">
+              <img src="assets/img/INAMI.png" alt="INAMI Logo" />
+              <span>INAMI</span>
+            </div>
+            <div class="payment-page-topbar-text">Halaman Pembayaran</div>
+          </div>
+        </div>
+        <div class="payment-header-divider"></div>
+      </div>
+
+      <div class="payment-inner">
+        <div class="payment-header text-center">
+          <h2>PAYMENT DATA INAMI</h2>
+          <p>
+            Silakan lengkapi informasi pembeli untuk melanjutkan proses pembayaran data tsunami risk
+            monitoring.
+          </p>
+        </div>
+
+        <div class="row g-4">
+          <!-- FORM PEMBELI -->
+          <div class="col-lg-7">
+            <div class="payment-card" id="paymentFormCard">
+              <h3 class="payment-card-title">Informasi Pembeli</h3>
+
+              <form id="paymentForm" novalidate>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="buyerName" class="form-label">Nama Pembeli</label>
+                    <input
+                      type="text"
+                      id="buyerName"
+                      class="form-control"
+                      placeholder="Masukkan nama lengkap"
+                      required
+                    />
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="buyerWhatsapp" class="form-label">Nomor WhatsApp Aktif</label>
+                    <input
+                      type="tel"
+                      id="buyerWhatsapp"
+                      class="form-control"
+                      placeholder="08xxxxxxxxxx"
+                      required
+                    />
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="buyerEmail" class="form-label">Email</label>
+                    <input
+                      type="email"
+                      id="buyerEmail"
+                      class="form-control"
+                      placeholder="nama@email.com"
+                      required
+                    />
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="buyerInstitution" class="form-label">Instansi / Organisasi</label>
+                    <input
+                      type="text"
+                      id="buyerInstitution"
+                      class="form-control"
+                      placeholder="Contoh: Pemda / Kampus / Konsultan"
+                    />
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="payment-label">Tujuan Penggunaan Data</label>
+                    <div class="custom-select-wrapper" id="usagePurposeWrapper">
+                      <div
+                        class="custom-select-trigger"
+                        tabindex="0"
+                        id="usagePurposeTrigger"
+                        role="combobox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                      >
+                        <span class="custom-select-text placeholder" id="usagePurposeText"
+                          >Pilih tujuan</span
+                        >
+                        <span class="custom-select-arrow">
+                          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                            <path
+                              d="M5.5 7.5 10 12l4.5-4.5"
+                              stroke="#657a8f"
+                              stroke-width="1.8"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                      <div class="custom-select-dropdown" role="listbox" id="usagePurposeDropdown">
+                        <div
+                          class="custom-select-option"
+                          data-value="Riset / Akademik"
+                          role="option"
+                        >
+                          <i class="bi bi-journal-text me-2"></i>Riset / Akademik
+                        </div>
+                        <div class="custom-select-option" data-value="Perencanaan" role="option">
+                          <i class="bi bi-clipboard2-check me-2"></i>Perencanaan
+                        </div>
+                        <div
+                          class="custom-select-option"
+                          data-value="Mitigasi Bencana"
+                          role="option"
+                        >
+                          <i class="bi bi-shield-exclamation me-2"></i>Mitigasi Bencana
+                        </div>
+                        <div
+                          class="custom-select-option"
+                          data-value="Kebutuhan Komersial"
+                          role="option"
+                        >
+                          <i class="bi bi-briefcase me-2"></i>Kebutuhan Komersial
+                        </div>
+                        <div class="custom-select-option" data-value="Lainnya" role="option">
+                          <i class="bi bi-three-dots me-2"></i>Lainnya
+                        </div>
+                      </div>
+                      <input type="hidden" id="usagePurpose" name="usagePurpose" />
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="payment-label">Metode Pembayaran</label>
+                    <div class="custom-select-wrapper" id="paymentMethodWrapper">
+                      <div
+                        class="custom-select-trigger"
+                        tabindex="0"
+                        id="paymentMethodTrigger"
+                        role="combobox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                      >
+                        <span class="custom-select-text placeholder" id="paymentMethodText"
+                          >Pilih metode pembayaran</span
+                        >
+                        <span class="custom-select-arrow">
+                          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                            <path
+                              d="M5.5 7.5 10 12l4.5-4.5"
+                              stroke="#657a8f"
+                              stroke-width="1.8"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                      <div class="custom-select-dropdown" role="listbox" id="paymentMethodDropdown">
+                        <div class="custom-select-option" data-value="Transfer Bank" role="option">
+                          <i class="bi bi-bank me-2"></i>Transfer Bank
+                        </div>
+                        <div class="custom-select-option" data-value="QRIS" role="option">
+                          <i class="bi bi-qr-code me-2"></i>QRIS
+                        </div>
+                        <div
+                          class="custom-select-option"
+                          data-value="Virtual Account"
+                          role="option"
+                        >
+                          <i class="bi bi-credit-card me-2"></i>Virtual Account
+                        </div>
+                      </div>
+                      <input type="hidden" id="paymentMethod" name="paymentMethod" />
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="buyerNotes" class="form-label">Catatan Tambahan</label>
+                    <textarea
+                      id="buyerNotes"
+                      class="form-control"
+                      rows="4"
+                      placeholder="Catatan tambahan jika ada"
+                    ></textarea>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="payment-license-box">
+                      <h4>Ketentuan Penggunaan Data</h4>
+                      <ul>
+                        <li>Data hanya digunakan sesuai tujuan yang didaftarkan.</li>
+                        <li>Dilarang memperjualbelikan ulang data tanpa izin.</li>
+                        <li>Distribusi ulang wajib mendapat persetujuan dari pengelola INAMI.</li>
+                        <li>
+                          Pastikan email dan WhatsApp aktif untuk proses verifikasi pembayaran.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="form-check payment-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="agreementCheck"
+                        required
+                      />
+                      <label class="form-check-label" for="agreementCheck">
+                        Saya menyetujui ketentuan penggunaan data dan informasi pembayaran yang saya
+                        isi sudah benar.
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div id="paymentFormMessage" class="payment-form-message d-none"></div>
+                  </div>
+
+                  <div class="col-12 d-flex justify-content-center gap-3 flex-wrap">
+                    <button
+                      type="button"
+                      id="backToPublicDownloadBtn"
+                      class="btn payment-btn-secondary"
+                    >
+                      Kembali ke Pemilihan Data
+                    </button>
+                    <button type="submit" id="submitPaymentBtn" class="btn payment-btn-primary">
+                      Konfirmasi Pembayaran
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- RINGKASAN ORDER -->
+          <div class="col-lg-5">
+            <div class="payment-card payment-summary-card" id="paymentSummaryCard">
+              <h3 class="payment-card-title">Ringkasan Pembayaran</h3>
+
+              <div class="payment-summary-list">
+                <div class="payment-summary-row">
+                  <span>Lokasi</span>
+                  <strong id="paymentLocationText">-</strong>
+                </div>
+
+                <div class="payment-summary-row">
+                  <span>Produk</span>
+                  <strong id="paymentProductText">-</strong>
+                </div>
+
+                <div class="payment-summary-row">
+                  <span>Jumlah Item</span>
+                  <strong id="paymentItemCount">0 item</strong>
+                </div>
+
+                <div class="payment-summary-row">
+                  <span>Biaya Admin</span>
+                  <strong id="paymentAdminFee">Rp0</strong>
+                </div>
+
+                <div class="payment-summary-row total">
+                  <span>Total Pembayaran</span>
+                  <strong id="paymentTotalPrice">Rp0</strong>
+                </div>
+              </div>
+
+              <div class="payment-info-note">
+                <h4>Informasi Penting</h4>
+                <p>
+                  Setelah konfirmasi, sistem dapat diarahkan ke gateway pembayaran atau menampilkan
+                  instruksi transfer manual.
+                </p>
+                <p>
+                  Bukti pembayaran dan detail transaksi sebaiknya dikirim ke email pembeli yang
+                  terdaftar untuk mempercepat proses verifikasi oleh admin INAMI.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================
+     PAYMENT PAGE 1
+     ================================================ -->
+    <div id="paymentInstructionSection" class="payment-instruction-section d-none">
+      <div class="payment-instruction-shell">
+        <div class="payment-instruction-header">
+          <span class="payment-step-badge">Langkah 2</span>
+          <h2 class="payment-instruction-title">Instruksi Pembayaran</h2>
+          <p class="payment-instruction-subtitle">
+            Silakan lakukan pembayaran manual sesuai nominal berikut. Setelah transfer selesai,
+            unggah bukti pembayaran atau dokumen mitra untuk proses verifikasi admin INAMI.
+          </p>
+        </div>
+
+        <div class="payment-instruction-grid">
+          <!-- CARD TOTAL -->
+          <div class="payment-info-card payment-total-card">
+            <span class="payment-info-label">Total Pembayaran</span>
+            <strong id="instructionTotalPayment" class="payment-total-value">Rp0</strong>
+            <small class="payment-total-note">
+              Pastikan nominal transfer sesuai agar proses verifikasi lebih cepat.
+            </small>
+          </div>
+
+          <!-- CARD DETAIL REKENING -->
+          <div class="payment-info-card">
+            <h3 class="payment-info-card-title">Detail Rekening INAMI</h3>
+
+            <div class="payment-detail-list">
+              <div class="payment-detail-row">
+                <span>Bank Tujuan</span>
+                <strong>Bank Mandiri</strong>
+              </div>
+
+              <div class="payment-detail-row">
+                <span>Nomor Rekening</span>
+                <strong id="instructionAccountNumber">1234567890123456</strong>
+              </div>
+
+              <div class="payment-detail-row">
+                <span>Atas Nama</span>
+                <strong>INAMI Indonesia</strong>
+              </div>
+
+              <div class="payment-detail-row">
+                <span>Email Pengiriman Data</span>
+                <strong id="instructionDeliveryEmail">-</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORM KONFIRMASI -->
+        <div class="payment-form-panel">
+          <div class="row g-4">
+            <div class="col-lg-6">
+              <label for="deliveryEmail" class="form-label payment-label">
+                Email Pengiriman Data
+              </label>
+              <input
+                type="email"
+                id="deliveryEmail"
+                class="form-control payment-input-lg"
+                placeholder="Masukkan email tujuan pengiriman data"
+              />
+              <div class="payment-field-note">
+                Data final akan dikirim ke email ini setelah pembayaran atau dokumen diverifikasi.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="payment-label">Bank Pengirim</label>
+              <div class="custom-select-wrapper" id="senderBankWrapper">
+                <div
+                  class="custom-select-trigger"
+                  tabindex="0"
+                  id="senderBankTrigger"
+                  role="combobox"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
+                >
+                  <span class="custom-select-text placeholder" id="senderBankText"
+                    >Pilih bank yang digunakan</span
+                  >
+                  <span class="custom-select-arrow">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M5.5 7.5 10 12l4.5-4.5"
+                        stroke="#657a8f"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
+                <div class="custom-select-dropdown" role="listbox" id="senderBankDropdown">
+                  <div class="custom-select-option" data-value="BCA" role="option">
+                    <i class="bi bi-bank me-2"></i>BCA
+                  </div>
+                  <div class="custom-select-option" data-value="BRI" role="option">
+                    <i class="bi bi-bank me-2"></i>BRI
+                  </div>
+                  <div class="custom-select-option" data-value="BNI" role="option">
+                    <i class="bi bi-bank me-2"></i>BNI
+                  </div>
+                  <div class="custom-select-option" data-value="Mandiri" role="option">
+                    <i class="bi bi-bank me-2"></i>Mandiri
+                  </div>
+                  <div class="custom-select-option" data-value="BSI" role="option">
+                    <i class="bi bi-bank me-2"></i>BSI
+                  </div>
+                  <div class="custom-select-option" data-value="CIMB Niaga" role="option">
+                    <i class="bi bi-bank me-2"></i>CIMB Niaga
+                  </div>
+                  <div class="custom-select-option" data-value="Permata" role="option">
+                    <i class="bi bi-bank me-2"></i>Permata
+                  </div>
+                  <div class="custom-select-option" data-value="Danamon" role="option">
+                    <i class="bi bi-bank me-2"></i>Danamon
+                  </div>
+                  <div class="custom-select-option" data-value="BTN" role="option">
+                    <i class="bi bi-bank me-2"></i>BTN
+                  </div>
+                  <div class="custom-select-option" data-value="Lainnya" role="option">
+                    <i class="bi bi-three-dots me-2"></i>Lainnya
+                  </div>
+                </div>
+                <input type="hidden" id="senderBank" name="senderBank" />
+              </div>
+            </div>
+
+            <div class="payment-field-note">
+              Pilih bank asal transfer untuk mempermudah verifikasi pembayaran.
+            </div>
+
+            <div class="col-12">
+              <label for="paymentProof" class="form-label payment-label" id="paymentProofLabel">
+                Upload Bukti Pembayaran
+              </label>
+
+              <div class="payment-upload-box">
+                <div class="payment-upload-custom">
+                  <input type="file" id="paymentProof" accept=".jpg,.jpeg,.png,.pdf" hidden />
+
+                  <button type="button" class="payment-upload-btn" id="uploadTriggerBtn">
+                    Pilih File
+                  </button>
+
+                  <span id="paymentFileText" class="payment-file-placeholder">
+                    Belum ada file dipilih
+                  </span>
+                </div>
+                <div class="payment-upload-meta">
+                  <div class="payment-field-note" id="paymentProofHint">
+                    Upload bukti transfer dalam format JPG, PNG, atau PDF.
+                  </div>
+                  <div id="paymentProofFileName" class="payment-file-name"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- INFO -->
+          <div class="payment-notice-box">
+            <h4>Informasi Penting</h4>
+            <p>
+              Verifikasi dilakukan secara manual oleh admin INAMI. Setelah pembayaran atau dokumen
+              dinyatakan valid, data akan dikirim ke email tujuan yang telah Anda masukkan.
+            </p>
+          </div>
+
+          <!-- AKSI -->
+          <div class="payment-action-row">
+            <button type="button" id="backToPaymentFormBtn" class="btn payment-btn-secondary">
+              Kembali ke Form
+            </button>
+            <button type="button" id="finalSubmitPaymentBtn" class="btn payment-btn-primary">
+              Kirim Bukti &amp; Selesaikan
+            </button>
+          </div>
+
+          <!-- MESSAGE -->
+          <div class="col-12">
+            <div id="finalPaymentMessage" class="payment-form-message d-none"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAYMENT SUCCESS MODAL ===== -->
+    <div
+      id="paymentSuccessModal"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(6px);
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div
+        style="
+          background: #ffffff;
+          border-radius: 24px;
+          padding: 48px 40px 40px;
+          max-width: 480px;
+          width: 90%;
+          text-align: center;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+          animation: slideUp 0.3s ease-out;
+          position: relative;
+          z-index: 1;
+        "
+      >
+        <div
+          style="
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+          "
+        >
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M5 13l4 4L19 7"
+              stroke="#fff"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+        <h3 style="margin: 0 0 10px; font-size: 1.5rem; font-weight: 800; color: #123d55">
+          Pembayaran Terkirim!
+        </h3>
+        <p
+          id="paymentSuccessModalMsg"
+          style="color: #4b6478; font-size: 0.97rem; line-height: 1.7; margin-bottom: 32px"
+        >
+          Bukti pembayaran berhasil dikirim. Tim INAMI akan memverifikasi dan mengirim data ke email
+          kamu.
+        </p>
+        <button
+          id="paymentSuccessHomeBtn"
+          style="
+            background: #0f2d67;
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 14px 36px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+          "
+          onmouseover="this.style.background = '#0b2453'"
+          onmouseout="this.style.background = '#0f2d67'"
+        >
+          Kembali ke Beranda
+        </button>
+      </div>
+    </div>
+
+    <!-- ================================================
+     ADMIN REPORT PICKER MODAL
+     ================================================ -->
+    <div id="adminReportPickerModal" class="admin-report-modal-overlay" style="display: none">
+      <div class="admin-report-modal-card">
+        <button
+          type="button"
+          class="admin-report-close"
+          id="adminReportCloseBtn"
+          aria-label="Tutup"
+        >
+          ×
+        </button>
+
+        <div class="admin-report-icon">
+          <i class="fas fa-file-pdf"></i>
+        </div>
+
+        <h3 class="admin-report-title">Laporan Kuantifikasi Risiko</h3>
+        <p class="admin-report-subtitle">Silakan pilih lokasi laporan detail yang ingin dibuka.</p>
+
+        <div class="admin-report-option-list">
+          <button type="button" class="admin-report-option-btn" id="adminDownloadCilacapBtn">
+            Pertamina RU IV Cilacap
+          </button>
+
+          <button type="button" class="admin-report-option-btn" id="adminDownloadBakauheniBtn">
+            Pelabuhan Bakauheni
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================
+     LOGIN OVERLAY
+     ================================================ -->
+    <div class="login-overlay" id="loginOverlay" onclick="overlayClickClose(event)">
+      <div
+        class="login-card"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Login"
+        onclick="event.stopPropagation()"
+      >
+        <button type="button" class="btn-close" aria-label="Close" onclick="closeLogin()"></button>
+        <div class="mb-3">
+          <i class="fas fa-user-circle fa-3x" style="color: var(--tsirip-primary)"></i>
+          <h5 class="mt-2">Sign In</h5>
+        </div>
+
+        <form onsubmit="handleLogin(event)">
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <input type="email" class="form-control" id="loginEmail" placeholder="Email" required />
+          </div>
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            <input
+              type="password"
+              class="form-control"
+              id="loginPassword"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <div class="d-grid mb-2">
+            <button class="btn btn-primary" type="submit">Log In</button>
+          </div>
+          <a
+            href="#"
+            class="small"
+            onclick="
+              openForgotPassword(event);
+              return false;
+            "
+            >Forgot Password?</a
+          >
+          <div class="text-center mb-3">
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              onclick="openSignup(event)"
+            >
+              Sign up
+            </button>
+          </div>
+          <div class="login-hint">Press ESC to close</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================================================
+     FORGOT PASSWORD OVERLAY
+     ================================================ -->
+    <div class="login-overlay" id="forgotOverlay" onclick="overlayClickClose(event)">
+      <div
+        class="login-card"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Forgot Password"
+        onclick="event.stopPropagation()"
+      >
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          onclick="closeForgotPassword()"
+        ></button>
+        <div class="mb-3">
+          <i class="fas fa-key fa-3x" style="color: var(--tsirip-primary)"></i>
+          <h5 class="mt-2">Forgot Password</h5>
+        </div>
+
+        <form onsubmit="handleForgotPassword(event)">
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <input
+              type="email"
+              class="form-control"
+              id="forgotEmail"
+              placeholder="Email"
+              required
+            />
+          </div>
+
+          <div class="d-grid mb-2">
+            <button class="btn btn-primary" type="submit">Send Reset Link</button>
+          </div>
+
+          <div class="login-hint">Press ESC to close</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================================================
+     SIGN UP OVERLAY
+     ================================================ -->
+    <div class="login-overlay" id="signupOverlay" onclick="overlayClickClose(event)">
+      <div
+        class="login-card"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Signup"
+        onclick="event.stopPropagation()"
+      >
+        <button type="button" class="btn-close" aria-label="Close" onclick="closeSignup()"></button>
+        <div class="mb-3">
+          <i class="fas fa-user-plus fa-3x" style="color: var(--tsirip-primary)"></i>
+          <h5 class="mt-2">Create Account</h5>
+        </div>
+
+        <form onsubmit="handleSignupSubmit(event)">
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+            <input
+              type="text"
+              class="form-control"
+              id="signupName"
+              placeholder="Full Name"
+              required
+            />
+          </div>
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <input
+              type="email"
+              class="form-control"
+              id="signupEmail"
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            <input
+              type="password"
+              class="form-control"
+              id="signupPassword"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            <input
+              type="password"
+              class="form-control"
+              id="signupPassword2"
+              placeholder="Confirm Password"
+              required
+            />
+          </div>
+          <div class="d-grid mb-2">
+            <button class="btn btn-primary" type="submit">Sign Up</button>
+          </div>
+          <div class="login-hint">Press ESC to close</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================================================
+     MODAL PROJECT
+     ================================================ -->
+    <!-- ================= HAZARD MODAL ================= -->
+    <div class="info-overlay" id="hazardModal" onclick="overlayClickClose(event)">
+      <div class="info-modal" onclick="event.stopPropagation()">
+        <button type="button" class="btn-close" aria-label="Close" onclick="closeHazardModal()">
+          ×
+        </button>
+        <div class="info-modal-header">
+          <img src="assets/img/Hazard.png" alt="Hazard Icon" />
+          <h3>Potensi Bencana</h3>
+        </div>
+        <div class="info-modal-content">
+          <p>
+            <strong>Hazard</strong> adalah potensi atau bencana alam yang dapat terjadi di suatu
+            wilayah, seperti gempa bumi, tsunami, atau banjir.
+          </p>
+
+          <p>Informasi ini membantu mengidentifikasi area dengan risiko tinggi terkena tsunami.</p>
+        </div>
+        <div class="info-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeHazardModal()">
+            Tutup
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="
+              closeHazardModal();
+              document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+            "
+          >
+            Lihat Peta Interaktif
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= EXPOSURE MODAL ================= -->
+    <div class="info-overlay" id="exposureModal" onclick="overlayClickClose(event)">
+      <div class="info-modal" onclick="event.stopPropagation()">
+        <button type="button" class="btn-close" aria-label="Close" onclick="closeExposureModal()">
+          ×
+        </button>
+        <div class="info-modal-header">
+          <img src="assets/img/Exposure.png" alt="Exposure Icon" />
+          <h3>Paparan Infrastruktur</h3>
+        </div>
+        <div class="info-modal-content">
+          <p>
+            <strong>Exposure</strong> adalah identifikasi infrastruktur kritis dan aset yang berada
+            di area terancam bencana.
+          </p>
+
+          <p>Analisis ini menunjukkan aset mana yang berada dalam zona terancam tsunami.</p>
+        </div>
+        <div class="info-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeExposureModal()">
+            Tutup
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="
+              closeExposureModal();
+              document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+            "
+          >
+            Lihat Peta Interaktif
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= RISK MODAL ================= -->
+    <div class="info-overlay" id="riskModal" onclick="overlayClickClose(event)">
+      <div class="info-modal" onclick="event.stopPropagation()">
+        <button type="button" class="btn-close" aria-label="Close" onclick="closeRiskModal()">
+          ×
+        </button>
+        <div class="info-modal-header">
+          <img src="assets/img/Risk.png" alt="Risk Icon" />
+          <h3>Kuantifikasi Risiko</h3>
+        </div>
+        <div class="info-modal-content">
+          <p>
+            <strong>Risk</strong> adalah kombinasi dari hazard dan exposure, yang mengukur
+            kemungkinan dan dampak kerugian.
+          </p>
+
+          <p>
+            Risk = Hazard × Exposure × Vulnerability. Hasil analisis mendukung pengambilan keputusan
+            strategis dalam manajemen risiko bencana.
+          </p>
+        </div>
+        <div class="info-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeRiskModal()">Tutup</button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="
+              closeRiskModal();
+              document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+            "
+          >
+            Lihat Peta Interaktif
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- ================================================
+     ALERT
+     ================================================ -->
+    <div id="customAlert" class="custom-alert hidden">
+      <div class="custom-alert-box">
+        <div class="custom-alert-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h4>Akses Terbatas</h4>
+        <p id="customAlertMessage"></p>
+        <button onclick="closeCustomAlert()">OK</button>
+      </div>
+    </div>
+
+    <div class="modal fade" id="accessNoticeModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content access-notice-modal">
+          <div class="modal-body text-center p-4">
+            <div class="access-notice-icon mb-3">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h4 id="accessNoticeTitle" class="mb-2">Akses Ditolak</h4>
+            <p id="accessNoticeMessage" class="mb-4">Fitur ini hanya tersedia untuk mitra.</p>
+            <button type="button" class="btn access-notice-btn" data-bs-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================
+     MODAL OVERVIEW
+     ================================================ -->
+    <div id="customModal" style="display: none; position: fixed; inset: 0; z-index: 999999">
+      <!-- Overlay -->
+      <div
+        id="modalOverlay"
+        style="
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(4px);
+          cursor: pointer;
+        "
+      ></div>
+
+      <!-- Konten Modal -->
+      <div
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: #fff;
+          border-radius: 20px;
+          padding: 32px;
+          width: 90%;
+          max-width: 520px;
+          max-height: 80vh;
+          overflow-y: auto;
+          box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+          z-index: 1;
+        "
+      >
+        <!-- Tombol Close -->
+        <button
+          id="closeModalBtn"
+          style="
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 50%;
+            background: #f3f4f6;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          ✕
+        </button>
+
+        <h3
+          id="modalTitle"
+          style="
+            margin: 0 0 16px;
+            padding-right: 30px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #1f2a37;
+          "
+        ></h3>
+
+        <div id="modalBody" style="color: #4b5563; font-size: 0.97rem; line-height: 1.75"></div>
+      </div>
+    </div>
+
+    <!-- ================================================
+     BOOTSTRAP JS
+     ================================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/payment.js"></script>
+  </body>
+</html>
