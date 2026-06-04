@@ -1184,7 +1184,7 @@ document.addEventListener("DOMContentLoaded", function () {
         this.disabled = true;
         this.textContent = "Mengirim...";
         showFinalPaymentMessage(
-          "Sedang mengupload file ke server lokal, mohon tunggu...",
+          "Sedang mengupload file. Mohon tunggu, proses ini bisa memakan waktu beberapa detik.",
           "success",
         );
 
