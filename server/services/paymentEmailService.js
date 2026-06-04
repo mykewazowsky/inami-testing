@@ -222,12 +222,20 @@ async function sendPaymentSubmissionEmail(payload) {
 
   // EMAIL CUSTOMER
 
-  await resend.emails.send({
-    from: "INAMI Payment <onboarding@resend.dev>",
-    to: payload.deliveryEmail,
-    subject: "✅ Bukti Pembayaran Berhasil Diterima",
-    html: customerHtml,
-  });
+  try {
+    console.log("CUSTOMER EMAIL:", payload.deliveryEmail);
+
+    const customerResult = await resend.emails.send({
+      from: "INAMI Payment <onboarding@resend.dev>",
+      to: payload.deliveryEmail,
+      subject: "✅ Bukti Pembayaran Berhasil Diterima",
+      html: customerHtml,
+    });
+
+    console.log("CUSTOMER RESULT:", customerResult);
+  } catch (err) {
+    console.error("CUSTOMER EMAIL ERROR:", err);
+  }
 
   console.log("Payment emails sent");
   console.log("ADMIN EMAIL:", adminEmail);
