@@ -1234,23 +1234,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
           newBtn.addEventListener("click", function () {
             if (modal) modal.style.display = "none";
+
             window._paymentCompleted = false;
 
             const paymentPage = document.getElementById("paymentPage");
+            const paymentInstructionPage = document.getElementById("paymentInstructionPage");
             const publicDownloadPage = document.getElementById("publicDownloadPage");
 
-            if (paymentPage) paymentPage.classList.add("hidden-page");
-            if (publicDownloadPage) publicDownloadPage.classList.add("hidden-page");
+            if (paymentPage) {
+              paymentPage.classList.add("hidden-page");
+              paymentPage.classList.remove("active");
+            }
+
+            if (paymentInstructionPage) {
+              paymentInstructionPage.classList.add("hidden-page");
+              paymentInstructionPage.classList.remove("active");
+            }
+
+            if (publicDownloadPage) {
+              publicDownloadPage.classList.add("hidden-page");
+              publicDownloadPage.classList.remove("active");
+            }
 
             document.body.style.overflow = "";
+
             document.querySelectorAll(".view, .detail-view").forEach(function (el) {
               el.classList.remove("active");
             });
 
             const homeView = document.getElementById("homeView");
-            if (homeView) homeView.classList.add("active");
 
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            if (homeView) {
+              homeView.classList.add("active");
+            }
+
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
 
             if (typeof handleNavbarBackground === "function") {
               handleNavbarBackground();

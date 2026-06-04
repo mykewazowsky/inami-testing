@@ -2,7 +2,9 @@ const { uploadPaymentProof } = require("../services/r2");
 const db = require("../firebase");
 const fs = require("fs");
 const path = require("path");
-const { sendPaymentSubmissionEmail } = require("../mailer");
+const {
+  sendPaymentSubmissionEmail,
+} = require("../services/paymentEmailService");
 
 const DATASET_FILE_MAP = {
   cilacap: {
