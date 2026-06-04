@@ -230,6 +230,8 @@ async function sendPaymentSubmissionEmail(payload) {
   });
 
   console.log("Payment emails sent");
+  console.log("ADMIN EMAIL:", adminEmail);
+  console.log("CUSTOMER EMAIL:", payload.deliveryEmail);
 }
 
 module.exports = {
