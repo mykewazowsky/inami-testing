@@ -1108,19 +1108,26 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  if (backToPaymentFormBtn) {
-    backToPaymentFormBtn.addEventListener("click", function () {
-      const paymentFormCard = document.getElementById("paymentFormCard");
-      const paymentInstructionSection = document.getElementById("paymentInstructionSection");
-      const paymentSummaryCard = document.getElementById("paymentSummaryCard");
+  backToPaymentFormBtn.addEventListener("click", function () {
+    const paymentPage = document.getElementById("paymentPage");
+    const paymentInstructionPage = document.getElementById("paymentInstructionPage");
 
-      if (paymentInstructionSection) paymentInstructionSection.classList.add("d-none");
-      if (paymentFormCard) paymentFormCard.classList.remove("d-none");
-      if (paymentSummaryCard) paymentSummaryCard.classList.remove("d-none");
+    if (!paymentPage || !paymentInstructionPage) {
+      console.error("Payment pages tidak ditemukan");
+      return;
+    }
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    paymentInstructionPage.classList.remove("active");
+    paymentInstructionPage.classList.add("hidden-page");
+
+    paymentPage.classList.remove("hidden-page");
+    paymentPage.classList.add("active");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
-  }
+  });
 
   if (finalSubmitPaymentBtn) {
     finalSubmitPaymentBtn.addEventListener("click", async function (e) {
