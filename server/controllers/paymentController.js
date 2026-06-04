@@ -151,8 +151,7 @@ exports.submitPayment = async (req, res) => {
         uploadedFilePath,
       });
     } catch (emailError) {
-      console.warn("Email gagal terkirim (non-fatal):", emailError.message);
-      // Data sudah tersimpan di DB — lanjut return sukses
+      console.error("PAYMENT EMAIL ERROR:", emailError);
     }
 
     return res.status(201).json({
