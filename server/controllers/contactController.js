@@ -10,17 +10,191 @@ exports.subscribe = async (req, res) => {
   }
 
   try {
-    const result = await resend.emails.send({
-      from: "onboarding@resend.dev",
+    await resend.emails.send({
+      from: "INAMI Partnership <onboarding@resend.dev>",
       to: process.env.MAIL_TO,
-      subject: "INAMI Partnership Request",
+      subject: "🌊 New INAMI Partnership Request",
+
       html: `
-        <h2>Partnership Request</h2>
-        <p>Email: ${email}</p>
+      <div style="
+        margin:0;
+        padding:30px;
+        background:#f4f7fb;
+        font-family:Arial, Helvetica, sans-serif;
+      ">
+
+        <div style="
+          max-width:700px;
+          margin:auto;
+          background:white;
+          border-radius:16px;
+          overflow:hidden;
+          box-shadow:0 10px 30px rgba(0,0,0,0.08);
+        ">
+
+          <!-- HEADER -->
+
+          <div style="
+            background:#003049;
+            padding:32px;
+            text-align:center;
+          ">
+            <h1 style="
+              color:white;
+              margin:0;
+              font-size:34px;
+              letter-spacing:2px;
+            ">
+              INAMI
+            </h1>
+
+            <p style="
+              margin-top:10px;
+              color:#dbeafe;
+              font-size:14px;
+            ">
+              Indonesia Tsunami Risk Monitoring for Coastal Infrastructure
+            </p>
+          </div>
+
+          <!-- BODY -->
+
+          <div style="padding:40px;">
+
+            <div style="
+              display:inline-block;
+              background:#e0f2fe;
+              color:#0369a1;
+              padding:8px 14px;
+              border-radius:999px;
+              font-size:12px;
+              font-weight:bold;
+              margin-bottom:20px;
+            ">
+              NEW PARTNERSHIP REQUEST
+            </div>
+
+            <h2 style="
+              margin-top:0;
+              color:#003049;
+            ">
+              Someone wants to collaborate with INAMI
+            </h2>
+
+            <p style="
+              color:#475569;
+              line-height:1.8;
+            ">
+              A visitor has submitted a partnership inquiry through the
+              INAMI website.
+            </p>
+
+            <div style="
+              margin-top:30px;
+              background:#f8fafc;
+              border:1px solid #e2e8f0;
+              border-radius:12px;
+              padding:24px;
+            ">
+
+              <table style="width:100%; border-collapse:collapse;">
+                <tr>
+                  <td style="
+                    width:150px;
+                    padding:10px 0;
+                    color:#64748b;
+                    font-weight:bold;
+                  ">
+                    Email
+                  </td>
+
+                  <td style="
+                    padding:10px 0;
+                    color:#0f172a;
+                  ">
+                    ${email}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="
+                    padding:10px 0;
+                    color:#64748b;
+                    font-weight:bold;
+                  ">
+                    Submitted
+                  </td>
+
+                  <td style="
+                    padding:10px 0;
+                    color:#0f172a;
+                  ">
+                    ${new Date().toLocaleString("id-ID")}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="
+                    padding:10px 0;
+                    color:#64748b;
+                    font-weight:bold;
+                  ">
+                    Source
+                  </td>
+
+                  <td style="
+                    padding:10px 0;
+                    color:#0f172a;
+                  ">
+                    INAMI Website Contact Form
+                  </td>
+                </tr>
+              </table>
+
+            </div>
+
+            <div style="
+              text-align:center;
+              margin-top:35px;
+            ">
+              <a
+                href="mailto:${email}"
+                style="
+                  background:#003049;
+                  color:white;
+                  text-decoration:none;
+                  padding:14px 28px;
+                  border-radius:10px;
+                  display:inline-block;
+                  font-weight:bold;
+                "
+              >
+                Reply to Contact
+              </a>
+            </div>
+
+          </div>
+
+          <!-- FOOTER -->
+
+          <div style="
+            background:#f8fafc;
+            padding:24px;
+            text-align:center;
+            color:#64748b;
+            font-size:12px;
+            border-top:1px solid #e2e8f0;
+          ">
+            © ${new Date().getFullYear()} INAMI Dashboard
+            <br>
+            Automated notification generated by INAMI System
+          </div>
+
+        </div>
+
+      </div>
       `,
     });
-
-    console.log("Email partnership sent:", result);
 
     return res.status(200).json({
       message: "Terima kasih! Kami akan segera menghubungi Anda.",
