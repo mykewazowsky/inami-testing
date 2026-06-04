@@ -171,10 +171,11 @@
 }
 
 .payment-form-message {
-  padding: 14px 16px;
+  padding: 18px 16px;
   border-radius: 14px;
   font-weight: 600;
   font-size: 0.95rem;
+  margin-top: 16px;
 }
 
 .payment-form-message.success {
