@@ -212,6 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const selectedDataText = document.getElementById("selectedDataText");
   const paymentBtn = document.getElementById("paymentBtn");
   const paymentPage = document.getElementById("paymentPage");
+  const paymentInstructionPage = document.getElementById("paymentInstructionPage");
   const backToPublicDownloadBtn = document.getElementById("backToPublicDownloadBtn");
   const paymentForm = document.getElementById("paymentForm");
   const paymentLocationText = document.getElementById("paymentLocationText");
@@ -837,6 +838,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
       localStorage.setItem("paymentDraftData", JSON.stringify(payload));
       console.log("PAYMENT STEP 1 PAYLOAD:", payload);
+
+      if (!paymentInstructionPage) {
+        console.error("paymentInstructionPage tidak ditemukan");
+        return;
+      }
+
+      paymentPage.classList.remove("active");
+      paymentPage.classList.add("hidden-page");
+
+      paymentInstructionPage.classList.remove("hidden-page");
+      paymentInstructionPage.classList.add("active");
 
       showPaymentInstructionStep(payload, purchaseData);
     });
