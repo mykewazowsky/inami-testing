@@ -1,4 +1,4 @@
-const nodemailer = require("nodemailer");
+const resend = require("../services/resendMailer");
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -18,25 +18,14 @@ exports.subscribe = async (req, res) => {
   }
 
   try {
-    await transporter.sendMail({
-      from: `"INAMI Dashboard" <${process.env.MAIL_USER}>`,
+    await resend.emails.send({
+      from: "onboarding@resend.dev",
       to: process.env.MAIL_TO,
-      subject: "📩 Permintaan Bermitra Baru — INAMI",
+      subject: "INAMI Partnership Request",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 480px; margin: auto; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
-          <div style="background: #003049; padding: 24px; text-align: center;">
-            <h2 style="color: white; margin: 0;">INAMI Dashboard</h2>
-            <p style="color: #d0f0ec; margin: 4px 0 0;">Permintaan Bermitra Baru</p>
-          </div>
-          <div style="padding: 28px;">
-            <p style="font-size: 15px; color: #333;">Ada calon mitra baru yang ingin bergabung:</p>
-            <div style="background: #f4f4f4; border-radius: 8px; padding: 16px; margin: 16px 0; font-size: 16px;">
-              📧 <strong>${email}</strong>
-            </div>
-            <p style="font-size: 13px; color: #888;">Dikirim otomatis dari form kontak INAMI Dashboard.</p>
-          </div>
-        </div>
-      `,
+    <h2>Partnership Request</h2>
+    <p>Email: ${email}</p>
+  `,
     });
 
     console.log("Email partnership sent:", info.messageId);
