@@ -1257,7 +1257,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             document.body.style.overflow = "";
-
             document.body.classList.remove("hide-main-nav");
 
             document.querySelectorAll(".view, .detail-view").forEach(function (el) {
