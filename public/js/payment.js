@@ -902,13 +902,21 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    if (paymentFormCard) paymentFormCard.classList.add("d-none");
-    if (paymentSummaryCard) paymentSummaryCard.classList.add("d-none");
-    if (paymentInstructionSection) paymentInstructionSection.classList.remove("d-none");
+    const paymentPage = document.getElementById("paymentPage");
+    const paymentInstructionPage = document.getElementById("paymentInstructionPage");
 
-    setTimeout(() => {
-      paymentInstructionSection?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
+    if (paymentPage) {
+      paymentPage.classList.add("hidden-page");
+    }
+
+    if (paymentInstructionPage) {
+      paymentInstructionPage.classList.remove("hidden-page");
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 
   if (backToPublicDownloadBtn) {
