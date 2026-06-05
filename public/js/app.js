@@ -1461,7 +1461,8 @@ let currentRiskState = "DS1";
 let inundationLegendControl = null;
 let activeDamageState = "DS1";
 
-const geoserverUrl = "https://foster-cringing-unwary.ngrok-free.dev/geoserver";
+const geoserverUrl =
+  "https://foster-cringing-unwary.ngrok-free.dev/geoserver/wms?ngrok-skip-browser-warning=true&";
 
 function createWmsLayer(layerName) {
   return L.tileLayer.wms(geoserverUrl, {
@@ -1469,6 +1470,7 @@ function createWmsLayer(layerName) {
     format: "image/png",
     transparent: true,
     version: "1.1.1",
+    headers: { "ngrok-skip-browser-warning": "true" },
   });
 }
 
@@ -1479,6 +1481,12 @@ async function loadRiskLayer(layerName) {
     `&typeName=${layerName}` +
     `&outputFormat=application/json` +
     `&srsName=EPSG:4326`;
+
+  const response = await fetch(url, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+    },
+  });
 
   console.log("Loading risk layer:", layerName);
   console.log(url);
@@ -1727,6 +1735,7 @@ function createInundasiWmsLayer(layerName, styleName) {
     transparent: true,
     version: "1.1.1",
     opacity: 0.9,
+    headers: { "ngrok-skip-browser-warning": "true" },
   });
 }
 
@@ -2475,7 +2484,11 @@ async function fetchRiskFeatures(layerName) {
     `&outputFormat=application/json` +
     `&srsName=EPSG:4326`;
 
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+    },
+  });
 
   if (!response.ok) {
     throw new Error(`Failed loading ${layerName}`);
