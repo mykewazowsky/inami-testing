@@ -1,0 +1,765 @@
+/* =====================================================
+   LARGE TABLET
+===================================================== */
+@media (max-width: 1200px) {
+  .projects-grid {
+    gap: 28px;
+  }
+
+  .project-card-image {
+    height: 320px;
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .download-card {
+    min-height: auto;
+  }
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+@media (max-width: 992px) {
+  .enterprise-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .enterprise-title {
+    font-size: 2.7rem;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card-image {
+    height: 340px;
+  }
+
+  .projects-hero-title {
+    font-size: 56px;
+  }
+
+  .projects-hero-subtitle {
+    font-size: 18px;
+  }
+
+  .lecturer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .projects-section .project-text {
+    padding: 5rem;
+  }
+
+  .projects-section .featured-text {
+    padding: 0 0 0 2rem;
+    border-left: 0.5rem solid #003049;
+  }
+
+  .risk-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .risk-metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mini-leaflet-map {
+    height: 380px;
+  }
+
+  .risk-kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  #map {
+    height: 360px;
+  }
+
+  .damage-assessment-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .projects-main-header {
+    top: 56px;
+  }
+
+  #pertaminaDetailView .projects-page-header,
+  #bakauheniDetailView .projects-page-header {
+    top: 56px;
+  }
+
+  .masthead {
+    height: 100vh;
+    padding: 0;
+  }
+
+  .masthead h1 {
+    font-size: 6.5rem;
+
+    line-height: 6.5rem;
+  }
+
+  .masthead h2 {
+    font-size: 1.25rem;
+  }
+
+  .payment-upload-box {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .payment-upload-input {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .payment-inner {
+    padding: 0 24px 60px;
+  }
+
+  .payment-header h2 {
+    font-size: 1.7rem;
+  }
+
+  .payment-instruction-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-instruction-shell {
+    padding: 28px;
+  }
+
+  .detail-carousel {
+    flex-direction: column;
+  }
+
+  .detail-slide {
+    width: 100%;
+
+    max-width: 420px;
+
+    height: 260px;
+  }
+
+  .detail-pill {
+    min-height: auto;
+  }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+@media (max-width: 768px) {
+  .projects-redesign-shell {
+    width: 92%;
+
+    padding-top: 78px;
+  }
+
+  .projects-top-actions {
+    margin-bottom: 42px;
+  }
+
+  .btn-back-dashboard {
+    width: 100%;
+  }
+
+  .projects-hero {
+    margin-bottom: 56px;
+  }
+
+  .projects-hero-title {
+    font-size: 42px;
+  }
+
+  .projects-hero-subtitle {
+    font-size: 16px;
+
+    line-height: 1.8;
+  }
+
+  .project-card-image {
+    height: 240px;
+  }
+
+  .project-card-body {
+    padding: 28px 24px 32px;
+  }
+
+  .project-card-title {
+    font-size: 32px;
+  }
+
+  .project-card-desc {
+    font-size: 16px;
+  }
+
+  .projects-about-panel {
+    margin-top: 12px;
+
+    padding: 62px 0 70px;
+
+    border-radius: 28px 28px 0 0;
+  }
+
+  .person-card,
+  .lecturer-card {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .projects-about-panel {
+    padding: 72px 0;
+  }
+
+  .projects-about-title {
+    font-size: 42px;
+  }
+
+  .projects-about-desc {
+    font-size: 16px;
+  }
+
+  .projects-section-line {
+    display: none;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-section-header {
+    justify-content: center;
+  }
+
+  .public-download-page {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .public-download-inner {
+    padding: 0 18px 60px;
+  }
+
+  .public-page-topbar-inner {
+    padding: 0 12px;
+  }
+
+  .public-page-brand img {
+    height: 50px;
+  }
+
+  .public-page-brand span {
+    font-size: 0.92rem;
+  }
+
+  .public-page-topbar-text {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+
+  .public-download-header h2 {
+    font-size: 2.2rem;
+  }
+
+  .public-download-header p {
+    font-size: 1rem;
+  }
+
+  .public-search-box {
+    min-height: 64px;
+  }
+
+  .public-search-btn {
+    width: 58px;
+    height: 58px;
+    font-size: 1.3rem;
+  }
+
+  .public-card-header h3 {
+    font-size: 1.45rem;
+  }
+
+  .option-title {
+    font-size: 1rem;
+  }
+
+  .dataset-info {
+    gap: 12px;
+  }
+
+  .dataset-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+
+  .dataset-topline {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .selected-badge {
+    font-size: 0.72rem;
+  }
+
+  .summary-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .summary-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    padding: 6px 0;
+  }
+
+  .summary-value {
+    text-align: right;
+  }
+
+  .public-action-row {
+    grid-template-columns: 1fr;
+  }
+
+  .risk-section-card {
+    padding: 24px;
+  }
+
+  .risk-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .risk-section-header h2 {
+    font-size: 1.7rem;
+  }
+
+  .mini-leaflet-map {
+    height: 300px;
+  }
+
+  .risk-legend-wrap {
+    gap: 16px;
+  }
+
+  .download-card {
+    padding: 28px 22px;
+
+    border-radius: 24px;
+  }
+
+  .download-card h2 {
+    font-size: 2rem;
+  }
+
+  .download-img,
+  .download-card img {
+    height: 320px;
+  }
+
+  .download-card .btn-primary {
+    width: 100%;
+
+    max-width: 260px;
+  }
+
+  .contact-section {
+    padding: 80px 0 70px;
+  }
+
+  .contact-header h2 {
+    font-size: 32px;
+  }
+
+  .contact-card {
+    padding: 40px 26px;
+  }
+
+  .contact-cta {
+    padding: 40px 24px;
+  }
+
+  .contact-cta h3 {
+    font-size: 28px;
+  }
+
+  /* chart */
+  .chart-wrap {
+    height: 300px;
+  }
+
+  .heatmap-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* mini map */
+  .mini-zonation-map {
+    height: 220px;
+  }
+
+  #miniRiskRasterMap,
+  #bakauheniMiniRiskRasterMap {
+    height: 260px;
+  }
+
+  /* legend */
+  .inundation-legend {
+    min-width: 155px;
+
+    padding: 10px 12px;
+  }
+
+  .inundation-legend-title {
+    font-size: 0.85rem;
+  }
+
+  .inundation-legend-item {
+    font-size: 0.76rem;
+  }
+
+  .inundation-legend-swatch {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* raster */
+  .raster-preview-frame {
+    min-height: 300px;
+  }
+
+  .raster-label {
+    font-size: 0.68rem;
+
+    padding: 5px 10px;
+  }
+
+  .raster-watermark {
+    font-size: 0.65rem;
+  }
+
+  /* toolbar */
+  .map-toolbar {
+    top: 58px;
+
+    left: 12px;
+
+    right: 12px;
+
+    max-width: none;
+
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .map-toolbar input,
+  .map-toolbar select {
+    width: 100%;
+  }
+
+  .damage-assessment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-pill {
+    min-height: 88px;
+
+    padding: 14px 20px;
+
+    font-size: 14px;
+  }
+
+  .detail-image-card img {
+    height: 150px;
+  }
+
+  .detail-carousel {
+    gap: 12px;
+  }
+
+  .detail-slide {
+    width: 120px;
+
+    height: 120px;
+  }
+
+  .detail-slide.center {
+    transform: translateY(-10px) scale(1.04);
+  }
+
+  .detail-topbar-brand {
+    gap: 10px;
+  }
+
+  .detail-topbar-brand img {
+    height: 34px;
+  }
+
+  .detail-topbar-brand span {
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+  }
+
+  .detail-topbar {
+    padding: 0 14px;
+    min-height: 56px;
+  }
+
+  .detail-action-wrap {
+    gap: 8px;
+  }
+
+  .kpi-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .kpi-card {
+    padding: 18px;
+  }
+
+  .kpi-value {
+    font-size: 1.5rem;
+  }
+
+  .masthead h1 {
+    font-size: 4rem;
+  }
+
+  .payment-inner {
+    padding: 24px;
+  }
+
+  .payment-header h2 {
+    font-size: 38px;
+  }
+
+  .payment-instruction-title {
+    font-size: 1.6rem;
+  }
+
+  .payment-action-row .payment-btn-secondary,
+  .payment-action-row .payment-btn-primary {
+    width: 100%;
+    min-width: 250px;
+  }
+
+  .payment-detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .payment-detail-row strong {
+    text-align: left;
+  }
+
+  .payment-form-panel {
+    padding: 20px;
+  }
+
+  .payment-instruction-shell {
+    padding: 22px;
+    border-radius: 24px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 700px;
+  }
+
+  #riskDetailView table,
+  #bakauheniRiskDetailView table {
+    font-size: 12px;
+  }
+
+  .enterprise-hero {
+    padding-top: 90px;
+    padding-bottom: 50px;
+  }
+
+  .enterprise-title {
+    font-size: 2.2rem;
+  }
+
+  .enterprise-description {
+    font-size: 0.95rem;
+
+    line-height: 1.7;
+  }
+
+  .enterprise-metrics {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+  }
+
+  .enterprise-metric-card {
+    padding: 16px;
+
+    min-width: auto;
+  }
+
+  .metric-value {
+    font-size: 1.15rem;
+  }
+  .map-legend {
+    width: 120px;
+
+    min-width: 120px;
+
+    padding: 6px;
+  }
+
+  .legend-item {
+    font-size: 7px;
+  }
+
+  .legend-color {
+    width: 5px;
+    height: 5px;
+  }
+
+  .leaflet-layer-panel {
+    min-width: 180px;
+
+    padding: 10px;
+  }
+
+  .leaflet-layer-panel label {
+    font-size: 13px;
+  }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+@media (max-width: 576px) {
+  .payment-page-topbar-inner {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .payment-inner {
+    padding: 0 14px 40px;
+  }
+
+  .payment-card {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .payment-header h2 {
+    font-size: 1.45rem;
+  }
+
+  .payment-header p {
+    font-size: 0.95rem;
+  }
+  .admin-report-modal-card {
+    padding: 30px 20px 22px;
+    border-radius: 20px;
+  }
+
+  .admin-report-title {
+    font-size: 1.3rem;
+  }
+
+  .admin-report-option-btn {
+    padding: 15px 18px;
+    font-size: 0.95rem;
+  }
+
+  .risk-download-card {
+    gap: 12px;
+  }
+
+  .risk-main-group,
+  .risk-subgroup {
+    gap: 8px;
+  }
+
+  .risk-pill-btn {
+    min-height: 62px;
+    font-size: 0.95rem;
+    padding: 16px 50px;
+  }
+
+  .risk-subpill-btn {
+    min-height: 46px;
+    padding: 10px 42px 10px 46px;
+  }
+
+  .risk-pill-arrow {
+    right: 16px;
+    font-size: 1.25rem;
+  }
+
+  .risk-lock-icon {
+    left: 12px;
+    width: 24px;
+    height: 24px;
+    font-size: 0.82rem;
+  }
+
+  .risk-leaf-pill.is-criteria {
+    font-size: 0.76rem;
+  }
+
+  .risk-leaf-pill.is-subcriteria {
+    font-size: 0.66rem;
+  }
+
+  .risk-subcriteria-list.two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-topbar-brand span {
+    display: none;
+  }
+
+  .masthead h1 {
+    font-size: 2.8rem;
+
+    letter-spacing: 0.2rem;
+  }
+
+  .masthead h2 {
+    font-size: 0.8rem;
+
+    white-space: normal;
+
+    padding: 0 20px;
+  }
+
+  .kpi-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .download-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .action-btn {
+    height: 60px;
+
+    font-size: 0.9rem;
+  }
+}

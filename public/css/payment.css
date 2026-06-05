@@ -280,41 +280,6 @@
   color: #1c3342;
 }
 
-@media (max-width: 991.98px) {
-  .payment-inner {
-    padding: 0 24px 60px;
-  }
-
-  .payment-header h2 {
-    font-size: 1.7rem;
-  }
-}
-
-@media (max-width: 575.98px) {
-  .payment-page-topbar-inner {
-    flex-direction: column;
-    gap: 10px;
-    padding: 12px;
-  }
-
-  .payment-inner {
-    padding: 0 14px 40px;
-  }
-
-  .payment-card {
-    padding: 20px;
-    border-radius: 22px;
-  }
-
-  .payment-header h2 {
-    font-size: 1.45rem;
-  }
-
-  .payment-header p {
-    font-size: 0.95rem;
-  }
-}
-
 #emailAddress,
 #submitButton {
   height: 50px;
@@ -509,46 +474,6 @@
   margin-top: 28px;
 }
 
-@media (max-width: 991.98px) {
-  .payment-instruction-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .payment-instruction-shell {
-    padding: 28px;
-  }
-}
-
-@media (max-width: 767.98px) {
-  .payment-instruction-title {
-    font-size: 1.6rem;
-  }
-
-  .payment-action-row .payment-btn-secondary,
-  .payment-action-row .payment-btn-primary {
-    width: 100%;
-    min-width: 250px;
-  }
-
-  .payment-detail-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .payment-detail-row strong {
-    text-align: left;
-  }
-
-  .payment-form-panel {
-    padding: 20px;
-  }
-
-  .payment-instruction-shell {
-    padding: 22px;
-    border-radius: 24px;
-  }
-}
-
 .payment-upload-box {
   display: flex;
   align-items: center;
@@ -577,18 +502,6 @@
   color: #173c5e;
   font-weight: 700;
   word-break: break-word;
-}
-
-@media (max-width: 991.98px) {
-  .payment-upload-box {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .payment-upload-input {
-    flex: 1 1 auto;
-    width: 100%;
-  }
 }
 
 .payment-upload-custom {
@@ -681,15 +594,4 @@ body.payment-open {
 /* CARD STYLE */
 .payment-card {
   backdrop-filter: blur(14px);
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-  .payment-inner {
-    padding: 24px;
-  }
-
-  .payment-header h2 {
-    font-size: 38px;
-  }
 }

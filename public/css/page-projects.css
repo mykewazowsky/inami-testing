@@ -314,18 +314,6 @@ body.hide-main-nav #mainNav {
   box-shadow: 0 24px 60px rgba(15, 39, 71, 0.18);
 }
 
-/* responsive */
-
-@media (max-width: 991px) {
-  .enterprise-hero-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .enterprise-title {
-    font-size: 2.7rem;
-  }
-}
-
 /* =========================================================
    HERO IMAGE SLIDER
 ========================================================= */
@@ -541,103 +529,6 @@ body.hide-main-nav #mainNav {
   gap: 34px;
 
   align-items: stretch;
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 1200px) {
-  .projects-grid {
-    gap: 28px;
-  }
-
-  .project-card-image {
-    height: 320px;
-  }
-}
-
-@media (max-width: 992px) {
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .project-card-image {
-    height: 340px;
-  }
-
-  .projects-hero-title {
-    font-size: 56px;
-  }
-
-  .projects-hero-subtitle {
-    font-size: 18px;
-  }
-}
-
-@media (max-width: 768px) {
-  .projects-redesign-shell {
-    width: 92%;
-
-    padding-top: 78px;
-  }
-
-  .projects-top-actions {
-    margin-bottom: 42px;
-  }
-
-  .btn-back-dashboard {
-    width: 100%;
-  }
-
-  .projects-hero {
-    margin-bottom: 56px;
-  }
-
-  .projects-hero-title {
-    font-size: 42px;
-  }
-
-  .projects-hero-subtitle {
-    font-size: 16px;
-
-    line-height: 1.8;
-  }
-
-  .project-card-image {
-    height: 240px;
-  }
-
-  .project-card-body {
-    padding: 28px 24px 32px;
-  }
-
-  .project-card-title {
-    font-size: 32px;
-  }
-
-  .project-card-desc {
-    font-size: 16px;
-  }
-}
-
-/* =========================================
-   RESPONSIVE BLEND FIX
-========================================= */
-
-@media (max-width: 768px) {
-  .projects-about-panel {
-    margin-top: 12px;
-
-    padding: 62px 0 70px;
-
-    border-radius: 28px 28px 0 0;
-  }
-
-  .person-card,
-  .lecturer-card {
-    background: rgba(255, 255, 255, 0.05);
-  }
 }
 
 .projects-about-panel {
@@ -870,52 +761,6 @@ body.hide-main-nav #mainNav {
   transform: translateY(-2px);
 
   background: #f2fbff;
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 1200px) {
-  .team-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 992px) {
-  .lecturer-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .team-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .projects-about-panel {
-    padding: 72px 0;
-  }
-
-  .projects-about-title {
-    font-size: 42px;
-  }
-
-  .projects-about-desc {
-    font-size: 16px;
-  }
-
-  .projects-section-line {
-    display: none;
-  }
-
-  .team-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .projects-section-header {
-    justify-content: center;
-  }
 }
 
 .btn-inami {

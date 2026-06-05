@@ -444,91 +444,6 @@
   left: 6px;
 }
 
-/* ----------------- RESPONSIVE ----------------- */
-@media (max-width: 768px) {
-  /* chart */
-  .chart-wrap {
-    height: 300px;
-  }
-
-  .heatmap-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  /* mini map */
-  .mini-zonation-map {
-    height: 220px;
-  }
-
-  #miniRiskRasterMap,
-  #bakauheniMiniRiskRasterMap {
-    height: 260px;
-  }
-
-  /* legend */
-  .inundation-legend {
-    min-width: 155px;
-
-    padding: 10px 12px;
-  }
-
-  .inundation-legend-title {
-    font-size: 0.85rem;
-  }
-
-  .inundation-legend-item {
-    font-size: 0.76rem;
-  }
-
-  .inundation-legend-swatch {
-    width: 16px;
-    height: 16px;
-  }
-
-  /* raster */
-  .raster-preview-frame {
-    min-height: 300px;
-  }
-
-  .raster-label {
-    font-size: 0.68rem;
-
-    padding: 5px 10px;
-  }
-
-  .raster-watermark {
-    font-size: 0.65rem;
-  }
-
-  /* toolbar */
-  .map-toolbar {
-    top: 58px;
-
-    left: 12px;
-
-    right: 12px;
-
-    max-width: none;
-
-    flex-direction: column;
-
-    align-items: stretch;
-  }
-
-  .map-toolbar input,
-  .map-toolbar select {
-    width: 100%;
-  }
-}
-
-/* tablet */
-
-@media (max-width: 992px) {
-  #map {
-    height: 360px;
-  }
-}
-
 /* ================= LEGEND ================= */
 
 .inundation-legend {
@@ -1038,12 +953,6 @@
   font-size: 15px;
 
   line-height: 1.7;
-}
-
-@media (max-width: 992px) {
-  .risk-kpi-row {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 .risk-section-card h2 {

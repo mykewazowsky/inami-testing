@@ -18,18 +18,6 @@
   flex-wrap: nowrap;
 }
 
-/* ================= MOBILE ================= */
-@media (max-width: 768px) {
-  .detail-topbar {
-    padding: 0 14px;
-    min-height: 56px;
-  }
-
-  .detail-action-wrap {
-    gap: 8px;
-  }
-}
-
 /* ================= TOPBAR BRAND ================= */
 
 .detail-topbar-brand {
@@ -55,23 +43,6 @@
   letter-spacing: 0.08em;
   line-height: 1;
   white-space: nowrap;
-}
-
-/* mobile */
-
-@media (max-width: 768px) {
-  .detail-topbar-brand {
-    gap: 10px;
-  }
-
-  .detail-topbar-brand img {
-    height: 34px;
-  }
-
-  .detail-topbar-brand span {
-    font-size: 1.05rem;
-    letter-spacing: 0.04em;
-  }
 }
 
 /* =========================================================
@@ -241,66 +212,12 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
-/* RESPONSIVE */
-
-@media (max-width: 991px) {
-  .detail-carousel {
-    flex-direction: column;
-  }
-
-  .detail-slide {
-    width: 100%;
-
-    max-width: 420px;
-
-    height: 260px;
-  }
-
-  .detail-pill {
-    min-height: auto;
-  }
-}
-
-@media (max-width: 768px) {
-  .detail-pill {
-    min-height: 88px;
-
-    padding: 14px 20px;
-
-    font-size: 14px;
-  }
-
-  .detail-image-card img {
-    height: 150px;
-  }
-
-  .detail-carousel {
-    gap: 12px;
-  }
-
-  .detail-slide {
-    width: 120px;
-
-    height: 120px;
-  }
-
-  .detail-slide.center {
-    transform: translateY(-10px) scale(1.04);
-  }
-}
-
 .projects-main-header {
   position: sticky;
   top: 72px;
   z-index: 20;
   background: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-@media (max-width: 991.98px) {
-  .projects-main-header {
-    top: 56px;
-  }
 }
 
 /* PASTIKAN TIDAK ADA OFFSET DARI ELEMEN PERTAMA */
@@ -605,22 +522,6 @@ body > *:first-child {
   transform: translateY(0);
 }
 
-@media (max-width: 576px) {
-  .admin-report-modal-card {
-    padding: 30px 20px 22px;
-    border-radius: 20px;
-  }
-
-  .admin-report-title {
-    font-size: 1.3rem;
-  }
-
-  .admin-report-option-btn {
-    padding: 15px 18px;
-    font-size: 0.95rem;
-  }
-}
-
 /* ===== Info Modals (Hazard, Exposure, Risk) ===== */
 .info-overlay {
   position: fixed;
@@ -761,13 +662,6 @@ body > *:first-child {
   background: transparent;
   border-bottom: none;
   backdrop-filter: none;
-}
-
-@media (max-width: 991.98px) {
-  #pertaminaDetailView .projects-page-header,
-  #bakauheniDetailView .projects-page-header {
-    top: 56px;
-  }
 }
 
 .risk-main-group,
@@ -950,52 +844,6 @@ body > *:first-child {
   margin-top: 6px !important;
 }
 
-@media (max-width: 576px) {
-  .risk-download-card {
-    gap: 12px;
-  }
-
-  .risk-main-group,
-  .risk-subgroup {
-    gap: 8px;
-  }
-
-  .risk-pill-btn {
-    min-height: 62px;
-    font-size: 0.95rem;
-    padding: 16px 50px;
-  }
-
-  .risk-subpill-btn {
-    min-height: 46px;
-    padding: 10px 42px 10px 46px;
-  }
-
-  .risk-pill-arrow {
-    right: 16px;
-    font-size: 1.25rem;
-  }
-
-  .risk-lock-icon {
-    left: 12px;
-    width: 24px;
-    height: 24px;
-    font-size: 0.82rem;
-  }
-
-  .risk-leaf-pill.is-criteria {
-    font-size: 0.76rem;
-  }
-
-  .risk-leaf-pill.is-subcriteria {
-    font-size: 0.66rem;
-  }
-
-  .risk-subcriteria-list.two-col {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* =========================================
    KPI STRIP
 ========================================= */
@@ -1092,22 +940,6 @@ body > *:first-child {
 
 .kpi-card.primary {
   border-left: 4px solid #2f63b5;
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 768px) {
-  .kpi-strip {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .kpi-card {
-    padding: 18px;
-  }
-
-  .kpi-value {
-    font-size: 1.5rem;
-  }
 }
 
 /* FIX DETAIL BACKGROUND */
