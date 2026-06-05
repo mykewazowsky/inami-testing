@@ -6,22 +6,16 @@
     <title>INAMI Dashboard</title>
     <link rel="icon" type="image/x-icon" href="assets/img/INAMI.png" />
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: 3 request → 1 + display=swap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Nunito:wght@200;300;400;600;700;800;900&family=Varela+Round&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Font Awesome -->
-    <script
-      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
-      crossorigin="anonymous"
-    ></script>
+    <!-- Font Awesome: defer agar tidak blok render -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous" defer></script>
 
     <!-- Bootstrap CDN -->
     <link
@@ -54,15 +48,10 @@
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
       crossorigin=""
     />
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin=""
-    ></script>
-
-    <!-- GeoRaster: render GeoTIFF langsung di Leaflet tanpa GeoServer -->
-    <script src="https://cdn.jsdelivr.net/npm/georaster/dist/georaster.browser.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/georaster-layer-for-leaflet/dist/georaster-layer-for-leaflet.min.js"></script>
+    <!-- Leaflet JS + GeoRaster: defer, hanya dibutuhkan saat peta dibuka -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/georaster/dist/georaster.browser.bundle.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/georaster-layer-for-leaflet/dist/georaster-layer-for-leaflet.min.js" defer></script>
   </head>
 
   <body id="page-top">
@@ -200,8 +189,8 @@
                 <div
                   class="card-body p-4 d-flex flex-column align-items-center justify-content-center"
                 >
-                  <img
-                    src="assets/img/Hazard.png"
+                  <img loading="lazy"
+                    src="assets/img/Hazard.webp"
                     alt="Hazard Icon"
                     class="mb-4"
                     style="max-height: 100px; width: auto"
@@ -220,8 +209,8 @@
                 <div
                   class="card-body p-4 d-flex flex-column align-items-center justify-content-center"
                 >
-                  <img
-                    src="assets/img/Exposure.png"
+                  <img loading="lazy"
+                    src="assets/img/Exposure.webp"
                     alt="Exposure Icon"
                     class="mb-4"
                     style="max-height: 100px; width: auto"
@@ -240,8 +229,8 @@
                 <div
                   class="card-body p-4 d-flex flex-column align-items-center justify-content-center"
                 >
-                  <img
-                    src="assets/img/Risk.png"
+                  <img loading="lazy"
+                    src="assets/img/Risk.webp"
                     alt="Risk Icon"
                     class="mb-4"
                     style="max-height: 100px; width: auto"
@@ -576,7 +565,7 @@
             <!-- PROJECT 1 -->
             <article class="project-card">
               <div class="project-card-image">
-                <img src="assets/img/cilacap/1.webp" alt="Pertamina RU IV Cilacap" />
+                <img loading="lazy" src="assets/img/cilacap/1.webp" alt="Pertamina RU IV Cilacap" />
               </div>
               <div class="project-card-body">
                 <span class="project-card-label"> Project 1 </span>
@@ -594,7 +583,7 @@
             <!-- PROJECT 2 -->
             <article class="project-card project-card-alt">
               <div class="project-card-image">
-                <img src="assets/img/bakauheni/12.jpg" alt="Pelabuhan Bakauheni" />
+                <img loading="lazy" src="assets/img/bakauheni/12.webp" alt="Pelabuhan Bakauheni" />
               </div>
               <div class="project-card-body">
                 <span class="project-card-label"> Project 2 </span>
@@ -638,7 +627,7 @@
               <!-- PERSON 1 -->
               <div class="person-card">
                 <div class="person-photo">
-                  <img src="assets/img/ranny1.png" alt="" />
+                  <img loading="lazy" src="assets/img/ranny1.webp" alt="" />
                 </div>
                 <div class="person-content">
                   <div class="person-name">Ranny F. M. Saimuri</div>
@@ -649,7 +638,7 @@
               <!-- PERSON 2 -->
               <div class="person-card">
                 <div class="person-photo">
-                  <img src="assets/img/mitzu1.png" alt="" />
+                  <img loading="lazy" src="assets/img/mitzu1.webp" alt="" />
                 </div>
                 <div class="person-content">
                   <div class="person-name">Mitzu Lintang S.</div>
@@ -660,7 +649,7 @@
               <!-- PERSON 3 -->
               <div class="person-card">
                 <div class="person-photo">
-                  <img src="assets/img/syahrir1.png" alt="" />
+                  <img loading="lazy" src="assets/img/syahrir1.webp" alt="" />
                 </div>
                 <div class="person-content">
                   <div class="person-name">M. Rayhan Syahrir</div>
@@ -671,7 +660,7 @@
               <!-- PERSON 4 -->
               <div class="person-card">
                 <div class="person-photo">
-                  <img src="assets/img/halim1.png" alt="" />
+                  <img loading="lazy" src="assets/img/halim1.webp" alt="" />
                 </div>
                 <div class="person-content">
                   <div class="person-name">Hanif Halim W.</div>
@@ -682,7 +671,7 @@
               <!-- PERSON 5 -->
               <div class="person-card">
                 <div class="person-photo">
-                  <img src="assets/img/ega1.png" alt="" />
+                  <img loading="lazy" src="assets/img/ega1.webp" alt="" />
                 </div>
                 <div class="person-content">
                   <div class="person-name">Ega Mutia Asyifa</div>
@@ -703,7 +692,7 @@
               <!-- LECTURER 1 -->
               <div class="lecturer-card">
                 <div class="lecturer-photo">
-                  <img src="assets/img/irwanmeilano1.png" alt="" />
+                  <img loading="lazy" src="assets/img/irwanmeilano1.webp" alt="" />
                 </div>
                 <div class="lecturer-content">
                   <div class="lecturer-name">Prof. Dr. Irwan Meilano, ST., M.Sc.</div>
@@ -713,7 +702,7 @@
               <!-- LECTURER 2 -->
               <div class="lecturer-card">
                 <div class="lecturer-photo">
-                  <img src="assets/img/Wiwin.jpg" alt="" />
+                  <img loading="lazy" src="assets/img/Wiwin.webp" alt="" />
                 </div>
                 <div class="lecturer-content">
                   <div class="lecturer-name">Dr. Rer. Nat. Wiwin Windupranata, ST., M.Si.</div>
@@ -723,7 +712,7 @@
               <!-- LECTURER 3 -->
               <div class="lecturer-card">
                 <div class="lecturer-photo">
-                  <img src="assets/img/iyan.png" alt="" />
+                  <img loading="lazy" src="assets/img/iyan.webp" alt="" />
                 </div>
                 <div class="lecturer-content">
                   <div class="lecturer-name">Dr. Iyan E. Mulia, S.Si, M.T.</div>
@@ -794,14 +783,14 @@
             <div class="enterprise-hero-image">
               <div class="hero-slider">
                 <img class="hero-slide active" src="assets/img/cilacap/1.webp" alt="" />
-                <img class="hero-slide" src="assets/img/cilacap/2.webp" alt="" />
-                <img class="hero-slide" src="assets/img/cilacap/3.webp" alt="" />
-                <img class="hero-slide" src="assets/img/cilacap/4.webp" alt="" />
-                <img class="hero-slide" src="assets/img/cilacap/5.webp" alt="" />
-                <img class="hero-slide" src="assets/img/cilacap/6.webp" alt="" />
-                <img class="hero-slide" src="assets/img/cilacap/7.webp" alt="" />
-                <img class="hero-slide" src="assets/img/cilacap/8.jpg" alt="" />
-                <img class="hero-slide" src="assets/img/cilacap/9.jpg" alt="" />
+                <img loading="lazy" class="hero-slide" src="assets/img/cilacap/2.webp" alt="" />
+                <img loading="lazy" class="hero-slide" src="assets/img/cilacap/3.webp" alt="" />
+                <img loading="lazy" class="hero-slide" src="assets/img/cilacap/4.webp" alt="" />
+                <img loading="lazy" class="hero-slide" src="assets/img/cilacap/5.webp" alt="" />
+                <img loading="lazy" class="hero-slide" src="assets/img/cilacap/6.webp" alt="" />
+                <img loading="lazy" class="hero-slide" src="assets/img/cilacap/7.webp" alt="" />
+                <img loading="lazy" class="hero-slide" src="assets/img/cilacap/8.webp" alt="" />
+                <img loading="lazy" class="hero-slide" src="assets/img/cilacap/9.webp" alt="" />
               </div>
             </div>
           </div>
@@ -1174,24 +1163,24 @@
               <div class="hero-slider bakauheni-slider">
                 <img
                   class="hero-slide active"
-                  src="assets/img/bakauheni/16.jpg"
+                  src="assets/img/bakauheni/16.webp"
                   alt="Bakauheni 1"
                 />
-                <img class="hero-slide" src="assets/img/bakauheni/1.jpg" alt="Bakauheni 2" />
-                <img class="hero-slide" src="assets/img/bakauheni/2.jpg" alt="Bakauheni 3" />
-                <img class="hero-slide" src="assets/img/bakauheni/3.jpg" alt="Bakauheni 4" />
-                <img class="hero-slide" src="assets/img/bakauheni/4.jpg" alt="Bakauheni 5" />
-                <img class="hero-slide" src="assets/img/bakauheni/5.jpg" alt="Bakauheni 6" />
-                <img class="hero-slide" src="assets/img/bakauheni/6.jpg" alt="Bakauheni 7" />
-                <img class="hero-slide" src="assets/img/bakauheni/7.jpg" alt="Bakauheni 8" />
-                <img class="hero-slide" src="assets/img/bakauheni/8.jpg" alt="Bakauheni 9" />
-                <img class="hero-slide" src="assets/img/bakauheni/9.jpg" alt="Bakauheni 10" />
-                <img class="hero-slide" src="assets/img/bakauheni/10.jpg" alt="Bakauheni 11" />
-                <img class="hero-slide" src="assets/img/bakauheni/11.jpg" alt="Bakauheni 12" />
-                <img class="hero-slide" src="assets/img/bakauheni/12.jpg" alt="Bakauheni 13" />
-                <img class="hero-slide" src="assets/img/bakauheni/13.jpg" alt="Bakauheni 14" />
-                <img class="hero-slide" src="assets/img/bakauheni/14.jpg" alt="Bakauheni 15" />
-                <img class="hero-slide" src="assets/img/bakauheni/15.jpg" alt="Bakauheni 16" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/1.webp" alt="Bakauheni 2" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/2.webp" alt="Bakauheni 3" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/3.webp" alt="Bakauheni 4" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/4.webp" alt="Bakauheni 5" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/5.webp" alt="Bakauheni 6" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/6.webp" alt="Bakauheni 7" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/7.webp" alt="Bakauheni 8" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/8.webp" alt="Bakauheni 9" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/9.webp" alt="Bakauheni 10" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/10.webp" alt="Bakauheni 11" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/11.webp" alt="Bakauheni 12" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/12.webp" alt="Bakauheni 13" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/13.webp" alt="Bakauheni 14" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/14.webp" alt="Bakauheni 15" />
+                <img loading="lazy" class="hero-slide" src="assets/img/bakauheni/15.webp" alt="Bakauheni 16" />
               </div>
             </div>
           </div>
@@ -2441,7 +2430,7 @@
           ×
         </button>
         <div class="info-modal-header">
-          <img src="assets/img/Hazard.png" alt="Hazard Icon" />
+          <img loading="lazy" src="assets/img/Hazard.webp" alt="Hazard Icon" />
           <h3>Potensi Bencana</h3>
         </div>
         <div class="info-modal-content">
@@ -2477,7 +2466,7 @@
           ×
         </button>
         <div class="info-modal-header">
-          <img src="assets/img/Exposure.png" alt="Exposure Icon" />
+          <img loading="lazy" src="assets/img/Exposure.webp" alt="Exposure Icon" />
           <h3>Paparan Infrastruktur</h3>
         </div>
         <div class="info-modal-content">
@@ -2513,7 +2502,7 @@
           ×
         </button>
         <div class="info-modal-header">
-          <img src="assets/img/Risk.png" alt="Risk Icon" />
+          <img loading="lazy" src="assets/img/Risk.webp" alt="Risk Icon" />
           <h3>Kuantifikasi Risiko</h3>
         </div>
         <div class="info-modal-content">
