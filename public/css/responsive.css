@@ -528,7 +528,7 @@
     width: 100%;
 
     padding: 15px 18px;
-
+    margin-top: 20px 0 0;
     font-size: 0.85rem;
 
     min-height: 48px;
@@ -610,7 +610,7 @@
   }
 
   .enterprise-hero {
-    padding-top: 150px;
+    padding-top: 165px;
     padding-bottom: 50px;
   }
 
