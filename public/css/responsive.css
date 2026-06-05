@@ -462,8 +462,8 @@
 
   .wilayah-dropdown {
     width: 60%;
-    margin-top: 15px;
-    margin-left: 30px;
+    margin-top: 5px;
+    margin-left: 35px;
   }
 
   .map-toolbar input,
@@ -515,7 +515,7 @@
   }
 
   .detail-topbar {
-    padding: 60px 14px;
+    padding: 30px 14px;
     min-height: 56px;
   }
 
@@ -525,7 +525,7 @@
 
   .detail-topbar .action-btn {
     padding: 40px 18px;
-    font-size: 0.9rem;
+    font-size: 0.6rem;
   }
 
   .kpi-strip {
