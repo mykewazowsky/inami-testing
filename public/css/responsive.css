@@ -515,8 +515,13 @@
   }
 
   .detail-topbar {
-    padding: 30px 14px;
-    min-height: 56px;
+    padding: 12px 14px;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    align-items: stretch;
   }
 
   .detail-action-wrap {
