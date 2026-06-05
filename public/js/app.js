@@ -1474,7 +1474,7 @@ function createWmsLayer(layerName) {
 
 async function loadRiskLayer(layerName) {
   const url =
-    `https://foster-cringing-unwary.ngrok-free.dev/geoserver` +
+    `https://foster-cringing-unwary.ngrok-free.dev/geoserver/ows?` +
     `service=WFS&version=1.0.0&request=GetFeature` +
     `&typeName=${layerName}` +
     `&outputFormat=application/json` +
@@ -2469,7 +2469,7 @@ window.requireLoginForPurchase = requireLoginForPurchase;
 /* ================= Loader WFS ================= */
 async function fetchRiskFeatures(layerName) {
   const url =
-    `https://foster-cringing-unwary.ngrok-free.dev/geoserver` +
+    `https://foster-cringing-unwary.ngrok-free.dev/geoserver/ows?` +
     `service=WFS&version=1.0.0&request=GetFeature` +
     `&typeName=${layerName}` +
     `&outputFormat=application/json` +
