@@ -9,3 +9,4 @@ server/node_modules
 public/assets/data
 server/uploads
 server/logs
+package-lock.json
