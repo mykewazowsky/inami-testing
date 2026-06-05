@@ -1465,7 +1465,7 @@ const GEOSERVER_WMS =
   "https://foster-cringing-unwary.ngrok-free.dev/geoserver/wms?ngrok-skip-browser-warning=true";
 
 function createWmsLayer(layerName) {
-  return L.tileLayer.wms(geoserverUrl, {
+  return L.tileLayer.wms(GEOSERVER_WMS, {
     layers: layerName,
     format: "image/png",
     transparent: true,
@@ -1699,7 +1699,7 @@ async function refreshRiskLayer() {
 }
 
 function createInundasiWmsLayer(layerName, styleName) {
-  return L.tileLayer.wms(geoserverUrl, {
+  return L.tileLayer.wms(GEOSERVER_WMS, {
     layers: layerName,
     styles: styleName,
     format: "image/png",
