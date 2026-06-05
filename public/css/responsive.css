@@ -460,6 +460,11 @@
     align-items: stretch;
   }
 
+  .wilayah-dropdown {
+    width: 100%;
+    margin-top: 5px;
+  }
+
   .map-toolbar input,
   .map-toolbar select {
     width: 100%;
@@ -515,6 +520,11 @@
 
   .detail-action-wrap {
     gap: 8px;
+  }
+
+  .detail-topbar .action-btn {
+    padding: 40px 18px;
+    font-size: 0.9rem;
   }
 
   .kpi-strip {
