@@ -1461,7 +1461,8 @@ let currentRiskState = "DS1";
 let inundationLegendControl = null;
 let activeDamageState = "DS1";
 
-const geoserverUrl = "https://foster-cringing-unwary.ngrok-free.dev/geoserver/wms?ngrok-skip-browser-warning=true&";
+const geoserverUrl =
+  "https://foster-cringing-unwary.ngrok-free.dev/geoserver/wms?ngrok-skip-browser-warning=true&";
 
 function createWmsLayer(layerName) {
   return L.tileLayer.wms(geoserverUrl, {
@@ -1507,7 +1508,33 @@ async function loadRiskLayer(layerName) {
   const geojson = await response.json();
 
   return L.geoJSON(geojson, {
-    ...
+    style(feature) {
+      const value = Number(feature.properties?.[activeDamageState]) || 0;
+
+      return {
+        color: "#ffffff",
+        weight: 0.4,
+        opacity: 0.35,
+        fillOpacity: 0.9,
+        fillColor: getRiskColor(value),
+      };
+    },
+
+    onEachFeature(feature, layer) {
+      const p = feature.properties;
+
+      layer.bindPopup(`
+      <b>${p.TYPE}</b><br>
+      ${p.SUBTYPE}<br><br>
+
+      HMAX : ${Number(p.HMAX).toFixed(2)} m<br>
+
+      DS1 : ${Number(p.DS1).toFixed(3)}<br>
+      DS2 : ${Number(p.DS2).toFixed(3)}<br>
+      DS3 : ${Number(p.DS3).toFixed(3)}<br>
+      DS4 : ${Number(p.DS4).toFixed(3)}
+    `);
+    },
   });
 }
 
