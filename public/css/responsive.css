@@ -160,8 +160,6 @@
 @media (max-width: 768px) {
   .projects-redesign-shell {
     width: 92%;
-
-    padding-top: 78px;
   }
 
   .projects-top-actions {
@@ -648,8 +646,8 @@
     top: 70px;
   }
 
-  .leaflet-control-zoom {
-    transform: translateY(70px);
+  .projects-redesign-shell {
+    padding-top: 140px !important;
   }
 
   .projects-page-header {
