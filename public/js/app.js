@@ -585,6 +585,8 @@ function initRiskDownloadCards() {
 async function initInundationDetailMap() {
   if (inundationDetailMap) return;
 
+  await ensureMapLibrariesLoaded();
+
   inundationDetailMap = L.map("inundationDetailMap");
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -751,6 +753,8 @@ function getZoneStyle(level) {
 /* ================= BAKAUHENI DATA ================= */
 async function initBakauheniInundationDetailMap() {
   if (bakauheniInundationDetailMap) return;
+
+  await ensureMapLibrariesLoaded();
 
   bakauheniInundationDetailMap = L.map("bakauheniInundationDetailMap");
 
@@ -1442,6 +1446,8 @@ let mapControlsInitialized = false;
 let mapLazyObserver = null;
 let activeMapLocation = "cilacap";
 let mapLayerRequestId = 0;
+let mapLibrariesLoadPromise = null;
+let chartLibraryLoadPromise = null;
 
 let cilacapRiskFeatures = [];
 let bakauheniRiskFeatures = [];
@@ -1492,10 +1498,129 @@ const MAP_LOCATION_CONFIG = {
   },
 };
 
+const DYNAMIC_ASSETS = {
+  leafletCss: {
+    id: "leaflet-css",
+    href: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+    integrity: "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=",
+  },
+  leafletJs: {
+    id: "leaflet-js",
+    src: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+    integrity: "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",
+  },
+  georasterJs: {
+    id: "georaster-js",
+    src: "https://cdn.jsdelivr.net/npm/georaster/dist/georaster.browser.bundle.min.js",
+  },
+  georasterLayerJs: {
+    id: "georaster-layer-js",
+    src: "https://cdn.jsdelivr.net/npm/georaster-layer-for-leaflet/dist/georaster-layer-for-leaflet.min.js",
+  },
+  chartJs: {
+    id: "chart-js",
+    src: "https://cdn.jsdelivr.net/npm/chart.js",
+  },
+};
+
 function getGeoAPIBase() {
   return window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? "http://localhost:3000"
     : "https://inami-testing-production.up.railway.app";
+}
+
+function loadExternalStyle({ id, href, integrity }) {
+  const existing = document.getElementById(id);
+  if (existing) return Promise.resolve(existing);
+
+  return new Promise((resolve, reject) => {
+    const link = document.createElement("link");
+    link.id = id;
+    link.rel = "stylesheet";
+    link.href = href;
+    link.crossOrigin = "";
+    if (integrity) link.integrity = integrity;
+    link.onload = () => resolve(link);
+    link.onerror = () => reject(new Error(`Failed loading stylesheet: ${href}`));
+    document.head.appendChild(link);
+  });
+}
+
+function loadExternalScript({ id, src, integrity }, isReady) {
+  if (typeof isReady === "function" && isReady()) {
+    return Promise.resolve(document.getElementById(id));
+  }
+
+  const existing = document.getElementById(id);
+  if (existing) {
+    return new Promise((resolve, reject) => {
+      if (typeof isReady === "function" && isReady()) {
+        resolve(existing);
+        return;
+      }
+
+      existing.addEventListener("load", () => resolve(existing), { once: true });
+      existing.addEventListener(
+        "error",
+        () => reject(new Error(`Failed loading script: ${src}`)),
+        { once: true },
+      );
+    });
+  }
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.id = id;
+    script.src = src;
+    script.async = true;
+    script.crossOrigin = "";
+    if (integrity) script.integrity = integrity;
+    script.onload = () => resolve(script);
+    script.onerror = () => reject(new Error(`Failed loading script: ${src}`));
+    document.head.appendChild(script);
+  });
+}
+
+async function ensureMapLibrariesLoaded() {
+  if (window.L && window.parseGeoraster && window.GeoRasterLayer) return;
+
+  if (!mapLibrariesLoadPromise) {
+    mapLibrariesLoadPromise = (async () => {
+      showMapLoading("Memuat library peta...", "map-libraries");
+
+      try {
+        await Promise.all([
+          loadExternalStyle(DYNAMIC_ASSETS.leafletCss),
+          loadExternalScript(DYNAMIC_ASSETS.leafletJs, () => !!window.L),
+        ]);
+
+        await loadExternalScript(
+          DYNAMIC_ASSETS.georasterJs,
+          () => !!window.parseGeoraster,
+        );
+
+        await loadExternalScript(
+          DYNAMIC_ASSETS.georasterLayerJs,
+          () => !!window.GeoRasterLayer,
+        );
+      } finally {
+        hideMapLoading("map-libraries");
+      }
+    })();
+  }
+
+  return mapLibrariesLoadPromise;
+}
+
+async function ensureChartLibraryLoaded() {
+  if (window.Chart) return window.Chart;
+
+  if (!chartLibraryLoadPromise) {
+    chartLibraryLoadPromise = loadExternalScript(DYNAMIC_ASSETS.chartJs, () => !!window.Chart);
+  }
+
+  await chartLibraryLoadPromise;
+  return window.Chart;
 }
 
 function getMapLocationConfig(locationKey = activeMapLocation) {
@@ -1607,13 +1732,20 @@ function refreshMapAfterResize(message = "Menyiapkan basemap...") {
   });
 }
 
-function requestMapInitialization() {
+async function requestMapInitialization() {
   if (map) {
     setTimeout(() => map.invalidateSize(), 80);
     return map;
   }
 
+  await ensureMapLibrariesLoaded();
   return initMap();
+}
+
+function initializeMapInBackground() {
+  requestMapInitialization().catch((error) => {
+    console.error("Map initialization failed:", error);
+  });
 }
 
 function setupLazyMapInitialization() {
@@ -1625,7 +1757,7 @@ function setupLazyMapInitialization() {
       (entries) => {
         if (!entries.some((entry) => entry.isIntersecting)) return;
 
-        requestMapInitialization();
+        initializeMapInBackground();
         mapLazyObserver.disconnect();
         mapLazyObserver = null;
       },
@@ -1642,7 +1774,7 @@ function setupLazyMapInitialization() {
   const initOnScroll = () => {
     const rect = mapEl.getBoundingClientRect();
     if (rect.top < window.innerHeight + 320) {
-      requestMapInitialization();
+      initializeMapInBackground();
       window.removeEventListener("scroll", initOnScroll);
     }
   };
@@ -1871,10 +2003,12 @@ function populateTopRiskAssets(features, dsField) {
   });
 }
 
-function renderMiniRiskMap(dsField = "DS1") {
+async function renderMiniRiskMap(dsField = "DS1") {
   const mapContainer = document.getElementById("miniRiskRasterMap");
 
   if (!mapContainer) return;
+
+  await ensureMapLibrariesLoaded();
 
   if (!miniRiskRasterMap) {
     miniRiskRasterMap = L.map("miniRiskRasterMap", {
@@ -1930,10 +2064,12 @@ function renderMiniRiskMap(dsField = "DS1") {
   }
 }
 
-function renderBakauheniMiniRiskMap(dsField = "DS1") {
+async function renderBakauheniMiniRiskMap(dsField = "DS1") {
   const mapContainer = document.getElementById("bakauheniMiniRiskRasterMap");
 
   if (!mapContainer) return;
+
+  await ensureMapLibrariesLoaded();
 
   if (!bakauheniMiniRiskRasterMap) {
     bakauheniMiniRiskRasterMap = L.map("bakauheniMiniRiskRasterMap", {
@@ -2076,7 +2212,7 @@ function setupLayerControls() {
 
   if (chkJalan) {
     chkJalan.addEventListener("change", async function () {
-      const activeMap = requestMapInitialization();
+      const activeMap = await requestMapInitialization();
       if (!activeMap || !jalanLayer) return;
 
       this.checked ? activeMap.addLayer(jalanLayer) : activeMap.removeLayer(jalanLayer);
@@ -2089,7 +2225,7 @@ function setupLayerControls() {
 
   if (chkInundasi) {
     chkInundasi.addEventListener("change", async function () {
-      const activeMap = requestMapInitialization();
+      const activeMap = await requestMapInitialization();
       if (!activeMap || !inundasiLayer) return;
 
       this.checked ? activeMap.addLayer(inundasiLayer) : activeMap.removeLayer(inundasiLayer);
@@ -2102,7 +2238,7 @@ function setupLayerControls() {
 
   if (chkRisk) {
     chkRisk.addEventListener("change", async function () {
-      const activeMap = requestMapInitialization();
+      const activeMap = await requestMapInitialization();
       if (!activeMap || !riskLayer) return;
 
       if (this.checked) {
@@ -2118,7 +2254,7 @@ function setupLayerControls() {
 
   riskRadios.forEach((radio) => {
     radio.addEventListener("change", async () => {
-      const activeMap = requestMapInitialization();
+      const activeMap = await requestMapInitialization();
       if (!activeMap) return;
 
       activeDamageState = radio.value;
@@ -2354,7 +2490,7 @@ function goToSection(sectionId, event) {
 
   setTimeout(() => {
     if (sectionId === "projects") {
-      requestMapInitialization();
+      initializeMapInBackground();
     }
 
     const target = document.getElementById(sectionId);
@@ -2589,8 +2725,8 @@ function setupMapFullscreen() {
   const mapBox = document.querySelector(".map-box");
   if (!btn || !mapBox) return;
 
-  btn.addEventListener("click", function () {
-    requestMapInitialization();
+  btn.addEventListener("click", async function () {
+    await requestMapInitialization();
     const isFullscreen = mapBox.classList.toggle("map-fullscreen");
     btn.querySelector("i").className = isFullscreen ? "fas fa-compress" : "fas fa-expand";
     btn.title = isFullscreen ? "Keluar Layar Penuh" : "Layar Penuh";
@@ -2633,7 +2769,7 @@ function setupWilayahControls() {
       input.value = this.textContent.trim();
       list.classList.add("hidden");
 
-      const activeMap = requestMapInitialization();
+      const activeMap = await requestMapInitialization();
       if (!activeMap) return;
 
       await loadMapLayersForLocation(value, { fitToLocation: true });
@@ -2771,6 +2907,7 @@ window.closeLeafletPopup = closeLeafletPopup;
 window.goToProjectPage = goToProjectPage;
 window.closeAllDetailViews = closeAllDetailViews;
 window.handleNavbarBackground = handleNavbarBackground;
+window.ensureChartLibraryLoaded = ensureChartLibraryLoaded;
 
 /* ================= FORCE HOME ON FIRST LOAD ================= */
 document.addEventListener("DOMContentLoaded", function () {
@@ -2990,9 +3127,9 @@ function initRiskStateButtons() {
 
       refreshRiskDashboard();
 
-      renderMiniRiskMap(currentRiskState);
+      await renderMiniRiskMap(currentRiskState);
 
-      renderBakauheniMiniRiskMap(currentRiskState);
+      await renderBakauheniMiniRiskMap(currentRiskState);
     });
   });
 }
