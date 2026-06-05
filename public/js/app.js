@@ -1461,8 +1461,7 @@ let currentRiskState = "DS1";
 let inundationLegendControl = null;
 let activeDamageState = "DS1";
 
-const geoserverUrl =
-  "https://foster-cringing-unwary.ngrok-free.dev/geoserver/wms?ngrok-skip-browser-warning=true&";
+const geoserverUrl = "https://foster-cringing-unwary.ngrok-free.dev/geoserver/wms?ngrok-skip-browser-warning=true&";
 
 function createWmsLayer(layerName) {
   return L.tileLayer.wms(geoserverUrl, {
@@ -1482,16 +1481,14 @@ async function loadRiskLayer(layerName) {
     `&outputFormat=application/json` +
     `&srsName=EPSG:4326`;
 
+  console.log("Loading risk layer:", layerName);
+  console.log(url);
+
   const response = await fetch(url, {
     headers: {
       "ngrok-skip-browser-warning": "true",
     },
   });
-
-  console.log("Loading risk layer:", layerName);
-  console.log(url);
-
-  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(`WFS request failed (${response.status})`);
@@ -1510,55 +1507,7 @@ async function loadRiskLayer(layerName) {
   const geojson = await response.json();
 
   return L.geoJSON(geojson, {
-    style(feature) {
-      const value = feature.properties[activeDamageState] || 0;
-
-      let fillColor;
-
-      if (value >= 0.8) {
-        fillColor = "#d7191c";
-      } else if (value >= 0.6) {
-        fillColor = "#fdae61";
-      } else if (value >= 0.4) {
-        fillColor = "#ffff66";
-      } else if (value >= 0.2) {
-        fillColor = "#a6d96a";
-      } else {
-        fillColor = "#1a9641";
-      }
-
-      return {
-        color: "#222",
-        weight: 1,
-        fillColor: fillColor,
-        fillOpacity: 0.6,
-      };
-    },
-
-    onEachFeature(feature, layer) {
-      const p = feature.properties;
-
-      layer.bindPopup(`
-        <div style="min-width:250px">
-          <h6><b>${p.TYPE}</b></h6>
-
-          <b>Active Scenario</b><br>
-          ${activeDamageState} <br><br>
-
-          <b>Subtype</b><br>
-          ${p.SUBTYPE}<br><br>
-
-          <b>HMAX</b><br>
-          ${Number(p.HMAX).toFixed(2)} m<br><br>
-
-          <b>Damage State</b><br>
-          DS1 : ${Number(p.DS1).toFixed(3)}<br>
-          DS2 : ${Number(p.DS2).toFixed(3)}<br>
-          DS3 : ${Number(p.DS3).toFixed(3)}<br>
-          DS4 : ${Number(p.DS4).toFixed(3)}
-        </div>
-      `);
-    },
+    ...
   });
 }
 
