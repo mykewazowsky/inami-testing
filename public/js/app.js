@@ -2266,6 +2266,30 @@ function setupLayerMenu() {
   });
 }
 
+function setupMapFullscreen() {
+  const btn = document.getElementById("mapFullscreenBtn");
+  const mapBox = document.querySelector(".map-box");
+  if (!btn || !mapBox) return;
+
+  btn.addEventListener("click", function () {
+    const isFullscreen = mapBox.classList.toggle("map-fullscreen");
+    btn.querySelector("i").className = isFullscreen ? "fas fa-compress" : "fas fa-expand";
+    btn.title = isFullscreen ? "Keluar Layar Penuh" : "Layar Penuh";
+    btn.setAttribute("aria-label", isFullscreen ? "Exit fullscreen" : "Toggle fullscreen");
+    if (map) setTimeout(() => map.invalidateSize(), 200);
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && mapBox.classList.contains("map-fullscreen")) {
+      mapBox.classList.remove("map-fullscreen");
+      btn.querySelector("i").className = "fas fa-expand";
+      btn.title = "Layar Penuh";
+      btn.setAttribute("aria-label", "Toggle fullscreen");
+      if (map) setTimeout(() => map.invalidateSize(), 200);
+    }
+  });
+}
+
 function setupWilayahControls() {
   const input = document.getElementById("wilayahInput");
   const list = document.getElementById("wilayahList");
@@ -2388,6 +2412,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   setupLayerMenu();
   setupWilayahControls();
+  setupMapFullscreen();
 
   setTimeout(() => {
     addProjectMarkers();

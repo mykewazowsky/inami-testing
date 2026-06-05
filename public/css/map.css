@@ -961,3 +961,46 @@
   padding-bottom: 7px;
   color: #173a6a;
 }
+
+/* ----------------- FULLSCREEN BUTTON ----------------- */
+.map-fullscreen-btn {
+  position: absolute;
+  top: 18px;
+  right: 68px;
+  z-index: 1001;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #556270;
+  font-size: 14px;
+  transition: background 0.15s ease;
+}
+
+.map-fullscreen-btn:hover {
+  background: #f0f4f8;
+}
+
+/* Fullscreen active state */
+.map-box.map-fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9998 !important;
+  border-radius: 0 !important;
+  min-height: unset !important;
+  padding-bottom: 0 !important;
+  width: 100% !important;
+  height: 100vh !important;
+}
+
+.map-box.map-fullscreen #map {
+  height: 100vh !important;
+  min-height: unset !important;
+  border-radius: 0 !important;
+}
