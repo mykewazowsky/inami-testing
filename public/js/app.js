@@ -1436,8 +1436,12 @@ let map;
 let jalanLayer;
 let inundasiLayer;
 let riskLayer;
+let mapBaseTileLayer;
+let mapVectorRenderer;
 let mapControlsInitialized = false;
 let mapLazyObserver = null;
+let activeMapLocation = "cilacap";
+let mapLayerRequestId = 0;
 
 let cilacapRiskFeatures = [];
 let bakauheniRiskFeatures = [];
@@ -1450,6 +1454,13 @@ let activeDamageState = "DS1";
 
 const riskGeoJSONCache = {};   // layerName → raw GeoJSON object
 const riskLeafletLayers = {};  // layerName → L.geoJSON layer instance
+
+const mapLayerCache = {
+  jalan: {},
+  inundasi: {},
+  risk: {},
+};
+const mapLoadingTasks = new Set();
 
 // Peta layer name GeoServer → endpoint lokal
 const GEODATA_ENDPOINTS = {
@@ -1464,10 +1475,136 @@ const INUNDATION_TIFS = {
   bakauheni: "/assets/raster/Inundasi_Tsunami_Bakauheni_Fix.tif",
 };
 
+const MAP_LOCATION_CONFIG = {
+  cilacap: {
+    label: "Cilacap",
+    center: [-7.699563, 108.998468],
+    zoom: 14,
+    jalanLayer: "Capstone:jalan_cilacap",
+    riskLayer: "Capstone:DS_CILACAP_RISK",
+  },
+  bakauheni: {
+    label: "Bakauheni",
+    center: [-5.871, 105.745],
+    zoom: 14,
+    jalanLayer: "Capstone:jalan_bakauheni",
+    riskLayer: "Capstone:Bakauheni_DS_Risk",
+  },
+};
+
 function getGeoAPIBase() {
   return window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? "http://localhost:3000"
     : "https://inami-testing-production.up.railway.app";
+}
+
+function getMapLocationConfig(locationKey = activeMapLocation) {
+  return MAP_LOCATION_CONFIG[locationKey] || MAP_LOCATION_CONFIG.cilacap;
+}
+
+function getMapVectorRenderer() {
+  if (!mapVectorRenderer && typeof L !== "undefined") {
+    mapVectorRenderer = L.canvas({ padding: 0.5 });
+  }
+
+  return mapVectorRenderer;
+}
+
+function createCanvasRenderer() {
+  return typeof L !== "undefined" ? L.canvas({ padding: 0.5 }) : undefined;
+}
+
+function ensureMapLoadingOverlay() {
+  const mapBox = document.querySelector(".map-box");
+  if (!mapBox) return null;
+
+  let overlay = document.getElementById("mapLoadingOverlay");
+  if (overlay) return overlay;
+
+  overlay = document.createElement("div");
+  overlay.id = "mapLoadingOverlay";
+  overlay.className = "map-loading-overlay";
+  overlay.setAttribute("aria-live", "polite");
+  overlay.setAttribute("aria-hidden", "true");
+  overlay.innerHTML = `
+    <div class="map-loading-card">
+      <span class="map-loading-spinner" aria-hidden="true"></span>
+      <span class="map-loading-text">Memuat peta...</span>
+    </div>
+  `;
+
+  mapBox.appendChild(overlay);
+  return overlay;
+}
+
+function showMapLoading(message = "Memuat peta...", task = "map") {
+  const overlay = ensureMapLoadingOverlay();
+  if (!overlay) return;
+
+  mapLoadingTasks.add(task);
+  overlay.querySelector(".map-loading-text").textContent = message;
+  overlay.classList.add("is-active");
+  overlay.setAttribute("aria-hidden", "false");
+}
+
+function hideMapLoading(task = "map") {
+  const overlay = ensureMapLoadingOverlay();
+  if (!overlay) return;
+
+  mapLoadingTasks.delete(task);
+  if (mapLoadingTasks.size) return;
+
+  overlay.classList.remove("is-active");
+  overlay.setAttribute("aria-hidden", "true");
+}
+
+function setMapControlsDisabled(disabled) {
+  ["chkJalan", "chkInundasi", "chkRisk"].forEach((id) => {
+    const input = document.getElementById(id);
+    if (input) input.disabled = disabled;
+  });
+
+  document.querySelectorAll('input[name="riskState"]').forEach((input) => {
+    input.disabled = disabled;
+  });
+}
+
+function isLayerChecked(id) {
+  const input = document.getElementById(id);
+  return !input || input.checked;
+}
+
+function syncMapLayerVisibility() {
+  if (!map || !jalanLayer || !inundasiLayer || !riskLayer) return;
+
+  const syncGroup = (group, shouldShow) => {
+    const isVisible = map.hasLayer(group);
+    if (shouldShow && !isVisible) map.addLayer(group);
+    if (!shouldShow && isVisible) map.removeLayer(group);
+  };
+
+  syncGroup(jalanLayer, isLayerChecked("chkJalan"));
+  syncGroup(inundasiLayer, isLayerChecked("chkInundasi"));
+  syncGroup(riskLayer, isLayerChecked("chkRisk"));
+}
+
+function refreshMapAfterResize(message = "Menyiapkan basemap...") {
+  if (!map) return;
+
+  showMapLoading(message, "resize");
+
+  requestAnimationFrame(() => {
+    map.invalidateSize({ pan: false, animate: false });
+
+    setTimeout(() => {
+      if (map) map.invalidateSize({ pan: false, animate: false });
+    }, 120);
+
+    setTimeout(() => {
+      if (map) map.invalidateSize({ pan: false, animate: false });
+      hideMapLoading("resize");
+    }, 420);
+  });
 }
 
 function requestMapInitialization() {
@@ -1520,6 +1657,7 @@ async function loadJalanLayer(layerName) {
   const res = await fetch(getGeoAPIBase() + path);
   const geojson = await res.json();
   return L.geoJSON(geojson, {
+    renderer: getMapVectorRenderer(),
     style: { color: "#888", weight: 1.2, opacity: 0.6 },
   });
 }
@@ -1561,6 +1699,7 @@ async function loadRiskLayer(layerName) {
   const geojson = riskGeoJSONCache[layerName];
 
   const leafletLayer = L.geoJSON(geojson, {
+    renderer: getMapVectorRenderer(),
     style(feature) {
       const value = Number(feature.properties?.[activeDamageState]) || 0;
 
@@ -1592,6 +1731,107 @@ async function loadRiskLayer(layerName) {
 
   riskLeafletLayers[layerName] = leafletLayer;
   return leafletLayer;
+}
+
+async function getCachedJalanLayer(locationKey) {
+  const config = getMapLocationConfig(locationKey);
+
+  if (!mapLayerCache.jalan[locationKey]) {
+    mapLayerCache.jalan[locationKey] = await loadJalanLayer(config.jalanLayer);
+  }
+
+  return mapLayerCache.jalan[locationKey];
+}
+
+async function getCachedInundationLayer(locationKey) {
+  if (!mapLayerCache.inundasi[locationKey]) {
+    mapLayerCache.inundasi[locationKey] = await loadInundationGeoRaster(locationKey);
+  }
+
+  return mapLayerCache.inundasi[locationKey];
+}
+
+async function getCachedRiskLayer(locationKey) {
+  const config = getMapLocationConfig(locationKey);
+
+  if (!mapLayerCache.risk[locationKey]) {
+    mapLayerCache.risk[locationKey] = await loadRiskLayer(config.riskLayer);
+  }
+
+  return mapLayerCache.risk[locationKey];
+}
+
+async function loadMapLayersForLocation(locationKey = activeMapLocation, options = {}) {
+  if (!map || !jalanLayer || !inundasiLayer || !riskLayer) return;
+  if (!MAP_LOCATION_CONFIG[locationKey]) return;
+
+  const config = getMapLocationConfig(locationKey);
+  const requestId = ++mapLayerRequestId;
+  activeMapLocation = locationKey;
+
+  showMapLoading(`Memuat layer ${config.label}...`, "layers");
+  setMapControlsDisabled(true);
+  syncMapLayerVisibility();
+
+  try {
+    jalanLayer.clearLayers();
+    inundasiLayer.clearLayers();
+    riskLayer.clearLayers();
+
+    const loaders = [];
+
+    if (isLayerChecked("chkJalan")) {
+      loaders.push(
+        getCachedJalanLayer(locationKey).then((layer) => {
+          if (requestId === mapLayerRequestId) jalanLayer.addLayer(layer);
+        }),
+      );
+    }
+
+    if (isLayerChecked("chkInundasi")) {
+      loaders.push(
+        getCachedInundationLayer(locationKey).then((layer) => {
+          if (requestId === mapLayerRequestId) inundasiLayer.addLayer(layer);
+        }),
+      );
+    }
+
+    if (isLayerChecked("chkRisk")) {
+      loaders.push(
+        getCachedRiskLayer(locationKey).then((layer) => {
+          if (requestId === mapLayerRequestId) {
+            riskLayer.addLayer(layer);
+            layer.bringToFront();
+          }
+        }),
+      );
+    }
+
+    const results = await Promise.allSettled(loaders);
+
+    results.forEach((result) => {
+      if (result.status === "rejected") {
+        console.error(`Layer ${config.label} failed:`, result.reason);
+      }
+    });
+
+    if (requestId !== mapLayerRequestId) return;
+
+    syncMapLayerVisibility();
+
+    if (options.fitToLocation) {
+      map.setView(config.center, config.zoom, { animate: true });
+    }
+
+    setTimeout(() => {
+      if (map) map.invalidateSize({ pan: false, animate: false });
+    }, 80);
+  } finally {
+    if (requestId === mapLayerRequestId) {
+      setMapControlsDisabled(false);
+      hideMapLoading("layers");
+    }
+  }
 }
 
 function getRiskColor(value) {
@@ -1653,6 +1893,7 @@ function renderMiniRiskMap(dsField = "DS1") {
   }
 
   miniRiskLayer = L.geoJSON(cilacapRiskFeatures, {
+    renderer: createCanvasRenderer(),
     style(feature) {
       const value = Number(feature.properties[dsField]) || 0;
 
@@ -1711,6 +1952,7 @@ function renderBakauheniMiniRiskMap(dsField = "DS1") {
   }
 
   bakauheniMiniRiskLayer = L.geoJSON(bakauheniRiskFeatures, {
+    renderer: createCanvasRenderer(),
     style(feature) {
       const value = Number(feature.properties[dsField]) || 0;
 
@@ -1750,27 +1992,24 @@ function renderBakauheniMiniRiskMap(dsField = "DS1") {
 async function refreshRiskLayer() {
   if (!riskLayer) return;
 
-  const cachedBakauheni = riskLeafletLayers["Capstone:Bakauheni_DS_Risk"];
-  const cachedCilacap   = riskLeafletLayers["Capstone:DS_CILACAP_RISK"];
-
-  // If layers already exist, just re-style without re-fetching
-  if (cachedBakauheni && cachedCilacap) {
-    const styleFunc = (feature) => {
-      const value = Number(feature.properties?.[activeDamageState]) || 0;
-      return { color: "#ffffff", weight: 0.4, opacity: 0.35, fillOpacity: 0.9, fillColor: getRiskColor(value) };
+  const styleFunc = (feature) => {
+    const value = Number(feature.properties?.[activeDamageState]) || 0;
+    return {
+      color: "#ffffff",
+      weight: 0.4,
+      opacity: 0.35,
+      fillOpacity: 0.9,
+      fillColor: getRiskColor(value),
     };
-    cachedBakauheni.setStyle(styleFunc);
-    cachedCilacap.setStyle(styleFunc);
-    return;
-  }
+  };
 
-  riskLayer.clearLayers();
-  const [bakauheniLayer, cilacapLayer] = await Promise.all([
-    loadRiskLayer("Capstone:Bakauheni_DS_Risk"),
-    loadRiskLayer("Capstone:DS_CILACAP_RISK"),
-  ]);
-  riskLayer.addLayer(bakauheniLayer);
-  riskLayer.addLayer(cilacapLayer);
+  Object.values(riskLeafletLayers).forEach((layer) => {
+    layer.setStyle(styleFunc);
+  });
+
+  if (isLayerChecked("chkRisk")) {
+    await loadMapLayersForLocation(activeMapLocation);
+  }
 }
 
 
@@ -1784,50 +2023,40 @@ function initMap() {
     return null;
   }
 
-  map = L.map("map").setView([-6.8, 107.5], 7);
+  map = L.map("map", {
+    preferCanvas: true,
+    zoomAnimation: true,
+    markerZoomAnimation: true,
+  }).setView([-6.8, 107.5], 7);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  mapBaseTileLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 18,
-  }).addTo(map);
+    updateWhenIdle: true,
+    updateWhenZooming: false,
+    keepBuffer: 2,
+    detectRetina: false,
+  });
+
+  mapBaseTileLayer.on("loading", () => {
+    showMapLoading("Memuat basemap...", "tiles");
+  });
+
+  mapBaseTileLayer.on("load", () => {
+    hideMapLoading("tiles");
+  });
+
+  mapBaseTileLayer.on("tileerror", () => {
+    hideMapLoading("tiles");
+  });
+
+  mapBaseTileLayer.addTo(map);
 
   jalanLayer = L.layerGroup().addTo(map);
   inundasiLayer = L.layerGroup().addTo(map);
   riskLayer = L.layerGroup().addTo(map);
 
-  // Jalan (GeoJSON dari Express)
-  loadJalanLayer("Capstone:jalan_cilacap")
-    .then((l) => jalanLayer.addLayer(l))
-    .catch((err) => console.error("Jalan Cilacap failed:", err));
-
-  loadJalanLayer("Capstone:jalan_bakauheni")
-    .then((l) => jalanLayer.addLayer(l))
-    .catch((err) => console.error("Jalan Bakauheni failed:", err));
-
-  // Inundasi raster (GeoRaster langsung dari TIF)
-  loadInundationGeoRaster("cilacap")
-    .then((l) => inundasiLayer.addLayer(l))
-    .catch((err) => console.error("Inundasi Cilacap failed:", err));
-
-  loadInundationGeoRaster("bakauheni")
-    .then((l) => inundasiLayer.addLayer(l))
-    .catch((err) => console.error("Inundasi Bakauheni failed:", err));
-
-  // Risk layer (GeoJSON dari Express)
-  loadRiskLayer("Capstone:Bakauheni_DS_Risk")
-    .then((layer) => {
-      riskLayer.addLayer(layer);
-      layer.bringToFront();
-    })
-    .catch((err) => console.error("Bakauheni risk layer failed:", err));
-
-  loadRiskLayer("Capstone:DS_CILACAP_RISK")
-    .then((layer) => {
-      riskLayer.addLayer(layer);
-      layer.bringToFront();
-    })
-    .catch((err) => console.error("Cilacap risk layer failed:", err));
-
   createMapLegend();
+  loadMapLayersForLocation(activeMapLocation);
 
   setTimeout(() => {
     addProjectMarkers();
@@ -1846,30 +2075,39 @@ function setupLayerControls() {
   const chkRisk = document.getElementById("chkRisk");
 
   if (chkJalan) {
-    chkJalan.addEventListener("change", function () {
+    chkJalan.addEventListener("change", async function () {
       const activeMap = requestMapInitialization();
       if (!activeMap || !jalanLayer) return;
 
       this.checked ? activeMap.addLayer(jalanLayer) : activeMap.removeLayer(jalanLayer);
+
+      if (this.checked) {
+        await loadMapLayersForLocation(activeMapLocation);
+      }
     });
   }
 
   if (chkInundasi) {
-    chkInundasi.addEventListener("change", function () {
+    chkInundasi.addEventListener("change", async function () {
       const activeMap = requestMapInitialization();
       if (!activeMap || !inundasiLayer) return;
 
       this.checked ? activeMap.addLayer(inundasiLayer) : activeMap.removeLayer(inundasiLayer);
+
+      if (this.checked) {
+        await loadMapLayersForLocation(activeMapLocation);
+      }
     });
   }
 
   if (chkRisk) {
-    chkRisk.addEventListener("change", function () {
+    chkRisk.addEventListener("change", async function () {
       const activeMap = requestMapInitialization();
       if (!activeMap || !riskLayer) return;
 
       if (this.checked) {
         activeMap.addLayer(riskLayer);
+        await loadMapLayersForLocation(activeMapLocation);
       } else {
         activeMap.removeLayer(riskLayer);
       }
@@ -2352,11 +2590,14 @@ function setupMapFullscreen() {
   if (!btn || !mapBox) return;
 
   btn.addEventListener("click", function () {
+    requestMapInitialization();
     const isFullscreen = mapBox.classList.toggle("map-fullscreen");
     btn.querySelector("i").className = isFullscreen ? "fas fa-compress" : "fas fa-expand";
     btn.title = isFullscreen ? "Keluar Layar Penuh" : "Layar Penuh";
     btn.setAttribute("aria-label", isFullscreen ? "Exit fullscreen" : "Toggle fullscreen");
-    if (map) setTimeout(() => map.invalidateSize(), 200);
+    refreshMapAfterResize(
+      isFullscreen ? "Menyiapkan basemap fullscreen..." : "Menyiapkan ukuran peta...",
+    );
   });
 
   document.addEventListener("keydown", function (e) {
@@ -2365,7 +2606,7 @@ function setupMapFullscreen() {
       btn.querySelector("i").className = "fas fa-expand";
       btn.title = "Layar Penuh";
       btn.setAttribute("aria-label", "Toggle fullscreen");
-      if (map) setTimeout(() => map.invalidateSize(), 200);
+      refreshMapAfterResize("Menyiapkan ukuran peta...");
     }
   });
 }
@@ -2387,7 +2628,7 @@ function setupWilayahControls() {
   });
 
   options.forEach((option) => {
-    option.addEventListener("click", function () {
+    option.addEventListener("click", async function () {
       const value = this.dataset.value;
       input.value = this.textContent.trim();
       list.classList.add("hidden");
@@ -2395,13 +2636,7 @@ function setupWilayahControls() {
       const activeMap = requestMapInitialization();
       if (!activeMap) return;
 
-      if (value === "cilacap") {
-        activeMap.setView([-7.699563, 108.998468], 14);
-      }
-
-      if (value === "bakauheni") {
-        activeMap.setView([-5.871, 105.745], 14);
-      }
+      await loadMapLayersForLocation(value, { fitToLocation: true });
     });
   });
 
