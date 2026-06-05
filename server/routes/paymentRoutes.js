@@ -8,8 +8,8 @@ const {
 } = require('../controllers/paymentController');
 
 const {
-  authenticateFirebaseToken
-} = require('../middleware/firebaseAuth');
+  authenticateSupabaseToken
+} = require('../middleware/supabaseAuth');
 
 const router = express.Router();
 
@@ -55,7 +55,7 @@ router.post(
 
 router.post(
   '/direct-request',
-  authenticateFirebaseToken,
+  authenticateSupabaseToken,
   submitDirectRequest
 );
 
@@ -65,7 +65,7 @@ router.post(
 
 router.post(
   '/secure-download',
-  authenticateFirebaseToken,
+  authenticateSupabaseToken,
   downloadDataSecure
 );
 

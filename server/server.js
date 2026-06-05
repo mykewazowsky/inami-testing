@@ -9,19 +9,24 @@ const reportRoutes = require("./routes/reportRoutes");
 const contactRoutes = require("./routes/contact");
 const paymentRoutes = require("./routes/paymentRoutes");
 const reportDownloadRoutes = require("./routes/report");
+const geodataRoutes = require("./routes/geodataRoutes");
 
 /* ======================================================
    FIREBASE ADMIN INIT
 ====================================================== */
 
 if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-    }),
-  });
+  if (process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_PRIVATE_KEY) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+      }),
+    });
+  } else {
+    console.warn("⚠️  Firebase credentials tidak ditemukan — fitur auth/payment dinonaktifkan.");
+  }
 }
 
 /* ======================================================
@@ -68,6 +73,7 @@ app.use("/api/reports", reportRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/report", reportDownloadRoutes);
+app.use("/api/geodata", geodataRoutes);
 
 /* ======================================================
    GLOBAL ERROR HANDLER

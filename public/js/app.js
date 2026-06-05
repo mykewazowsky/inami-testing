@@ -8,17 +8,6 @@ let miniRiskLayer = null;
 let bakauheniMiniRiskRasterMap = null;
 let bakauheniMiniRiskLayer = null;
 
-import {
-  db,
-  storage,
-  collection,
-  addDoc,
-  serverTimestamp,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} from "./firebase-config.js";
-
 import { API_BASE_URL } from "./config.js";
 import { openPublicDownloadPage } from "./payment.js";
 
@@ -593,7 +582,7 @@ function initRiskDownloadCards() {
 }
 
 /* ================= CILACAP DATA ================= */
-function initInundationDetailMap() {
+async function initInundationDetailMap() {
   if (inundationDetailMap) return;
 
   inundationDetailMap = L.map("inundationDetailMap");
@@ -602,18 +591,14 @@ function initInundationDetailMap() {
     maxZoom: 19,
   }).addTo(inundationDetailMap);
 
-  const layer = createInundasiWmsLayer(
-    "Capstone:Inundasi_Tsunami_Cilacap_Fix",
-    "Capstone:inundasi_style",
-  );
+  inundationDetailMap.setView([-7.717, 109.017], 13);
 
-  layer.addTo(inundationDetailMap);
-
-  inundationDetailMap.setView([-7.74, 109.01], 13);
-
-  setTimeout(() => {
-    inundationDetailMap.invalidateSize();
-  }, 200);
+  loadInundationGeoRaster("cilacap")
+    .then((layer) => {
+      layer.addTo(inundationDetailMap);
+      setTimeout(() => inundationDetailMap.invalidateSize(), 200);
+    })
+    .catch((err) => console.error("Detail Inundasi Cilacap failed:", err));
 }
 
 function openInundationData(event) {
@@ -762,7 +747,7 @@ function getZoneStyle(level) {
 }
 
 /* ================= BAKAUHENI DATA ================= */
-function initBakauheniInundationDetailMap() {
+async function initBakauheniInundationDetailMap() {
   if (bakauheniInundationDetailMap) return;
 
   bakauheniInundationDetailMap = L.map("bakauheniInundationDetailMap");
@@ -771,18 +756,14 @@ function initBakauheniInundationDetailMap() {
     maxZoom: 19,
   }).addTo(bakauheniInundationDetailMap);
 
-  const layer = createInundasiWmsLayer(
-    "Capstone:Inundasi_Tsunami_Bakauheni_Fix",
-    "Capstone:inundasi_style",
-  );
+  bakauheniInundationDetailMap.setView([-5.879, 105.75], 13);
 
-  layer.addTo(bakauheniInundationDetailMap);
-
-  bakauheniInundationDetailMap.setView([-5.87, 105.75], 13);
-
-  setTimeout(() => {
-    bakauheniInundationDetailMap.invalidateSize();
-  }, 200);
+  loadInundationGeoRaster("bakauheni")
+    .then((layer) => {
+      layer.addTo(bakauheniInundationDetailMap);
+      setTimeout(() => bakauheniInundationDetailMap.invalidateSize(), 200);
+    })
+    .catch((err) => console.error("Detail Inundasi Bakauheni failed:", err));
 }
 
 function openBakauheniInundationData(event) {
@@ -1461,42 +1442,67 @@ let currentRiskState = "DS1";
 let inundationLegendControl = null;
 let activeDamageState = "DS1";
 
-const GEOSERVER_WMS = "https://foster-cringing-unwary.ngrok-free.dev/geoserver/wms";
+// Peta layer name GeoServer → endpoint lokal
+const GEODATA_ENDPOINTS = {
+  "Capstone:DS_CILACAP_RISK":           "/api/geodata/cilacap-risk",
+  "Capstone:Bakauheni_DS_Risk":         "/api/geodata/bakauheni-risk",
+  "Capstone:jalan_cilacap":             "/api/geodata/cilacap-jalan",
+  "Capstone:jalan_bakauheni":           "/api/geodata/bakauheni-jalan",
+};
 
-function createWmsLayer(layerName) {
-  return L.tileLayer.wms(GEOSERVER_WMS, {
-    layers: layerName,
-    format: "image/png",
-    transparent: true,
-    version: "1.1.1",
+const INUNDATION_TIFS = {
+  cilacap:   "/assets/raster/Inundasi_Tsunami_Cilacap_Fix.tif",
+  bakauheni: "/assets/raster/Inundasi_Tsunami_Bakauheni_Fix.tif",
+};
+
+function getGeoAPIBase() {
+  return window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://localhost:3000"
+    : "https://inami-dashboard-production.up.railway.app";
+}
+
+async function loadJalanLayer(layerName) {
+  const path = GEODATA_ENDPOINTS[layerName];
+  if (!path) return L.layerGroup();
+  const res = await fetch(getGeoAPIBase() + path);
+  const geojson = await res.json();
+  return L.geoJSON(geojson, {
+    style: { color: "#888", weight: 1.2, opacity: 0.6 },
+  });
+}
+
+async function loadInundationGeoRaster(key) {
+  const tifPath = INUNDATION_TIFS[key];
+  const res = await fetch(tifPath);
+  const buffer = await res.arrayBuffer();
+  const georaster = await parseGeoraster(buffer);
+  return new GeoRasterLayer({
+    georaster,
+    opacity: 0.85,
+    pixelValuesToColorFn: (values) => {
+      const v = values[0];
+      if (!v || v <= 0) return null;
+      if (v <= 0.5)  return "#f2f0f7";
+      if (v <= 1.5)  return "#dadaeb";
+      if (v <= 3)    return "#bcbddc";
+      if (v <= 5)    return "#9e9ac8";
+      if (v <= 7)    return "#807dba";
+      if (v <= 9)    return "#6a51a3";
+      return "#4a1486";
+    },
+    resolution: 256,
   });
 }
 
 async function loadRiskLayer(layerName) {
-  const url =
-    `http://127.0.0.1:8080/geoserver/ows?` +
-    `service=WFS&version=1.0.0&request=GetFeature` +
-    `&typeName=${layerName}` +
-    `&outputFormat=application/json` +
-    `&srsName=EPSG:4326`;
+  const path = GEODATA_ENDPOINTS[layerName];
+  if (!path) throw new Error(`Unknown layer: ${layerName}`);
+  const url = getGeoAPIBase() + path;
 
-  console.log("Loading risk layer:", layerName);
-  console.log(url);
-
-  const response = await fetch(url, {});
+  const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(`WFS request failed (${response.status})`);
-  }
-
-  const contentType = response.headers.get("content-type") || "";
-
-  if (!contentType.includes("application/json")) {
-    const text = await response.text();
-
-    console.error("GeoServer returned non-JSON response:", text);
-
-    throw new Error(`GeoServer returned ${contentType}`);
+    throw new Error(`GeoJSON request failed (${response.status})`);
   }
 
   const geojson = await response.json();
@@ -1686,29 +1692,20 @@ function renderBakauheniMiniRiskMap(dsField = "DS1") {
 }
 
 async function refreshRiskLayer() {
+  if (!riskLayer) return;
   riskLayer.clearLayers();
 
-  const bakauheniLayer = await loadRiskLayer("Capstone:Bakauheni_DS_Risk");
+  const [bakauheniLayer, cilacapLayer] = await Promise.all([
+    loadRiskLayer("Capstone:Bakauheni_DS_Risk"),
+    loadRiskLayer("Capstone:DS_CILACAP_RISK"),
+  ]);
 
   riskLayer.addLayer(bakauheniLayer);
-
-  const cilacapLayer = await loadRiskLayer("Capstone:DS_CILACAP_RISK");
-
   riskLayer.addLayer(cilacapLayer);
 }
 
-function createInundasiWmsLayer(layerName, styleName) {
-  return L.tileLayer.wms(GEOSERVER_WMS, {
-    layers: layerName,
-    styles: styleName,
-    format: "image/png",
-    transparent: true,
-    version: "1.1.1",
-    opacity: 0.9,
-  });
-}
 
-function initMap() {
+async function initMap() {
   if (map) return;
 
   const mapEl = document.getElementById("map");
@@ -1724,40 +1721,38 @@ function initMap() {
   inundasiLayer = L.layerGroup().addTo(map);
   riskLayer = L.layerGroup().addTo(map);
 
-  createWmsLayer("Capstone:jalan_cilacap").addTo(jalanLayer);
-  createWmsLayer("Capstone:jalan_bakauheni").addTo(jalanLayer);
+  // Jalan (GeoJSON dari Express)
+  loadJalanLayer("Capstone:jalan_cilacap")
+    .then((l) => jalanLayer.addLayer(l))
+    .catch((err) => console.error("Jalan Cilacap failed:", err));
 
-  createInundasiWmsLayer("Capstone:Inundasi_Tsunami_Cilacap_Fix", "Capstone:inundasi_style").addTo(
-    inundasiLayer,
-  );
-  createInundasiWmsLayer(
-    "Capstone:Inundasi_Tsunami_Bakauheni_Fix",
-    "Capstone:inundasi_style",
-  ).addTo(inundasiLayer);
+  loadJalanLayer("Capstone:jalan_bakauheni")
+    .then((l) => jalanLayer.addLayer(l))
+    .catch((err) => console.error("Jalan Bakauheni failed:", err));
 
+  // Inundasi raster (GeoRaster langsung dari TIF)
+  loadInundationGeoRaster("cilacap")
+    .then((l) => inundasiLayer.addLayer(l))
+    .catch((err) => console.error("Inundasi Cilacap failed:", err));
+
+  loadInundationGeoRaster("bakauheni")
+    .then((l) => inundasiLayer.addLayer(l))
+    .catch((err) => console.error("Inundasi Bakauheni failed:", err));
+
+  // Risk layer (GeoJSON dari Express)
   loadRiskLayer("Capstone:Bakauheni_DS_Risk")
     .then((layer) => {
       riskLayer.addLayer(layer);
-
-      console.log("Bakauheni bounds:", layer.getBounds());
-
       layer.bringToFront();
     })
-    .catch((err) => {
-      console.error("Bakauheni risk layer failed:", err);
-    });
+    .catch((err) => console.error("Bakauheni risk layer failed:", err));
 
   loadRiskLayer("Capstone:DS_CILACAP_RISK")
     .then((layer) => {
       riskLayer.addLayer(layer);
-
-      console.log("Cilacap bounds:", layer.getBounds());
-
       layer.bringToFront();
     })
-    .catch((err) => {
-      console.error("Cilacap risk layer failed:", err);
-    });
+    .catch((err) => console.error("Cilacap risk layer failed:", err));
 
   createMapLegend();
 }
@@ -2444,19 +2439,16 @@ window.addEventListener("load", handleNavbarBackground);
 document.addEventListener("DOMContentLoaded", handleNavbarBackground);
 window.requireLoginForPurchase = requireLoginForPurchase;
 
-/* ================= Loader WFS ================= */
+/* ================= Loader GeoJSON (lokal) ================= */
 async function fetchRiskFeatures(layerName) {
-  const url =
-    `http://127.0.0.1:8080/geoserver/ows?` +
-    `service=WFS&version=1.0.0&request=GetFeature` +
-    `&typeName=${layerName}` +
-    `&outputFormat=application/json` +
-    `&srsName=EPSG:4326`;
+  const path = GEODATA_ENDPOINTS[layerName];
+  if (!path) throw new Error(`Unknown layer: ${layerName}`);
+  const url = getGeoAPIBase() + path;
 
-  const response = await fetch(url, {});
+  const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(`Failed loading ${layerName}`);
+    throw new Error(`Failed loading ${layerName} (${response.status})`);
   }
 
   const geojson = await response.json();

@@ -1,11 +1,4 @@
-import {
-  db,
-  collection,
-  getDocs,
-  query,
-  orderBy
-} from "./firebase-config.js";
-
+import { supabase } from "./supabase-config.js";
 import { API_BASE_URL } from "./config.js";
 
 async function loadAdminPayments() {
@@ -15,34 +8,31 @@ async function loadAdminPayments() {
   tbody.innerHTML = `<tr><td colspan="7">Memuat data...</td></tr>`;
 
   try {
-    const q = query(
-      collection(db, "payment_submissions"),
-      orderBy("created_at", "desc")
-    );
+    const { data, error } = await supabase
+      .from("payment_submissions")
+      .select("id, buyer_name, buyer_email, location_name, product_names, total_payment, status")
+      .order("created_at", { ascending: false });
 
-    const snapshot = await getDocs(q);
+    if (error) throw error;
 
-    if (snapshot.empty) {
+    if (!data || data.length === 0) {
       tbody.innerHTML = `<tr><td colspan="7">Belum ada data payment.</td></tr>`;
       return;
     }
 
     tbody.innerHTML = "";
 
-    snapshot.forEach((docSnap) => {
-      const data = docSnap.data();
-
+    data.forEach((row) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${docSnap.id}</td>
-        <td>${data.buyer_name || "-"}</td>
-        <td>${data.buyer_email || "-"}</td>
-        <td>${data.location_name || "-"}</td>
-        <td>${data.product_names || "-"}</td>
-        <td>Rp${Number(data.total_payment || 0).toLocaleString("id-ID")}</td>
-        <td>${data.status || "-"}</td>
+        <td>${row.id}</td>
+        <td>${row.buyer_name || "-"}</td>
+        <td>${row.buyer_email || "-"}</td>
+        <td>${row.location_name || "-"}</td>
+        <td>${row.product_names || "-"}</td>
+        <td>Rp${Number(row.total_payment || 0).toLocaleString("id-ID")}</td>
+        <td>${row.status || "-"}</td>
       `;
-
       tbody.appendChild(tr);
     });
   } catch (error) {

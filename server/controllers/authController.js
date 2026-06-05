@@ -1,5 +1,5 @@
-const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
+const supabase = require("../supabase");
 require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
@@ -17,21 +17,16 @@ async function sendCustomResetEmail(email, link) {
       <p style="color: #374151; line-height: 1.6;">
         Kami menerima permintaan untuk mereset password akun Anda.
       </p>
-
       <div style="margin: 24px 0;">
-        <a href="${link}" 
+        <a href="${link}"
            style="display: inline-block; padding: 12px 20px; background: #1e88e5; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600;">
            Reset Password
         </a>
       </div>
-
       <p style="margin-top: 20px; font-size: 13px; color: #666; line-height: 1.6;">
         Jika bukan Anda yang meminta reset password, abaikan email ini.
       </p>
-
-      <p style="font-size: 12px; color: #9ca3af; margin-top: 24px;">
-        INAMI Dashboard
-      </p>
+      <p style="font-size: 12px; color: #9ca3af; margin-top: 24px;">INAMI Dashboard</p>
     </div>
   `;
 
@@ -53,25 +48,38 @@ exports.forgotPasswordFirebase = async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    const actionCodeSettings = {
-      url: `${process.env.FRONTEND_URL}/reset-password.html`,
-      handleCodeInApp: false,
-    };
+    if (!supabase) {
+      return res.status(503).json({ message: "Database tidak aktif." });
+    }
 
-    const link = await admin.auth().generatePasswordResetLink(
-      normalizedEmail,
-      actionCodeSettings
-    );
+    // Supabase generates a password reset link via admin API
+    const { data, error } = await supabase.auth.admin.generateLink({
+      type: "recovery",
+      email: normalizedEmail,
+      options: {
+        redirectTo: `${process.env.FRONTEND_URL}/reset-password.html`,
+      },
+    });
 
-    await sendCustomResetEmail(normalizedEmail, link);
+    if (error) {
+      console.error("Supabase generateLink error:", error);
+      // Kembalikan pesan generik agar tidak bocorkan apakah email terdaftar
+      return res.status(200).json({
+        message: "Jika email terdaftar, link reset sudah dikirim.",
+      });
+    }
+
+    const link = data?.properties?.action_link;
+
+    if (link && process.env.EMAIL_USER) {
+      await sendCustomResetEmail(normalizedEmail, link);
+    }
 
     return res.status(200).json({
       message: "Jika email terdaftar, link reset sudah dikirim.",
     });
   } catch (err) {
-    console.error("forgotPasswordFirebase error:", err);
-    return res.status(500).json({
-      message: "Gagal kirim reset password.",
-    });
+    console.error("forgotPassword error:", err);
+    return res.status(500).json({ message: "Gagal kirim reset password." });
   }
 };

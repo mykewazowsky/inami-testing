@@ -1,43 +1,15 @@
 import { API_BASE_URL } from "./config.js";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-import {
-  doc,
-  getDoc,
-  setDoc,
-  serverTimestamp,
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-import { auth, db } from "./firebase-config.js";
+import { supabase } from "./supabase-config.js";
 
 (() => {
   const AUTH_STORAGE_KEY = "inami_auth";
   const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  function $(id) {
-    return document.getElementById(id);
-  }
-
-  function getLoginOverlay() {
-    return $("loginOverlay");
-  }
-
-  function getSignupOverlay() {
-    return $("signupOverlay");
-  }
-
-  function getLoginForm() {
-    return getLoginOverlay()?.querySelector("form") || null;
-  }
-
-  function getSignupForm() {
-    return getSignupOverlay()?.querySelector("form") || null;
-  }
+  function $(id) { return document.getElementById(id); }
+  function getLoginOverlay()  { return $("loginOverlay"); }
+  function getSignupOverlay() { return $("signupOverlay"); }
+  function getLoginForm()  { return getLoginOverlay()?.querySelector("form") || null; }
+  function getSignupForm() { return getSignupOverlay()?.querySelector("form") || null; }
 
   function saveAuth(authData) {
     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authData));
@@ -48,19 +20,12 @@ import { auth, db } from "./firebase-config.js";
       const raw = localStorage.getItem(AUTH_STORAGE_KEY);
       return raw ? JSON.parse(raw) : null;
     } catch (err) {
-      console.error("Gagal membaca auth:", err);
       return null;
     }
   }
 
-  function clearAuth() {
-    localStorage.removeItem(AUTH_STORAGE_KEY);
-  }
-
-  function getCurrentUser() {
-    return getAuth()?.user || null;
-  }
-
+  function clearAuth() { localStorage.removeItem(AUTH_STORAGE_KEY); }
+  function getCurrentUser() { return getAuth()?.user || null; }
   function isLoggedIn() {
     const auth = getAuth();
     return !!(auth && auth.token && auth.user);
@@ -68,7 +33,6 @@ import { auth, db } from "./firebase-config.js";
 
   function createMessageBox(form, id, extraClass = "") {
     if (!form) return null;
-
     let el = document.getElementById(id);
     if (!el) {
       el = document.createElement("div");
@@ -83,7 +47,6 @@ import { auth, db } from "./firebase-config.js";
   function showMessage(id, message, type = "error") {
     const el = document.getElementById(id);
     if (!el) return;
-
     el.textContent = message;
     el.style.display = "block";
     el.classList.remove("text-danger", "text-success");
@@ -110,7 +73,6 @@ import { auth, db } from "./firebase-config.js";
     if (!form) return;
     const button = form.querySelector('button[type="submit"]');
     if (!button) return;
-
     if (loading) {
       button.disabled = true;
       button.dataset.originalText = button.textContent;
@@ -124,13 +86,10 @@ import { auth, db } from "./firebase-config.js";
   function openLogin(e) {
     if (e) e.preventDefault();
     if (typeof closeNavbarIfOpen === "function") closeNavbarIfOpen();
-
     const overlay = getLoginOverlay();
     if (!overlay) return;
-
     clearMessage("loginError");
     overlay.classList.add("active");
-
     setTimeout(() => $("loginEmail")?.focus(), 50);
   }
 
@@ -144,16 +103,12 @@ import { auth, db } from "./firebase-config.js";
   function openSignup(e) {
     if (e) e.preventDefault();
     if (typeof closeNavbarIfOpen === "function") closeNavbarIfOpen();
-
     closeLogin();
-
     const overlay = getSignupOverlay();
     if (!overlay) return;
-
     clearMessage("signupError");
     clearMessage("signupSuccess");
     overlay.classList.add("active");
-
     setTimeout(() => $("signupName")?.focus(), 50);
   }
 
@@ -180,76 +135,47 @@ import { auth, db } from "./firebase-config.js";
     clearValidation(["loginEmail", "loginPassword"]);
     clearMessage("loginError");
 
-    if (!email) {
-      setFieldInvalid(emailEl, true);
-      showMessage("loginError", "Email wajib diisi.");
-      return null;
-    }
-
-    if (!EMAIL_REGEX.test(email)) {
-      setFieldInvalid(emailEl, true);
-      showMessage("loginError", "Format email tidak valid.");
-      return null;
-    }
-
-    if (!password) {
-      setFieldInvalid(passwordEl, true);
-      showMessage("loginError", "Password wajib diisi.");
-      return null;
-    }
+    if (!email) { setFieldInvalid(emailEl, true); showMessage("loginError", "Email wajib diisi."); return null; }
+    if (!EMAIL_REGEX.test(email)) { setFieldInvalid(emailEl, true); showMessage("loginError", "Format email tidak valid."); return null; }
+    if (!password) { setFieldInvalid(passwordEl, true); showMessage("loginError", "Password wajib diisi."); return null; }
 
     return { email: email.toLowerCase(), password };
   }
 
   function validateSignupForm() {
-    const nameEl = $("signupName");
+    const nameEl  = $("signupName");
     const emailEl = $("signupEmail");
     const pass1El = $("signupPassword");
     const pass2El = $("signupPassword2");
 
-    const name = nameEl?.value.trim() || "";
-    const email = emailEl?.value.trim() || "";
-    const password = pass1El?.value || "";
+    const name            = nameEl?.value.trim() || "";
+    const email           = emailEl?.value.trim() || "";
+    const password        = pass1El?.value || "";
     const confirmPassword = pass2El?.value || "";
 
     clearValidation(["signupName", "signupEmail", "signupPassword", "signupPassword2"]);
     clearMessage("signupError");
     clearMessage("signupSuccess");
 
-    if (name.length < 3) {
-      setFieldInvalid(nameEl, true);
-      showMessage("signupError", "Nama minimal 3 karakter.");
-      return null;
-    }
+    if (name.length < 3)         { setFieldInvalid(nameEl, true);  showMessage("signupError", "Nama minimal 3 karakter."); return null; }
+    if (!EMAIL_REGEX.test(email)){ setFieldInvalid(emailEl, true); showMessage("signupError", "Format email tidak valid."); return null; }
+    if (password.length < 8)     { setFieldInvalid(pass1El, true); showMessage("signupError", "Password minimal 8 karakter."); return null; }
+    if (password !== confirmPassword){ setFieldInvalid(pass2El, true); showMessage("signupError", "Konfirmasi password tidak sama."); return null; }
 
-    if (!EMAIL_REGEX.test(email)) {
-      setFieldInvalid(emailEl, true);
-      showMessage("signupError", "Format email tidak valid.");
-      return null;
-    }
+    return { name, email: email.toLowerCase(), password };
+  }
 
-    if (password.length < 8) {
-      setFieldInvalid(pass1El, true);
-      showMessage("signupError", "Password minimal 8 karakter.");
-      return null;
-    }
-
-    if (password !== confirmPassword) {
-      setFieldInvalid(pass2El, true);
-      showMessage("signupError", "Konfirmasi password tidak sama.");
-      return null;
-    }
-
-    return {
-      name,
-      email: email.toLowerCase(),
-      password,
-    };
+  async function fetchProfile(userId) {
+    const { data } = await supabase
+      .from("profiles")
+      .select("full_name, role, wilayah")
+      .eq("id", userId)
+      .single();
+    return data || {};
   }
 
   async function handleLogin(e) {
     e.preventDefault();
-
     const form = e.target;
     const payload = validateLoginForm();
     if (!payload) return;
@@ -257,27 +183,24 @@ import { auth, db } from "./firebase-config.js";
     try {
       setSubmitLoading(form, true, "Log In");
 
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        payload.email,
-        payload.password,
-      );
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: payload.email,
+        password: payload.password,
+      });
 
-      const firebaseUser = userCredential.user;
-      const token = await firebaseUser.getIdToken();
+      if (error) throw error;
 
-      const userRef = doc(db, "users", firebaseUser.uid);
-      const userSnap = await getDoc(userRef);
-
-      const profile = userSnap.exists() ? userSnap.data() : {};
+      const token   = data.session.access_token;
+      const sbUser  = data.user;
+      const profile = await fetchProfile(sbUser.id);
 
       saveAuth({
         token,
         user: {
-          uid: firebaseUser.uid,
-          name: profile.full_name || firebaseUser.displayName || "",
-          email: firebaseUser.email || "",
-          role: profile.role || "public",
+          uid:     sbUser.id,
+          name:    profile.full_name || sbUser.email || "",
+          email:   sbUser.email || "",
+          role:    profile.role || "public",
           wilayah: profile.wilayah || "",
         },
       });
@@ -286,11 +209,8 @@ import { auth, db } from "./firebase-config.js";
       closeLogin();
       updateAuthUI();
 
-      if (typeof window.resetAppToHome === "function") {
-        window.resetAppToHome();
-      }
-
-      showToast(`Selamat datang, ${profile.full_name || firebaseUser.email}!`);
+      if (typeof window.resetAppToHome === "function") window.resetAppToHome();
+      showToast(`Selamat datang, ${profile.full_name || sbUser.email}!`);
     } catch (err) {
       console.error(err);
       showMessage("loginError", "Login gagal. Cek email dan password.");
@@ -301,7 +221,6 @@ import { auth, db } from "./firebase-config.js";
 
   async function handleSignupSubmit(e) {
     e.preventDefault();
-
     const form = e.target;
     const payload = validateSignupForm();
     if (!payload) return;
@@ -309,30 +228,28 @@ import { auth, db } from "./firebase-config.js";
     try {
       setSubmitLoading(form, true, "Sign Up");
 
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        payload.email,
-        payload.password,
-      );
-
-      const firebaseUser = userCredential.user;
-
-      await setDoc(doc(db, "users", firebaseUser.uid), {
-        full_name: payload.name,
+      const { data, error } = await supabase.auth.signUp({
         email: payload.email,
-        role: "public",
-        wilayah: "",
-        created_at: serverTimestamp(),
+        password: payload.password,
       });
 
-      showMessage("signupSuccess", "Akun berhasil dibuat.", "success");
+      if (error) throw error;
+
+      // Simpan profile ke tabel profiles
+      if (data.user) {
+        await supabase.from("profiles").insert([{
+          id:        data.user.id,
+          full_name: payload.name,
+          role:      "public",
+          wilayah:   "",
+        }]);
+      }
+
+      showMessage("signupSuccess", "Akun berhasil dibuat. Silakan login.", "success");
       showToast("Akun berhasil dibuat");
       form.reset();
 
-      setTimeout(() => {
-        closeSignup();
-        openLogin();
-      }, 700);
+      setTimeout(() => { closeSignup(); openLogin(); }, 700);
     } catch (err) {
       console.error(err);
       showMessage("signupError", "Signup gagal. Email mungkin sudah terdaftar.");
@@ -343,30 +260,24 @@ import { auth, db } from "./firebase-config.js";
 
   async function logout(e) {
     if (e) e.preventDefault();
-
-    await signOut(auth);
+    await supabase.auth.signOut();
     clearAuth();
     updateAuthUI();
-
-    if (typeof window.resetAppToHome === "function") {
-      window.resetAppToHome();
-    }
-
+    if (typeof window.resetAppToHome === "function") window.resetAppToHome();
     showToast("Kamu sudah logout");
   }
 
   function updateAuthUI() {
-    const authData = getAuth();
-    const loginNav = document.getElementById("loginNav");
-    const userNav = document.getElementById("userNav");
+    const authData     = getAuth();
+    const loginNav     = document.getElementById("loginNav");
+    const userNav      = document.getElementById("userNav");
     const userGreeting = document.getElementById("userGreeting");
-    const userRoleLabel = document.getElementById("userRoleLabel");
+    const userRoleLabel= document.getElementById("userRoleLabel");
 
     if (!authData || !authData.user) {
       loginNav?.classList.remove("d-none");
       userNav?.classList.add("d-none");
-
-      if (userGreeting) userGreeting.textContent = "Account";
+      if (userGreeting)  userGreeting.textContent  = "Account";
       if (userRoleLabel) userRoleLabel.textContent = "Role: guest";
       return;
     }
@@ -379,30 +290,47 @@ import { auth, db } from "./firebase-config.js";
     }
 
     if (userRoleLabel) {
-      const roleMap = {
-        public: "publik",
-        mitra: "mitra",
-        admin: "admin",
-      };
-
-      const roleText = roleMap[authData.user.role] || authData.user.role || "guest";
-      const wilayahLabel = authData.user.wilayah ? ` · ${authData.user.wilayah}` : "";
+      const roleMap = { public: "publik", mitra: "mitra", admin: "admin", premium: "premium" };
+      const roleText    = roleMap[authData.user.role] || authData.user.role || "guest";
+      const wilayahLabel= authData.user.wilayah ? ` · ${authData.user.wilayah}` : "";
       userRoleLabel.textContent = `Role: ${roleText}${wilayahLabel}`;
     }
   }
 
   function setupEscClose() {
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        closeLogin();
-        closeSignup();
-        closeForgotPassword();
-      }
+      if (e.key === "Escape") { closeLogin(); closeSignup(); closeForgotPassword(); }
     });
   }
 
+  // Sinkronisasi session Supabase → localStorage
+  supabase.auth.onAuthStateChange(async (event, session) => {
+    if (!session) {
+      clearAuth();
+      updateAuthUI();
+      if (typeof window.resetAppToHome === "function") window.resetAppToHome();
+      return;
+    }
+
+    const sbUser  = session.user;
+    const profile = await fetchProfile(sbUser.id);
+
+    saveAuth({
+      token: session.access_token,
+      user: {
+        uid:     sbUser.id,
+        name:    profile.full_name || sbUser.email || "",
+        email:   sbUser.email || "",
+        role:    profile.role || "public",
+        wilayah: profile.wilayah || "",
+      },
+    });
+
+    updateAuthUI();
+  });
+
   function initAuth() {
-    createMessageBox(getLoginForm(), "loginError");
+    createMessageBox(getLoginForm(),  "loginError");
     createMessageBox(getSignupForm(), "signupError");
     createMessageBox(getSignupForm(), "signupSuccess");
     createMessageBox(getForgotForm(), "forgotError");
@@ -411,63 +339,25 @@ import { auth, db } from "./firebase-config.js";
     setupEscClose();
   }
 
-  onAuthStateChanged(auth, async (firebaseUser) => {
-    if (!firebaseUser) {
-      clearAuth();
-      updateAuthUI();
+  /* ── Forgot Password ── */
 
-      if (typeof window.resetAppToHome === "function") {
-        window.resetAppToHome();
-      }
-
-      return;
-    }
-
-    const token = await firebaseUser.getIdToken();
-    const userRef = doc(db, "users", firebaseUser.uid);
-    const userSnap = await getDoc(userRef);
-    const profile = userSnap.exists() ? userSnap.data() : {};
-
-    saveAuth({
-      token,
-      user: {
-        uid: firebaseUser.uid,
-        name: profile.full_name || firebaseUser.displayName || "",
-        email: firebaseUser.email || "",
-        role: profile.role || "public",
-        wilayah: profile.wilayah || "",
-      },
-    });
-
-    updateAuthUI();
-  });
-
-  function getForgotOverlay() {
-    return $("forgotOverlay");
-  }
-
-  function getForgotForm() {
-    return getForgotOverlay()?.querySelector("form") || null;
-  }
+  function getForgotOverlay() { return $("forgotOverlay"); }
+  function getForgotForm()    { return getForgotOverlay()?.querySelector("form") || null; }
 
   function openForgotPassword(e) {
     if (e) e.preventDefault();
     closeLogin();
-
     const overlay = getForgotOverlay();
     if (!overlay) return;
-
     clearMessage("forgotError");
     clearMessage("forgotSuccess");
     overlay.classList.add("active");
-
     setTimeout(() => $("forgotEmail")?.focus(), 50);
   }
 
   function closeForgotPassword() {
     const overlay = getForgotOverlay();
     if (!overlay) return;
-
     overlay.classList.remove("active");
     clearMessage("forgotError");
     clearMessage("forgotSuccess");
@@ -475,8 +365,7 @@ import { auth, db } from "./firebase-config.js";
 
   async function handleForgotPassword(e) {
     e.preventDefault();
-
-    const form = e.target;
+    const form  = e.target;
     const email = $("forgotEmail")?.value.trim() || "";
 
     clearMessage("forgotError");
@@ -490,24 +379,18 @@ import { auth, db } from "./firebase-config.js";
     try {
       setSubmitLoading(form, true, "Send Reset Link");
 
+      // Kirim via backend agar bisa custom email dengan Nodemailer
       const response = await fetch(`${API_BASE_URL}/api/auth/forgot-password-firebase`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email.toLowerCase(),
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.toLowerCase() }),
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Gagal mengirim reset password.");
-      }
+      if (!response.ok) throw new Error(data.message || "Gagal mengirim reset password.");
 
       showMessage("forgotSuccess", "Jika email terdaftar, link reset sudah dikirim.", "success");
-
       showToast("Link reset berhasil dikirim");
       form.reset();
     } catch (err) {
@@ -518,6 +401,32 @@ import { auth, db } from "./firebase-config.js";
     }
   }
 
+  async function getFreshAuthToken(forceRefresh = false) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return null;
+
+    if (forceRefresh) {
+      const { data: { session: refreshed } } = await supabase.auth.refreshSession();
+      if (!refreshed) return null;
+
+      const profile = await fetchProfile(refreshed.user.id);
+      saveAuth({
+        token: refreshed.access_token,
+        user: {
+          uid:     refreshed.user.id,
+          name:    profile.full_name || refreshed.user.email || "",
+          email:   refreshed.user.email || "",
+          role:    profile.role || "public",
+          wilayah: profile.wilayah || "",
+        },
+      });
+
+      return refreshed.access_token;
+    }
+
+    return session.access_token;
+  }
+
   function hasRole(roles = []) {
     const user = getCurrentUser();
     if (!user || !user.role) return false;
@@ -525,64 +434,28 @@ import { auth, db } from "./firebase-config.js";
   }
 
   function requireAuth(action) {
-    if (!isLoggedIn()) {
-      openLogin();
-      return false;
-    }
-
-    if (typeof action === "function") {
-      action(getCurrentUser());
-    }
-
+    if (!isLoggedIn()) { openLogin(); return false; }
+    if (typeof action === "function") action(getCurrentUser());
     return true;
   }
 
-  async function getFreshAuthToken(forceRefresh = false) {
-    const user = auth.currentUser;
-    if (!user) return null;
-
-    try {
-      const freshToken = await user.getIdToken(forceRefresh);
-
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-      const profile = userSnap.exists() ? userSnap.data() : {};
-
-      saveAuth({
-        token: freshToken,
-        user: {
-          uid: user.uid,
-          name: profile.full_name || user.displayName || "",
-          email: user.email || "",
-          role: profile.role || "public",
-          wilayah: profile.wilayah || "",
-        },
-      });
-
-      return freshToken;
-    } catch (error) {
-      console.error("Gagal mengambil token terbaru:", error);
-      return null;
-    }
-  }
-
-  window.openLogin = openLogin;
-  window.closeLogin = closeLogin;
-  window.openSignup = openSignup;
-  window.closeSignup = closeSignup;
-  window.overlayClickClose = overlayClickClose;
-  window.handleLogin = handleLogin;
+  window.openLogin          = openLogin;
+  window.closeLogin         = closeLogin;
+  window.openSignup         = openSignup;
+  window.closeSignup        = closeSignup;
+  window.overlayClickClose  = overlayClickClose;
+  window.handleLogin        = handleLogin;
   window.handleSignupSubmit = handleSignupSubmit;
-  window.logout = logout;
-  window.updateAuthUI = updateAuthUI;
-  window.isLoggedIn = isLoggedIn;
-  window.getCurrentUser = getCurrentUser;
+  window.logout             = logout;
+  window.updateAuthUI       = updateAuthUI;
+  window.isLoggedIn         = isLoggedIn;
+  window.getCurrentUser     = getCurrentUser;
   window.openForgotPassword = openForgotPassword;
-  window.closeForgotPassword = closeForgotPassword;
+  window.closeForgotPassword= closeForgotPassword;
   window.handleForgotPassword = handleForgotPassword;
-  window.hasRole = hasRole;
-  window.requireAuth = requireAuth;
-  window.getFreshAuthToken = getFreshAuthToken;
+  window.hasRole            = hasRole;
+  window.requireAuth        = requireAuth;
+  window.getFreshAuthToken  = getFreshAuthToken;
 
   document.addEventListener("DOMContentLoaded", initAuth);
 })();
@@ -594,15 +467,8 @@ function showToast(message, type = "success") {
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
   toast.textContent = message;
-
   container.appendChild(toast);
 
-  setTimeout(() => {
-    toast.classList.add("show");
-  }, 100);
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
+  setTimeout(() => toast.classList.add("show"), 100);
+  setTimeout(() => { toast.classList.remove("show"); setTimeout(() => toast.remove(), 300); }, 3000);
 }
