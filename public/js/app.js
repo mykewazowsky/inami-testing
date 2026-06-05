@@ -1461,7 +1461,7 @@ let currentRiskState = "DS1";
 let inundationLegendControl = null;
 let activeDamageState = "DS1";
 
-const geoserverUrl = "http://127.0.0.1:8080/geoserver/Capstone/wms";
+const geoserverUrl = "https://foster-cringing-unwary.ngrok-free.dev/geoserver";
 
 function createWmsLayer(layerName) {
   return L.tileLayer.wms(geoserverUrl, {
@@ -1474,7 +1474,7 @@ function createWmsLayer(layerName) {
 
 async function loadRiskLayer(layerName) {
   const url =
-    `http://127.0.0.1:8080/geoserver/Capstone/ows?` +
+    `https://foster-cringing-unwary.ngrok-free.dev/geoserver` +
     `service=WFS&version=1.0.0&request=GetFeature` +
     `&typeName=${layerName}` +
     `&outputFormat=application/json` +
@@ -2469,7 +2469,7 @@ window.requireLoginForPurchase = requireLoginForPurchase;
 /* ================= Loader WFS ================= */
 async function fetchRiskFeatures(layerName) {
   const url =
-    `http://127.0.0.1:8080/geoserver/Capstone/ows?` +
+    `https://foster-cringing-unwary.ngrok-free.dev/geoserver` +
     `service=WFS&version=1.0.0&request=GetFeature` +
     `&typeName=${layerName}` +
     `&outputFormat=application/json` +
