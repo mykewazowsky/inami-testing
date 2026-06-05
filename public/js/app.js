@@ -1442,6 +1442,9 @@ let currentRiskState = "DS1";
 let inundationLegendControl = null;
 let activeDamageState = "DS1";
 
+const riskGeoJSONCache = {};   // layerName → raw GeoJSON object
+const riskLeafletLayers = {};  // layerName → L.geoJSON layer instance
+
 // Peta layer name GeoServer → endpoint lokal
 const GEODATA_ENDPOINTS = {
   "Capstone:DS_CILACAP_RISK":           "/api/geodata/cilacap-risk",
@@ -1497,17 +1500,17 @@ async function loadInundationGeoRaster(key) {
 async function loadRiskLayer(layerName) {
   const path = GEODATA_ENDPOINTS[layerName];
   if (!path) throw new Error(`Unknown layer: ${layerName}`);
-  const url = getGeoAPIBase() + path;
 
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`GeoJSON request failed (${response.status})`);
+  if (!riskGeoJSONCache[layerName]) {
+    const url = getGeoAPIBase() + path;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`GeoJSON request failed (${response.status})`);
+    riskGeoJSONCache[layerName] = await response.json();
   }
 
-  const geojson = await response.json();
+  const geojson = riskGeoJSONCache[layerName];
 
-  return L.geoJSON(geojson, {
+  const leafletLayer = L.geoJSON(geojson, {
     style(feature) {
       const value = Number(feature.properties?.[activeDamageState]) || 0;
 
@@ -1536,6 +1539,9 @@ async function loadRiskLayer(layerName) {
     `);
     },
   });
+
+  riskLeafletLayers[layerName] = leafletLayer;
+  return leafletLayer;
 }
 
 function getRiskColor(value) {
@@ -1693,13 +1699,26 @@ function renderBakauheniMiniRiskMap(dsField = "DS1") {
 
 async function refreshRiskLayer() {
   if (!riskLayer) return;
-  riskLayer.clearLayers();
 
+  const cachedBakauheni = riskLeafletLayers["Capstone:Bakauheni_DS_Risk"];
+  const cachedCilacap   = riskLeafletLayers["Capstone:DS_CILACAP_RISK"];
+
+  // If layers already exist, just re-style without re-fetching
+  if (cachedBakauheni && cachedCilacap) {
+    const styleFunc = (feature) => {
+      const value = Number(feature.properties?.[activeDamageState]) || 0;
+      return { color: "#ffffff", weight: 0.4, opacity: 0.35, fillOpacity: 0.9, fillColor: getRiskColor(value) };
+    };
+    cachedBakauheni.setStyle(styleFunc);
+    cachedCilacap.setStyle(styleFunc);
+    return;
+  }
+
+  riskLayer.clearLayers();
   const [bakauheniLayer, cilacapLayer] = await Promise.all([
     loadRiskLayer("Capstone:Bakauheni_DS_Risk"),
     loadRiskLayer("Capstone:DS_CILACAP_RISK"),
   ]);
-
   riskLayer.addLayer(bakauheniLayer);
   riskLayer.addLayer(cilacapLayer);
 }
