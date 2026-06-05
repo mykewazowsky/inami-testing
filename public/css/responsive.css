@@ -158,10 +158,6 @@
    MOBILE
 ===================================================== */
 @media (max-width: 768px) {
-  .projects-redesign-shell {
-    width: 92%;
-  }
-
   .projects-top-actions {
     margin-bottom: 42px;
   }
@@ -502,16 +498,16 @@
   }
 
   .detail-topbar-brand {
-    gap: 10px;
+    gap: 8px;
   }
 
   .detail-topbar-brand img {
-    height: 34px;
+    height: 32px;
   }
 
   .detail-topbar-brand span {
-    font-size: 1.05rem;
-    letter-spacing: 0.04em;
+    font-size: 1rem;
+    letter-spacing: 0.03em;
   }
 
   .detail-topbar {
@@ -525,12 +521,26 @@
   }
 
   .detail-action-wrap {
-    gap: 8px;
+    width: 100%;
   }
 
   .detail-topbar .action-btn {
-    padding: 40px 18px;
-    font-size: 0.6rem;
+    width: 100%;
+
+    padding: 12px 18px;
+
+    font-size: 0.85rem;
+
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .projects-redesign-shell {
+    width: 92%;
+    padding-top: 110px !important;
   }
 
   .kpi-strip {
@@ -660,10 +670,6 @@
 
   .leaflet-top.leaflet-left {
     top: 70px;
-  }
-
-  .projects-redesign-shell {
-    padding-top: 140px !important;
   }
 
   .projects-page-header {
