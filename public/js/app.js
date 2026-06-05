@@ -637,7 +637,7 @@ function openInundationData(event) {
   }, 100);
 }
 
-function openRiskData(event) {
+async function openRiskData(event) {
   if (event) event.preventDefault();
 
   console.log("OPEN RISK CALLED");
@@ -669,13 +669,15 @@ function openRiskData(event) {
 
   document.body.style.overflow = "hidden";
 
-  setTimeout(() => {
-    renderMiniRiskMap(currentRiskState || "DS1");
-  }, 120);
+  await loadRiskData();
 
   if (typeof updateRiskDashboard === "function") {
     updateRiskDashboard(cilacapRiskFeatures, currentRiskState || "DS1");
   }
+
+  setTimeout(() => {
+    renderMiniRiskMap(currentRiskState || "DS1");
+  }, 120);
 
   riskDetailView.scrollTo({
     top: 0,
@@ -802,7 +804,7 @@ function openBakauheniInundationData(event) {
   }, 100);
 }
 
-function openBakauheniRiskData(event) {
+async function openBakauheniRiskData(event) {
   if (event) event.preventDefault();
 
   document.body.classList.add("hide-main-nav");
@@ -826,13 +828,15 @@ function openBakauheniRiskData(event) {
 
   document.body.style.overflow = "hidden";
 
-  setTimeout(() => {
-    renderBakauheniMiniRiskMap(currentRiskState || "DS1");
-  }, 120);
+  await loadRiskData();
 
   if (typeof updateBakauheniRiskDashboard === "function") {
     updateBakauheniRiskDashboard(bakauheniRiskFeatures, currentRiskState || "DS1");
   }
+
+  setTimeout(() => {
+    renderBakauheniMiniRiskMap(currentRiskState || "DS1");
+  }, 120);
 
   riskView.scrollTo({
     top: 0,
@@ -1196,7 +1200,6 @@ function requireAuth(action) {
 
 document.addEventListener("DOMContentLoaded", function () {
   initRiskDownloadCards();
-  loadRiskData();
   initRiskStateButtons();
 });
 
@@ -1433,9 +1436,12 @@ let map;
 let jalanLayer;
 let inundasiLayer;
 let riskLayer;
+let mapControlsInitialized = false;
+let mapLazyObserver = null;
 
 let cilacapRiskFeatures = [];
 let bakauheniRiskFeatures = [];
+let riskDataLoadPromise = null;
 
 let currentRiskState = "DS1";
 
@@ -1462,6 +1468,50 @@ function getGeoAPIBase() {
   return window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? "http://localhost:3000"
     : "https://inami-testing-production.up.railway.app";
+}
+
+function requestMapInitialization() {
+  if (map) {
+    setTimeout(() => map.invalidateSize(), 80);
+    return map;
+  }
+
+  return initMap();
+}
+
+function setupLazyMapInitialization() {
+  const mapEl = document.getElementById("map");
+  if (!mapEl || map || mapLazyObserver) return;
+
+  if ("IntersectionObserver" in window) {
+    mapLazyObserver = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+
+        requestMapInitialization();
+        mapLazyObserver.disconnect();
+        mapLazyObserver = null;
+      },
+      {
+        rootMargin: "320px 0px",
+        threshold: 0.01,
+      },
+    );
+
+    mapLazyObserver.observe(mapEl);
+    return;
+  }
+
+  const initOnScroll = () => {
+    const rect = mapEl.getBoundingClientRect();
+    if (rect.top < window.innerHeight + 320) {
+      requestMapInitialization();
+      window.removeEventListener("scroll", initOnScroll);
+    }
+  };
+
+  window.addEventListener("scroll", initOnScroll, { passive: true });
+  initOnScroll();
 }
 
 async function loadJalanLayer(layerName) {
@@ -1724,11 +1774,15 @@ async function refreshRiskLayer() {
 }
 
 
-async function initMap() {
-  if (map) return;
+function initMap() {
+  if (map) return map;
 
   const mapEl = document.getElementById("map");
   if (!mapEl) return;
+  if (typeof L === "undefined") {
+    console.warn("Leaflet belum siap, peta akan dicoba lagi nanti.");
+    return null;
+  }
 
   map = L.map("map").setView([-6.8, 107.5], 7);
 
@@ -1774,31 +1828,50 @@ async function initMap() {
     .catch((err) => console.error("Cilacap risk layer failed:", err));
 
   createMapLegend();
+
+  setTimeout(() => {
+    addProjectMarkers();
+    if (map) map.invalidateSize();
+  }, 250);
+
+  return map;
 }
 
 function setupLayerControls() {
+  if (mapControlsInitialized) return;
+  mapControlsInitialized = true;
+
   const chkJalan = document.getElementById("chkJalan");
   const chkInundasi = document.getElementById("chkInundasi");
   const chkRisk = document.getElementById("chkRisk");
 
   if (chkJalan) {
     chkJalan.addEventListener("change", function () {
-      this.checked ? map.addLayer(jalanLayer) : map.removeLayer(jalanLayer);
+      const activeMap = requestMapInitialization();
+      if (!activeMap || !jalanLayer) return;
+
+      this.checked ? activeMap.addLayer(jalanLayer) : activeMap.removeLayer(jalanLayer);
     });
   }
 
   if (chkInundasi) {
     chkInundasi.addEventListener("change", function () {
-      this.checked ? map.addLayer(inundasiLayer) : map.removeLayer(inundasiLayer);
+      const activeMap = requestMapInitialization();
+      if (!activeMap || !inundasiLayer) return;
+
+      this.checked ? activeMap.addLayer(inundasiLayer) : activeMap.removeLayer(inundasiLayer);
     });
   }
 
   if (chkRisk) {
     chkRisk.addEventListener("change", function () {
+      const activeMap = requestMapInitialization();
+      if (!activeMap || !riskLayer) return;
+
       if (this.checked) {
-        map.addLayer(riskLayer);
+        activeMap.addLayer(riskLayer);
       } else {
-        map.removeLayer(riskLayer);
+        activeMap.removeLayer(riskLayer);
       }
     });
   }
@@ -1807,12 +1880,15 @@ function setupLayerControls() {
 
   riskRadios.forEach((radio) => {
     radio.addEventListener("change", async () => {
+      const activeMap = requestMapInitialization();
+      if (!activeMap) return;
+
       activeDamageState = radio.value;
 
       await refreshRiskLayer();
 
       if (inundationLegendControl) {
-        map.removeControl(inundationLegendControl);
+        activeMap.removeControl(inundationLegendControl);
         inundationLegendControl = null;
       }
 
@@ -1825,7 +1901,7 @@ function setupLayerControls() {
 
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("map")) {
-    initMap();
+    setupLazyMapInitialization();
     setupLayerControls();
   }
 });
@@ -2039,6 +2115,10 @@ function goToSection(sectionId, event) {
   collapseNavbar();
 
   setTimeout(() => {
+    if (sectionId === "projects") {
+      requestMapInitialization();
+    }
+
     const target = document.getElementById(sectionId);
     if (target) {
       target.scrollIntoView({
@@ -2312,14 +2392,15 @@ function setupWilayahControls() {
       input.value = this.textContent.trim();
       list.classList.add("hidden");
 
-      if (!map) return;
+      const activeMap = requestMapInitialization();
+      if (!activeMap) return;
 
       if (value === "cilacap") {
-        map.setView([-7.699563, 108.998468], 14);
+        activeMap.setView([-7.699563, 108.998468], 14);
       }
 
       if (value === "bakauheni") {
-        map.setView([-5.871, 105.745], 14);
+        activeMap.setView([-5.871, 105.745], 14);
       }
     });
   });
@@ -2407,17 +2488,12 @@ document.addEventListener("DOMContentLoaded", function () {
   renderPertaminaCarousel();
   renderBakauheniCarousel();
 
-  if (typeof initMap === "function") initMap();
+  if (typeof setupLazyMapInitialization === "function") setupLazyMapInitialization();
   if (typeof setupLayerControls === "function") setupLayerControls();
 
   setupLayerMenu();
   setupWilayahControls();
   setupMapFullscreen();
-
-  setTimeout(() => {
-    addProjectMarkers();
-    if (typeof map !== "undefined" && map) map.invalidateSize();
-  }, 250);
 
   handleNavbarBackground();
 });
@@ -2501,18 +2577,33 @@ async function fetchRiskFeatures(layerName) {
 }
 
 async function loadRiskData() {
-  try {
-    cilacapRiskFeatures = await fetchRiskFeatures("Capstone:DS_CILACAP_RISK");
-
-    bakauheniRiskFeatures = await fetchRiskFeatures("Capstone:Bakauheni_DS_Risk");
-
-    console.log("Cilacap assets:", cilacapRiskFeatures.length);
-    console.log("Bakauheni assets:", bakauheniRiskFeatures.length);
-
-    refreshRiskDashboard();
-  } catch (error) {
-    console.error("Risk data loading failed:", error);
+  if (cilacapRiskFeatures.length && bakauheniRiskFeatures.length) {
+    return;
   }
+
+  if (!riskDataLoadPromise) {
+    riskDataLoadPromise = (async () => {
+      try {
+        const [cilacapFeatures, bakauheniFeatures] = await Promise.all([
+          fetchRiskFeatures("Capstone:DS_CILACAP_RISK"),
+          fetchRiskFeatures("Capstone:Bakauheni_DS_Risk"),
+        ]);
+
+        cilacapRiskFeatures = cilacapFeatures;
+        bakauheniRiskFeatures = bakauheniFeatures;
+
+        console.log("Cilacap assets:", cilacapRiskFeatures.length);
+        console.log("Bakauheni assets:", bakauheniRiskFeatures.length);
+
+        refreshRiskDashboard();
+      } catch (error) {
+        riskDataLoadPromise = null;
+        console.error("Risk data loading failed:", error);
+      }
+    })();
+  }
+
+  return riskDataLoadPromise;
 }
 
 /* ================= SUMMARY ================= */
@@ -2651,7 +2742,7 @@ function initRiskStateButtons() {
   const buttons = document.querySelectorAll(".risk-state-btn");
 
   buttons.forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
       buttons.forEach((btn) => {
         btn.classList.remove("active");
       });
@@ -2659,6 +2750,8 @@ function initRiskStateButtons() {
       button.classList.add("active");
 
       currentRiskState = button.dataset.ds;
+
+      await loadRiskData();
 
       refreshRiskDashboard();
 
