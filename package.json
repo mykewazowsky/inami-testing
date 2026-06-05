@@ -22,6 +22,9 @@
     "nodemailer": "^8.0.10",
     "resend": "^6.12.4"
   },
+  "engines": {
+    "node": ">=22"
+  },
   "devDependencies": {
     "htmlhint": "^1.9.2",
     "prettier": "^3.8.3",
