@@ -1461,8 +1461,7 @@ let currentRiskState = "DS1";
 let inundationLegendControl = null;
 let activeDamageState = "DS1";
 
-const GEOSERVER_WMS =
-  "https://foster-cringing-unwary.ngrok-free.dev/geoserver/wms?ngrok-skip-browser-warning=true";
+const GEOSERVER_WMS = "https://foster-cringing-unwary.ngrok-free.dev/geoserver/wms";
 
 function createWmsLayer(layerName) {
   return L.tileLayer.wms(GEOSERVER_WMS, {
@@ -1475,7 +1474,7 @@ function createWmsLayer(layerName) {
 
 async function loadRiskLayer(layerName) {
   const url =
-    `https://foster-cringing-unwary.ngrok-free.dev/geoserver/ows?` +
+    `http://127.0.0.1:8080/geoserver/ows?` +
     `service=WFS&version=1.0.0&request=GetFeature` +
     `&typeName=${layerName}` +
     `&outputFormat=application/json` +
@@ -2448,7 +2447,7 @@ window.requireLoginForPurchase = requireLoginForPurchase;
 /* ================= Loader WFS ================= */
 async function fetchRiskFeatures(layerName) {
   const url =
-    `https://foster-cringing-unwary.ngrok-free.dev/geoserver/ows?` +
+    `http://127.0.0.1:8080/geoserver/ows?` +
     `service=WFS&version=1.0.0&request=GetFeature` +
     `&typeName=${layerName}` +
     `&outputFormat=application/json` +
