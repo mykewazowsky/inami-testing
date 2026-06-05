@@ -1458,7 +1458,7 @@ const INUNDATION_TIFS = {
 function getGeoAPIBase() {
   return window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? "http://localhost:3000"
-    : "https://inami-dashboard-production.up.railway.app";
+    : "https://inami-testing-production.up.railway.app";
 }
 
 async function loadJalanLayer(layerName) {

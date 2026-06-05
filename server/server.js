@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const admin = require("firebase-admin");
 
 require("dotenv").config();
 
@@ -12,24 +11,6 @@ const reportDownloadRoutes = require("./routes/report");
 const geodataRoutes = require("./routes/geodataRoutes");
 
 /* ======================================================
-   FIREBASE ADMIN INIT
-====================================================== */
-
-if (!admin.apps.length) {
-  if (process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_PRIVATE_KEY) {
-    admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-      }),
-    });
-  } else {
-    console.warn("⚠️  Firebase credentials tidak ditemukan — fitur auth/payment dinonaktifkan.");
-  }
-}
-
-/* ======================================================
    EXPRESS APP
 ====================================================== */
 
@@ -39,13 +20,24 @@ const app = express();
    CORS
 ====================================================== */
 
+const allowedOrigins = [
+  "http://127.0.0.1:5500",
+  "http://localhost:5500",
+  "http://localhost:3000",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: [
-      "http://127.0.0.1:5500",
-      "http://localhost:5500",
-      process.env.FRONTEND_URL,
-    ],
+    origin: (origin, callback) => {
+      // Izinkan request tanpa origin (curl, Postman, Railway health check)
+      if (!origin) return callback(null, true);
+      // Izinkan semua subdomain vercel.app untuk fleksibilitas deploy
+      if (origin.endsWith(".vercel.app") || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   }),
 );
